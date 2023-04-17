@@ -7,6 +7,7 @@ object Dependencies {
 
         const val ui = "androidx.compose.ui:ui"
         const val material = "androidx.compose.material:material"
+        const val foundation = "androidx.compose.foundation:foundation"
 
         const val toolingPreview = "androidx.compose.ui:ui-tooling-preview"
         const val tooling = "androidx.compose.ui:ui-tooling"
