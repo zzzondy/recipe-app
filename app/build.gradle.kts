@@ -65,7 +65,8 @@ android {
 dependencies {
 
     // Modules
-    implementation(project(":common:theme"))
+    implementation(project(Modules.commonTheme))
+    implementation(project(Modules.commonComponents))
 
     // Lifecycle
     implementation(Dependencies.Lifecycle.core)

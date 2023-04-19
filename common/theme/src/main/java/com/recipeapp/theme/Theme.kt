@@ -1,6 +1,7 @@
 package com.recipeapp.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material.ripple.LocalRippleTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 
@@ -25,6 +26,7 @@ fun RecipeAppTheme(
         LocalRecipeAppShapes provides shapes,
         LocalRecipeAppPaddings provides paddings,
         LocalRecipeAppSizes provides sizes,
+        LocalRippleTheme provides RecipeAppRippleTheme,
         content = content
     )
 }

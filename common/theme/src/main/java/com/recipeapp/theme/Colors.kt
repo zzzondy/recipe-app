@@ -3,6 +3,7 @@ package com.recipeapp.theme
 import androidx.compose.ui.graphics.Color
 
 val lightColors = RecipeAppColors(
+    isDarkTheme = false,
     neutral100 = Color(0xff181818),
     neutral90 = Color(0xff303030),
     neutral80 = Color(0xff484848),
@@ -43,4 +44,4 @@ val lightColors = RecipeAppColors(
     success10 = Color(0xffceecd7)
 )
 
-val darkColors = lightColors.copy()
+val darkColors = lightColors.copy(isDarkTheme = true)

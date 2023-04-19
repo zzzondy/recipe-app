@@ -9,7 +9,7 @@ import androidx.compose.ui.unit.sp
 val appFontFamily = FontFamily(
     fonts = listOf(
         Font(resId = R.font.poppins_regular),
-        Font(resId = R.font.poppins_bold, weight = FontWeight.Bold)
+        Font(resId = R.font.poppins_bold)
     )
 )
 

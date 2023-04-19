@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.recipeapp.theme"
+    namespace = "com.recipeapp.components"
     compileSdk = Config.compileSdk
 
     defaultConfig {
@@ -33,11 +33,6 @@ android {
         }
     }
 
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-
     buildFeatures {
         compose = true
     }
@@ -46,20 +41,32 @@ android {
         kotlinCompilerExtensionVersion = Dependencies.Compose.composeVersion
     }
 
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
     kotlinOptions {
         jvmTarget = "1.8"
     }
 }
 
 dependencies {
+    // Modules
+    implementation(project(Modules.commonTheme))
 
     // Compose BOM
     implementation(platform(Dependencies.Compose.bom))
 
-    // Compose ui
+    // Compose
     implementation(Dependencies.Compose.ui)
     implementation(Dependencies.Compose.material)
     implementation(Dependencies.Compose.foundation)
+
+    // Compose tooling
+    implementation(Dependencies.Compose.toolingPreview)
+    debugImplementation(Dependencies.Compose.tooling)
+    debugImplementation(Dependencies.Compose.manifest)
 
     // Lifecycle
     implementation(Dependencies.Lifecycle.composeActivity)

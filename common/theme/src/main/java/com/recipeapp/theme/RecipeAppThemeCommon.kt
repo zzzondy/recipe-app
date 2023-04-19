@@ -1,5 +1,7 @@
 package com.recipeapp.theme
 
+import androidx.compose.material.ripple.RippleAlpha
+import androidx.compose.material.ripple.RippleTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
@@ -8,6 +10,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 
 data class RecipeAppColors(
+    val isDarkTheme: Boolean,
     // Neutral
     val neutral100: Color,
     val neutral90: Color,
@@ -96,6 +99,7 @@ data class RecipeAppPaddings(
 
 data class RecipeAppSizes(
     val default: Dp,
+    val extraExtraSmall: Dp,
     val extraSmall: Dp,
     val small: Dp,
     val medium: Dp,
@@ -132,6 +136,21 @@ object RecipeAppTheme {
     val sizes: RecipeAppSizes
         @Composable
         get() = LocalRecipeAppSizes.current
+}
+
+object RecipeAppRippleTheme : RippleTheme {
+
+    @Composable
+    override fun defaultColor(): Color = RippleTheme.defaultRippleColor(
+        contentColor = RecipeAppTheme.colors.primary100,
+        lightTheme = RecipeAppTheme.colors.isDarkTheme
+    )
+
+    @Composable
+    override fun rippleAlpha(): RippleAlpha = RippleTheme.defaultRippleAlpha(
+        contentColor = RecipeAppTheme.colors.primary100,
+        lightTheme = RecipeAppTheme.colors.isDarkTheme
+    )
 }
 
 val LocalRecipeAppColors = staticCompositionLocalOf<RecipeAppColors> { error("No colors provided") }
