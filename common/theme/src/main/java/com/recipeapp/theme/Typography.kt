@@ -6,14 +6,14 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
-val appFontFamily = FontFamily(
+internal val appFontFamily = FontFamily(
     fonts = listOf(
         Font(resId = R.font.poppins_regular),
         Font(resId = R.font.poppins_bold)
     )
 )
 
-val typography = RecipeAppTypography(
+internal val typography = RecipeAppTypography(
     regularHeading = TextStyle(
         fontFamily = appFontFamily,
         fontSize = 56.sp,

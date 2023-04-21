@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.recipeapp.components"
+    namespace = "com.recipeapp.navigation"
     compileSdk = Config.compileSdk
 
     defaultConfig {
@@ -52,23 +52,6 @@ android {
 }
 
 dependencies {
-
-    // Modules
-    implementation(project(Modules.commonTheme))
-
-    // Compose BOM
-    implementation(platform(Dependencies.Compose.bom))
-
-    // Compose
-    implementation(Dependencies.Compose.ui)
-    implementation(Dependencies.Compose.material)
-    implementation(Dependencies.Compose.foundation)
-
-    // Compose tooling
-    implementation(Dependencies.Compose.toolingPreview)
-    debugImplementation(Dependencies.Compose.tooling)
-    debugImplementation(Dependencies.Compose.manifest)
-
-    // Lifecycle
-    implementation(Dependencies.Lifecycle.composeActivity)
+    // Navigation
+    implementation(Dependencies.Compose.navigation)
 }

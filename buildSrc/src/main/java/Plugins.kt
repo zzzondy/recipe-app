@@ -7,4 +7,6 @@ object Plugins {
 
     const val kotlinAndroid = "org.jetbrains.kotlin.android"
     const val kotlinVersion = "1.8.20"
+
+    const val kapt = "kotlin-kapt"
 }

@@ -138,7 +138,7 @@ object RecipeAppTheme {
         get() = LocalRecipeAppSizes.current
 }
 
-object RecipeAppRippleTheme : RippleTheme {
+internal object RecipeAppRippleTheme : RippleTheme {
 
     @Composable
     override fun defaultColor(): Color = RippleTheme.defaultRippleColor(

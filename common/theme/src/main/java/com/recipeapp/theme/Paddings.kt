@@ -2,7 +2,7 @@ package com.recipeapp.theme
 
 import androidx.compose.ui.unit.dp
 
-val paddings = RecipeAppPaddings(
+internal val paddings = RecipeAppPaddings(
     default = 0.dp,
     extraSmall = 4.dp,
     small = 8.dp,

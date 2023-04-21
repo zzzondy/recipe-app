@@ -2,7 +2,7 @@ package com.recipeapp.theme
 
 import androidx.compose.ui.unit.dp
 
-val sizes = RecipeAppSizes(
+internal val sizes = RecipeAppSizes(
     default = 20.dp,
     extraExtraSmall = 1.dp,
     extraSmall = 16.dp,

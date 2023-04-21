@@ -1,6 +1,7 @@
 plugins {
     id(Plugins.androidApplication)
     id(Plugins.kotlinAndroid)
+    id(Plugins.kapt)
 }
 
 android {
@@ -67,6 +68,9 @@ dependencies {
     // Modules
     implementation(project(Modules.commonTheme))
     implementation(project(Modules.commonComponents))
+    implementation(project(Modules.commonNavigation))
+
+    implementation(project(Modules.featureRecipesPresentation))
 
     // Lifecycle
     implementation(Dependencies.Lifecycle.core)
@@ -79,6 +83,13 @@ dependencies {
     // Compose ui
     implementation(Dependencies.Compose.ui)
     implementation(Dependencies.Compose.material)
+    
+    // Dagger
+    implementation(Dependencies.Dagger.dagger)
+    kapt(Dependencies.Dagger.compiler)
+
+    // Navigation
+    implementation(Dependencies.Compose.navigation)
 
 
     // Testing
