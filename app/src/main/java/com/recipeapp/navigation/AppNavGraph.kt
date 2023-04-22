@@ -9,13 +9,13 @@ import androidx.navigation.compose.NavHost
 fun AppNavGraph(
     navController: NavHostController,
     modifier: Modifier = Modifier,
-    vararg featuresNavigationApi: FeatureNavigationApi,
+    featureNavigationApis: List<FeatureNavigationApi>,
 ) {
     NavHost(
         navController = navController,
-        startDestination = featuresNavigationApi[0].startScreenRoute
+        startDestination = featureNavigationApis[0].navigationRoute
     ) {
-        featuresNavigationApi.forEach { featuresNavigationApi ->
+        featureNavigationApis.forEach { featuresNavigationApi ->
             register(
                 featureNavigationApi = featuresNavigationApi,
                 navController = navController,
@@ -23,5 +23,4 @@ fun AppNavGraph(
             )
         }
     }
-
 }

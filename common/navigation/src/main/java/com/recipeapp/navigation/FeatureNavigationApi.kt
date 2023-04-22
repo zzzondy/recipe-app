@@ -7,7 +7,7 @@ import androidx.navigation.NavGraphBuilder
 
 interface FeatureNavigationApi {
 
-    val startScreenRoute: String
+    val navigationRoute: String
 
     fun registerFeatureNavigationGraph(
         navGraphBuilder: NavGraphBuilder,

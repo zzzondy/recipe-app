@@ -56,7 +56,7 @@ dependencies {
 
     // Modules
     implementation(project(Modules.commonTheme))
-    implementation(project(Modules.commonTheme))
+    implementation(project(Modules.commonComponents))
     implementation(project(Modules.commonNavigation))
 
     // Compose BOM

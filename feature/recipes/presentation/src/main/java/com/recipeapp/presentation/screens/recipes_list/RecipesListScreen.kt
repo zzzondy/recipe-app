@@ -1,4 +1,4 @@
-package com.recipeapp.presentation.screens.recipes_list_screen
+package com.recipeapp.presentation.screens.recipes_list
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
