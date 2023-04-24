@@ -59,6 +59,9 @@ dependencies {
     implementation(project(Modules.commonComponents))
     implementation(project(Modules.commonNavigation))
 
+    implementation(project(Modules.featureRecipesDomain))
+    implementation(project(Modules.featureRecipesData))
+
     // Compose BOM
     implementation(platform(Dependencies.Compose.bom))
 
@@ -76,4 +79,7 @@ dependencies {
     // Dagger
     implementation(Dependencies.Dagger.dagger)
     kapt(Dependencies.Dagger.compiler)
+
+    // Retrofit
+    implementation(Dependencies.Retrofit.retrofit)
 }

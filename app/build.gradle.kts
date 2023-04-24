@@ -72,6 +72,8 @@ dependencies {
     implementation(project(Modules.commonNetwork))
 
     implementation(project(Modules.featureRecipesPresentation))
+    implementation(project(Modules.featureRecipesDomain))
+    implementation(project(Modules.featureRecipesData))
 
     // Lifecycle
     implementation(Dependencies.Lifecycle.core)

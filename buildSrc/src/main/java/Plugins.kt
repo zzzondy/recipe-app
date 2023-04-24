@@ -11,4 +11,9 @@ object Plugins {
     const val kapt = "kotlin-kapt"
 
     const val kotlinSerialization = "org.jetbrains.kotlin.plugin.serialization"
+
+    const val kotlinJvmVersion = "1.8.0"
+    const val kotlinJvm = "org.jetbrains.kotlin.jvm"
+
+    const val javaLibrary = "java-library"
 }

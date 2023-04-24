@@ -1,12 +1,11 @@
 plugins {
     id(Plugins.androidLibrary)
     id(Plugins.kotlinAndroid)
-    id(Plugins.kapt)
     id(Plugins.kotlinSerialization)
 }
 
 android {
-    namespace = "com.recipeapp.network"
+    namespace = "com.recipes.data"
     compileSdk = Config.compileSdk
 
     defaultConfig {
@@ -19,28 +18,18 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = true
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-            buildConfigField(
-                "String",
-                "API_URL",
-                "\"http://127.0.0.1:8000/\""
-            )
-        }
-
-        debug {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            buildConfigField(
-                "String",
-                "API_URL",
-                "\"http://192.168.0.15:8000/\""
+        }
+
+        debug {
+            isMinifyEnabled = true
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
             )
         }
     }
@@ -57,18 +46,12 @@ android {
 
 dependencies {
 
-    // Dagger
-    implementation(Dependencies.Dagger.dagger)
-    kapt(Dependencies.Dagger.compiler)
-
-    // OkHttp3
-    api(Dependencies.OkHttp3.okhttp)
-    debugApi(Dependencies.OkHttp3.loggingInterceptor)
+    // Modules
+    implementation(project(Modules.featureRecipesDomain))
 
     // Retrofit
-    api(Dependencies.Retrofit.retrofit)
-    api(Dependencies.Retrofit.serialization)
+    implementation(Dependencies.Retrofit.retrofit)
 
     // Serialization
-    api(Dependencies.Serialization.kotlinSerializationJson)
+    implementation(Dependencies.Serialization.kotlinSerializationJson)
 }

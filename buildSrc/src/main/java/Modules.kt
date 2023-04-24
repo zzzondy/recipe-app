@@ -9,5 +9,9 @@ object Modules {
     const val commonNetwork = ":common:network"
 
     // Features
+
+    // Recipes
     const val featureRecipesPresentation = ":feature:recipes:presentation"
+    const val featureRecipesDomain = ":feature:recipes:domain"
+    const val featureRecipesData = ":feature:recipes:data"
 }

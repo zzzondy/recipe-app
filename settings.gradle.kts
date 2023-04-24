@@ -24,4 +24,8 @@ include(":common:navigation")
 include(":common:network")
 
 // Features
+
+// Recipes
 include(":feature:recipes:presentation")
+include(":feature:recipes:domain")
+include(":feature:recipes:data")
