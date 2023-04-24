@@ -21,6 +21,7 @@ include(":app")
 include(":common:theme")
 include(":common:components")
 include(":common:navigation")
+include(":common:network")
 
 // Features
 include(":feature:recipes:presentation")

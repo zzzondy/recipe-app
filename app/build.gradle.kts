@@ -69,6 +69,7 @@ dependencies {
     implementation(project(Modules.commonTheme))
     implementation(project(Modules.commonComponents))
     implementation(project(Modules.commonNavigation))
+    implementation(project(Modules.commonNetwork))
 
     implementation(project(Modules.featureRecipesPresentation))
 

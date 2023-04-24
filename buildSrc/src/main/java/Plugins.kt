@@ -9,4 +9,6 @@ object Plugins {
     const val kotlinVersion = "1.8.20"
 
     const val kapt = "kotlin-kapt"
+
+    const val kotlinSerialization = "org.jetbrains.kotlin.plugin.serialization"
 }

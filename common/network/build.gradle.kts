@@ -2,10 +2,11 @@ plugins {
     id(Plugins.androidLibrary)
     id(Plugins.kotlinAndroid)
     id(Plugins.kapt)
+    id(Plugins.kotlinSerialization)
 }
 
 android {
-    namespace = "com.recipeapp.navigation"
+    namespace = "com.recipeapp.network"
     compileSdk = Config.compileSdk
 
     defaultConfig {
@@ -23,6 +24,11 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            buildConfigField(
+                "String",
+                "API_URL",
+                "\"http://127.0.0.1:8000/\""
+            )
         }
 
         debug {
@@ -31,15 +37,12 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            buildConfigField(
+                "String",
+                "API_URL",
+                "\"http://127.0.0.1:8000/\""
+            )
         }
-    }
-
-    buildFeatures {
-        compose = true
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = Dependencies.Compose.composeVersion
     }
 
     compileOptions {
@@ -54,10 +57,18 @@ android {
 
 dependencies {
 
-    // Navigation
-    implementation(Dependencies.Compose.navigation)
-
     // Dagger
     implementation(Dependencies.Dagger.dagger)
     kapt(Dependencies.Dagger.compiler)
+
+    // OkHttp3
+    api(Dependencies.OkHttp3.okhttp)
+    debugApi(Dependencies.OkHttp3.loggingInterceptor)
+
+    // Retrofit
+    api(Dependencies.Retrofit.retrofit)
+    api(Dependencies.Retrofit.serialization)
+
+    // Serialization
+    api(Dependencies.Serialization.kotlinSerializationJson)
 }

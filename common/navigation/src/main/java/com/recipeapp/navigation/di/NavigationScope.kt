@@ -1,4 +1,4 @@
-package com.recipeapp.di.navigation
+package com.recipeapp.navigation.di
 
 import javax.inject.Scope
 

@@ -42,4 +42,21 @@ object Dependencies {
         const val animationNavigation =
             "com.google.accompanist:accompanist-navigation-animation:$accompanistVersion"
     }
+
+    object Serialization {
+        const val kotlinSerialization = "org.jetbrains.kotlin:kotlin-serialization:1.8.10"
+        const val kotlinSerializationJson = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.1"
+    }
+
+    object OkHttp3 {
+        private const val okHttpVersion = "4.9.0"
+
+        const val okhttp = "com.squareup.okhttp3:okhttp:$okHttpVersion"
+        const val loggingInterceptor = "com.squareup.okhttp3:logging-interceptor:$okHttpVersion"
+    }
+
+    object Retrofit {
+        const val retrofit = "com.squareup.retrofit2:retrofit:2.9.0"
+        const val serialization = "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0"
+    }
 }

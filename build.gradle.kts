@@ -2,6 +2,10 @@ buildscript {
     repositories {
         mavenCentral()
     }
+
+    dependencies {
+        classpath(Dependencies.Serialization.kotlinSerialization)
+    }
 }
 
 allprojects {
