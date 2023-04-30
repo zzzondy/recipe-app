@@ -59,4 +59,11 @@ object Dependencies {
         const val retrofit = "com.squareup.retrofit2:retrofit:2.9.0"
         const val serialization = "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0"
     }
+
+    object Paging {
+        private const val pagingVersion = "3.1.1"
+
+        const val common = "androidx.paging:paging-common-ktx:$pagingVersion"
+        const val compose = "androidx.paging:paging-compose:1.0.0-alpha17"
+    }
 }

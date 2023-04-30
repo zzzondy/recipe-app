@@ -36,7 +36,7 @@ class RecipesFeatureNavigationApi : FeatureNavigationApi {
                 }
 
                 RecipesListScreen(
-                    onClick = { viewModel.onClick() }
+                    viewModel = viewModel
                 )
             }
         }

@@ -10,4 +10,7 @@ data class RemoteRecipe(
 
     @SerialName("description")
     val description: String,
+
+    @SerialName("food_type")
+    val foodType: Int
 )

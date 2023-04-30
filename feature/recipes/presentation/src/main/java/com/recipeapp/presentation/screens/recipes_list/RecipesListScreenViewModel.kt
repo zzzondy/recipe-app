@@ -1,18 +1,14 @@
 package com.recipeapp.presentation.screens.recipes_list
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.cachedIn
 import com.recipes.domain.use_cases.ObtainRecipesUseCase
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.flowOn
 
-class RecipesListScreenViewModel(private val obtainRecipesUseCase: ObtainRecipesUseCase) :
+class RecipesListScreenViewModel(obtainRecipesUseCase: ObtainRecipesUseCase) :
     ViewModel() {
 
-    fun onClick() {
-        viewModelScope.launch(Dispatchers.IO) {
-            Log.d("RecipesViewModel", obtainRecipesUseCase().toString())
-        }
-    }
+    val recipes = obtainRecipesUseCase().flowOn(Dispatchers.IO).cachedIn(viewModelScope)
 }

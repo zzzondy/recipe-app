@@ -1,9 +1,12 @@
 package com.recipes.domain.use_cases
 
+import androidx.paging.PagingData
+import com.recipes.domain.models.Recipe
 import com.recipes.domain.repository.RecipesRepository
-import com.recipes.domain.states.ObtainingRecipesResult
+import kotlinx.coroutines.flow.Flow
 
 class ObtainRecipesUseCase(private val recipesRepository: RecipesRepository) {
 
-    suspend operator fun invoke(): ObtainingRecipesResult = recipesRepository.obtainRecipes()
+    operator fun invoke(): Flow<PagingData<Recipe>> =
+        recipesRepository.obtainRecipesWithPaging()
 }

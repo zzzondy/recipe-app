@@ -1,8 +1,8 @@
 package com.recipes.data.remote.repository
 
-import com.recipes.data.remote.states.RemoteObtainingRecipesResult
+import com.recipes.data.remote.models.ObtainingRecipesResponse
 
 interface RemoteRecipesRepository {
 
-    suspend fun obtainRecipes(): RemoteObtainingRecipesResult
+    suspend fun obtainRecipesWithPage(page: Int): ObtainingRecipesResponse
 }

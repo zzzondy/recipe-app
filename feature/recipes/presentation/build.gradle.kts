@@ -82,4 +82,7 @@ dependencies {
 
     // Retrofit
     implementation(Dependencies.Retrofit.retrofit)
+
+    // Paging
+    implementation(Dependencies.Paging.compose)
 }
