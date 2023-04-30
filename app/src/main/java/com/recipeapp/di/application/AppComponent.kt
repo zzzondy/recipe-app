@@ -1,6 +1,7 @@
 package com.recipeapp.di.application
 
 import android.content.Context
+import com.recipe_adding.presentation.di.RecipeAddingComponent
 import com.recipeapp.di.navigation.NavigationComponent
 import com.recipeapp.presentation.di.RecipesComponent
 import dagger.BindsInstance
@@ -19,4 +20,6 @@ interface AppComponent {
     }
 
     val recipesComponentFactory: RecipesComponent.Factory
+
+    val recipeAddingComponentFactory: RecipeAddingComponent.Factory
 }

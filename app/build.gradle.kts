@@ -75,6 +75,8 @@ dependencies {
     implementation(project(Modules.featureRecipesDomain))
     implementation(project(Modules.featureRecipesData))
 
+    implementation(project(Modules.featureRecipeAddingPresentation))
+
     // Lifecycle
     implementation(Dependencies.Lifecycle.core)
     implementation(Dependencies.Lifecycle.lifecycleRuntime)

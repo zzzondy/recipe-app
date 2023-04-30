@@ -6,6 +6,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
+import com.recipe_adding.presentation.navigation.RecipeAddingScreens
 import com.recipeapp.components.buttons.CircleButton
 import com.recipeapp.navigation.AppNavGraph
 import com.recipeapp.navigation.BottomBarItem
@@ -28,7 +29,9 @@ fun AppContent(
         },
         isFloatingActionButtonDocked = true,
         floatingActionButton = {
-            CircleButton {
+            CircleButton(
+                onClick = { navController.navigate(RecipeAddingScreens.RecipeAddingScreen.route) }
+            ) {
 
             }
         },

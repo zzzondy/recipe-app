@@ -1,5 +1,6 @@
 package com.recipeapp.navigation.ui
 
+import android.util.Log
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.BottomAppBar
@@ -26,6 +27,10 @@ fun BottomNavBar(
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestinationParentRoute = navBackStackEntry?.destination?.parent?.route
+    navController.backQueue.toList().forEach {
+        Log.d("Nav", it.destination.route.toString())
+    }
+
 
     BottomAppBar(
         backgroundColor = RecipeAppTheme.colors.white0,
@@ -39,8 +44,11 @@ fun BottomNavBar(
                 selected = selected,
                 onClick = {
                     navController.navigate(bottomBarItem.navigationRoute) {
-                        popUpTo(navController.graph.findStartDestination().id)
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
                         launchSingleTop = true
+                        restoreState = true
                     }
                 },
                 icon = {
