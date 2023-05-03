@@ -29,3 +29,6 @@ include(":common:network")
 include(":feature:recipes:presentation")
 include(":feature:recipes:domain")
 include(":feature:recipes:data")
+
+// Recipe adding
+include(":feature:recipe_adding:presentation")
