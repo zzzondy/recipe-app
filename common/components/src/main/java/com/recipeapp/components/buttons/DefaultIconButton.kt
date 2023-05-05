@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.recipeapp.theme.RecipeAppTheme
+import com.recipeapp.utils.bounceClick
 
 @Composable
 fun DefaultIconButton(
@@ -23,7 +24,9 @@ fun DefaultIconButton(
         enabled = enabled,
         onClick = onClick,
         shape = RecipeAppTheme.shapes.default,
-        modifier = modifier.size(RecipeAppTheme.sizes.small),
+        modifier = modifier
+            .size(RecipeAppTheme.sizes.small)
+            .bounceClick(enabled = enabled),
         colors = ButtonDefaults.buttonColors(
             backgroundColor = RecipeAppTheme.colors.primary50,
             disabledBackgroundColor = RecipeAppTheme.colors.neutral20,
@@ -50,7 +53,10 @@ private fun DefaultIconButtonPreview() {
                 )
             }
 
-            DefaultIconButton(modifier = Modifier.padding(RecipeAppTheme.paddings.medium), enabled = false) {
+            DefaultIconButton(
+                modifier = Modifier.padding(RecipeAppTheme.paddings.medium),
+                enabled = false
+            ) {
                 Icon(
                     imageVector = Icons.Default.ArrowForward,
                     contentDescription = null,

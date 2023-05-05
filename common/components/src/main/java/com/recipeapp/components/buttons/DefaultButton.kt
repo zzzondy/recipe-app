@@ -1,6 +1,14 @@
 package com.recipeapp.components.buttons
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
@@ -11,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.recipeapp.theme.RecipeAppTheme
+import com.recipeapp.utils.bounceClick
 
 @Composable
 fun DefaultButton(
@@ -22,7 +31,8 @@ fun DefaultButton(
     Button(
         enabled = enabled,
         onClick = onClick,
-        modifier = modifier,
+        modifier = modifier
+            .bounceClick(enabled = enabled),
         shape = RecipeAppTheme.shapes.default,
         colors = ButtonDefaults.buttonColors(
             backgroundColor = RecipeAppTheme.colors.primary50,

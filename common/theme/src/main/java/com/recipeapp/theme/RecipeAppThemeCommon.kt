@@ -150,10 +150,7 @@ internal object RecipeAppRippleTheme : RippleTheme {
     )
 
     @Composable
-    override fun rippleAlpha(): RippleAlpha = RippleTheme.defaultRippleAlpha(
-        contentColor = RecipeAppTheme.colors.primary100,
-        lightTheme = RecipeAppTheme.colors.isLightTheme
-    )
+    override fun rippleAlpha(): RippleAlpha = RippleAlpha(0f, 0f, 0f, 0f)
 }
 
 val LocalRecipeAppColors = staticCompositionLocalOf<RecipeAppColors> { error("No colors provided") }
