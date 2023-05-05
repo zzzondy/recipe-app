@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="arrow_back_icon">Arrow back icon</string>
+    <string name="create_recipe">Create recipe</string>
+    <string name="add_circle_icon">Add circle icon</string>
+</resources>

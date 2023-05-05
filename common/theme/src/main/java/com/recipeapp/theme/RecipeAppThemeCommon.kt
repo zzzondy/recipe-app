@@ -10,7 +10,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 
 data class RecipeAppColors(
-    val isDarkTheme: Boolean,
+    val isLightTheme: Boolean,
     // Neutral
     val neutral100: Color,
     val neutral90: Color,
@@ -90,6 +90,7 @@ data class RecipeAppTypography(
 
 data class RecipeAppPaddings(
     val default: Dp,
+    val extraExtraSmall: Dp,
     val extraSmall: Dp,
     val small: Dp,
     val medium: Dp,
@@ -104,7 +105,9 @@ data class RecipeAppSizes(
     val small: Dp,
     val medium: Dp,
     val large: Dp,
-    val extraLarge: Dp
+    val extraLarge: Dp,
+    val imageWidth: Dp,
+    val imageHeight: Dp,
 )
 
 data class RecipeAppShapes(
@@ -143,13 +146,13 @@ internal object RecipeAppRippleTheme : RippleTheme {
     @Composable
     override fun defaultColor(): Color = RippleTheme.defaultRippleColor(
         contentColor = RecipeAppTheme.colors.primary100,
-        lightTheme = RecipeAppTheme.colors.isDarkTheme
+        lightTheme = RecipeAppTheme.colors.isLightTheme
     )
 
     @Composable
     override fun rippleAlpha(): RippleAlpha = RippleTheme.defaultRippleAlpha(
         contentColor = RecipeAppTheme.colors.primary100,
-        lightTheme = RecipeAppTheme.colors.isDarkTheme
+        lightTheme = RecipeAppTheme.colors.isLightTheme
     )
 }
 

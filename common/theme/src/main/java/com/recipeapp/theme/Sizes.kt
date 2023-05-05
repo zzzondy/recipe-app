@@ -9,5 +9,7 @@ internal val sizes = RecipeAppSizes(
     small = 36.dp,
     medium = 48.dp,
     large = 64.dp,
-    extraLarge = 96.dp
+    extraLarge = 96.dp,
+    imageWidth = 335.dp,
+    imageHeight = 200.dp
 )

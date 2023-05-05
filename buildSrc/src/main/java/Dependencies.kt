@@ -8,6 +8,7 @@ object Dependencies {
         const val ui = "androidx.compose.ui:ui"
         const val material = "androidx.compose.material:material"
         const val foundation = "androidx.compose.foundation:foundation"
+        const val runtime = "androidx.compose.runtime:runtime"
 
         const val navigation = "androidx.navigation:navigation-compose:2.5.3"
 
@@ -37,10 +38,14 @@ object Dependencies {
     }
 
     object Accompanist {
-        private const val accompanistVersion = "0.31.0-alpha"
+        private const val accompanistVersion = "0.31.1-alpha"
 
         const val animationNavigation =
             "com.google.accompanist:accompanist-navigation-animation:$accompanistVersion"
+
+        const val systemUiController =
+            "com.google.accompanist:accompanist-systemuicontroller:$accompanistVersion"
+
     }
 
     object Serialization {
@@ -57,7 +62,8 @@ object Dependencies {
 
     object Retrofit {
         const val retrofit = "com.squareup.retrofit2:retrofit:2.9.0"
-        const val serialization = "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0"
+        const val serialization =
+            "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0"
     }
 
     object Paging {
@@ -65,5 +71,19 @@ object Dependencies {
 
         const val common = "androidx.paging:paging-common-ktx:$pagingVersion"
         const val compose = "androidx.paging:paging-compose:1.0.0-alpha17"
+    }
+
+    object FlowRedux {
+        private const val flowReduxVersion = "1.0.2"
+
+        const val flowRedux = "com.freeletics.flowredux:flowredux-jvm:$flowReduxVersion"
+    }
+
+    object Landscapist {
+        private const val landscapistVersion = "2.1.0"
+
+        const val bom = "com.github.skydoves:landscapist-bom:$landscapistVersion"
+        const val coil = "com.github.skydoves:landscapist-coil"
+        const val animation = "com.github.skydoves:landscapist-animation"
     }
 }

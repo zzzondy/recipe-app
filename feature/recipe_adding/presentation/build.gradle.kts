@@ -66,10 +66,21 @@ dependencies {
     implementation(Dependencies.Compose.ui)
     implementation(Dependencies.Compose.material)
 
+    // Compose tooling
+    implementation(Dependencies.Compose.tooling)
+    implementation(Dependencies.Compose.toolingPreview)
+
+    // FlowRedux
+    implementation(Dependencies.FlowRedux.flowRedux)
+
     // Navigation
     implementation(Dependencies.Compose.navigation)
 
     // Dagger
     implementation(Dependencies.Dagger.dagger)
     kapt(Dependencies.Dagger.compiler)
+
+    // Landscapist
+    implementation(Dependencies.Landscapist.bom)
+    implementation(Dependencies.Landscapist.coil)
 }

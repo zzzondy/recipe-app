@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import com.recipeapp.presentation.navigation.RecipesFeatureScreens
 
 @Composable
 fun AppNavGraph(
@@ -13,7 +14,7 @@ fun AppNavGraph(
 ) {
     NavHost(
         navController = navController,
-        startDestination = featureNavigationApis.reversed()[0].navigationRoute
+        startDestination = RecipesFeatureScreens.navigationRoute
     ) {
         featureNavigationApis.forEach { featuresNavigationApi ->
             register(

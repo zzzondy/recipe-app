@@ -1,8 +1,10 @@
 package com.recipeapp.navigation.ui
 
-import android.util.Log
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.BottomAppBar
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
@@ -23,43 +25,60 @@ import com.recipeapp.theme.RecipeAppTheme
 fun BottomNavBar(
     bottomBarItems: List<BottomBarItem>,
     navController: NavController,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    middleButton: @Composable RowScope.() -> Unit = {}
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestinationParentRoute = navBackStackEntry?.destination?.parent?.route
-    navController.backQueue.toList().forEach {
-        Log.d("Nav", it.destination.route.toString())
-    }
 
+    val shouldShowBottomBar =
+        bottomBarItems.any { it.navigationRoute == currentDestinationParentRoute } || currentDestinationParentRoute == null
 
-    BottomAppBar(
-        backgroundColor = RecipeAppTheme.colors.white0,
-        cutoutShape = CircleShape,
-        modifier = modifier
+    AnimatedVisibility(
+        visible = shouldShowBottomBar,
+        enter = slideInVertically(initialOffsetY = { it }),
+        exit = slideOutVertically(targetOffsetY = { it })
     ) {
-        bottomBarItems.forEach { bottomBarItem ->
-            val selected = currentDestinationParentRoute == bottomBarItem.navigationRoute
+        BottomAppBar(
+            backgroundColor = RecipeAppTheme.colors.white0,
+            modifier = modifier
+        ) {
+            bottomBarItems.forEachIndexed { index, bottomBarItem ->
+                val selected = currentDestinationParentRoute == bottomBarItem.navigationRoute
 
-            BottomNavigationItem(
-                selected = selected,
-                onClick = {
-                    navController.navigate(bottomBarItem.navigationRoute) {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
+                BottomNavigationItem(
+                    selected = selected,
+                    onClick = {
+                        navController.navigate(bottomBarItem.navigationRoute) {
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
                         }
-                        launchSingleTop = true
-                        restoreState = true
-                    }
-                },
-                icon = {
-                    Icon(
-                        painter = painterResource(bottomBarItem.iconId),
-                        contentDescription = stringResource(R.string.bottom_bar_icon)
-                    )
-                },
-                selectedContentColor = RecipeAppTheme.colors.primary50,
-                interactionSource = remember { MutableInteractionSource() }
-            )
+                    },
+                    icon = {
+                        Icon(
+                            painter = painterResource(bottomBarItem.iconId),
+                            contentDescription = stringResource(R.string.bottom_bar_icon)
+                        )
+                    },
+                    selectedContentColor = RecipeAppTheme.colors.primary50,
+                    interactionSource = remember { MutableInteractionSource() }
+                )
+
+                if (checkIndexIsMiddleOfList(index, bottomBarItems)) {
+                    middleButton()
+                }
+            }
         }
     }
+}
+
+private fun checkIndexIsMiddleOfList(index: Int, list: List<*>): Boolean {
+    return if (list.size == 1) {
+        true
+    } else if (list.size % 2 == 0 && index + 1 == list.size / 2) {
+        true
+    } else list.size % 2 != 0 && index + 1 == list.size / 2
 }

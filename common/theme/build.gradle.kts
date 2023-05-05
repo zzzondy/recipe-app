@@ -57,10 +57,11 @@ dependencies {
     implementation(platform(Dependencies.Compose.bom))
 
     // Compose ui
-    implementation(Dependencies.Compose.ui)
     implementation(Dependencies.Compose.material)
-    implementation(Dependencies.Compose.foundation)
 
     // Lifecycle
     implementation(Dependencies.Lifecycle.composeActivity)
+
+    // Accompanist
+    implementation(Dependencies.Accompanist.systemUiController)
 }

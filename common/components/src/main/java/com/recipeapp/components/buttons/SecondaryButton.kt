@@ -67,7 +67,7 @@ private fun SecondaryButtonPreview() {
             ) {
                 Text(text = "Preview", style = RecipeAppTheme.typography.boldP)
 
-                Spacer(modifier = Modifier.width(RecipeAppTheme.paddings.small))
+                Spacer(modifier = Modifier.width(RecipeAppTheme.paddings.extraSmall))
 
                 Icon(
                     imageVector = Icons.Default.ArrowForward,
@@ -83,7 +83,7 @@ private fun SecondaryButtonPreview() {
             ) {
                 Text(text = "Preview", style = RecipeAppTheme.typography.boldP)
 
-                Spacer(modifier = Modifier.width(RecipeAppTheme.paddings.small))
+                Spacer(modifier = Modifier.width(RecipeAppTheme.paddings.extraSmall))
 
                 Icon(
                     imageVector = Icons.Default.ArrowForward,

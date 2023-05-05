@@ -4,6 +4,8 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.ripple.LocalRippleTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.SideEffect
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @Composable
 fun RecipeAppTheme(
@@ -19,6 +21,16 @@ fun RecipeAppTheme(
     val paddings = paddings
 
     val sizes = sizes
+
+    val systemUiController = rememberSystemUiController()
+
+    SideEffect {
+        systemUiController.setSystemBarsColor(
+            color = colors.white0,
+            darkIcons = !isDarkTheme,
+            isNavigationBarContrastEnforced = false
+        )
+    }
 
     CompositionLocalProvider(
         LocalRecipeAppColors provides colors,

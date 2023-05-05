@@ -55,7 +55,7 @@ private fun BackgroundLessButtonPreview() {
             BackgroundLessButton(modifier = Modifier.padding(RecipeAppTheme.paddings.medium)) {
                 Text(text = "Preview")
 
-                Spacer(modifier = Modifier.width(RecipeAppTheme.paddings.small))
+                Spacer(modifier = Modifier.width(RecipeAppTheme.paddings.extraSmall))
 
                 Icon(imageVector = Icons.Default.ArrowForward, contentDescription = null)
             }

@@ -1,17 +1,22 @@
 package com.recipeapp
 
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.FabPosition
+import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import com.recipe_adding.presentation.navigation.RecipeAddingScreens
-import com.recipeapp.components.buttons.CircleButton
+import com.recipeapp.components.buttons.DefaultIconButton
 import com.recipeapp.navigation.AppNavGraph
 import com.recipeapp.navigation.BottomBarItem
 import com.recipeapp.navigation.FeatureNavigationApi
 import com.recipeapp.navigation.ui.BottomNavBar
+import com.recipeapp.theme.RecipeAppTheme
 
 @Composable
 fun AppContent(
@@ -25,22 +30,23 @@ fun AppContent(
             BottomNavBar(
                 navController = navController,
                 bottomBarItems = bottomBarItems,
+                middleButton = {
+                    DefaultIconButton(onClick = { navController.navigate(RecipeAddingScreens.navigationRoute) }) {
+                        Icon(imageVector = Icons.Default.Add, contentDescription = null)
+                    }
+                }
             )
         },
-        isFloatingActionButtonDocked = true,
-        floatingActionButton = {
-            CircleButton(
-                onClick = { navController.navigate(RecipeAddingScreens.RecipeAddingScreen.route) }
-            ) {
-
-            }
-        },
-        floatingActionButtonPosition = FabPosition.Center
+        backgroundColor = RecipeAppTheme.colors.white0,
+        modifier = Modifier
+            .fillMaxSize()
+            .systemBarsPadding()
     ) { paddingValues ->
         AppNavGraph(
             navController = navController,
             featureNavigationApis = featureNavigationApis,
-            modifier = Modifier.padding(paddingValues),
+            modifier = Modifier
+                .padding(paddingValues)
         )
     }
 }

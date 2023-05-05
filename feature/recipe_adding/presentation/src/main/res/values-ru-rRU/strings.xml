@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="arrow_back_icon">Иконка стрелки назад</string>
+    <string name="create_recipe">Создать рецепт</string>
+    <string name="add_circle_icon">Иконка добавления</string>
+</resources>

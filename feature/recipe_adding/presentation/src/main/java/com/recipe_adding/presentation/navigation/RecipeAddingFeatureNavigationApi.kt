@@ -1,14 +1,16 @@
 package com.recipe_adding.presentation.navigation
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.material.Text
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import androidx.navigation.navigation
 import com.recipe_adding.presentation.di.RecipeAddingComponentProvider
+import com.recipe_adding.presentation.screens.recipe_adding.RecipeAddingScreen
+import com.recipe_adding.presentation.screens.recipe_adding.RecipeAddingScreenViewModel
 import com.recipeapp.navigation.FeatureNavigationApi
+import com.recipeapp.navigation.daggerViewModel
 
 class RecipeAddingFeatureNavigationApi : FeatureNavigationApi {
     override val navigationRoute: String
@@ -19,12 +21,25 @@ class RecipeAddingFeatureNavigationApi : FeatureNavigationApi {
         navController: NavController,
         modifier: Modifier
     ) {
-        navGraphBuilder.composable(route = navigationRoute) {
-            val recipeAddingComponent =
-                (LocalContext.current.applicationContext as RecipeAddingComponentProvider).provideRecipeAddingComponent()
+        val recipeAddingComponent =
+            (navController.context.applicationContext as RecipeAddingComponentProvider).provideRecipeAddingComponent()
 
-            Column() {
-                Text(text = "recipe adding screen")
+        navGraphBuilder.navigation(
+            route = navigationRoute,
+            startDestination = RecipeAddingScreens.startDestination
+        ) {
+            composable(route = RecipeAddingScreens.RecipeAddingScreen.route) {
+                val recipeAddingScreenComponent =
+                    recipeAddingComponent.recipeAddingScreenComponentFactory.create()
+
+                val viewModel: RecipeAddingScreenViewModel = daggerViewModel {
+                    recipeAddingScreenComponent.recipeAddingScreenViewModel
+                }
+
+                RecipeAddingScreen(
+                    state = viewModel.state.collectAsState().value,
+                    onDispatchAction = viewModel::dispatchAction
+                )
             }
         }
     }
