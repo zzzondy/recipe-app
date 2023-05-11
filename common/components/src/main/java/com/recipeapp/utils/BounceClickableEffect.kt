@@ -18,7 +18,11 @@ enum class ClickState {
     PRESSED, IDLE
 }
 
-fun Modifier.bounceClick(enabled: Boolean = true, otherEffect: (ClickState) -> Unit = {}) = composed {
+fun Modifier.bounceClick(
+    enabled: Boolean = true,
+    otherEffect: (ClickState) -> Unit = {},
+    onClick: () -> Unit = {}
+) = composed {
 
     var buttonState by remember { mutableStateOf(ClickState.IDLE) }
 
@@ -33,7 +37,7 @@ fun Modifier.bounceClick(enabled: Boolean = true, otherEffect: (ClickState) -> U
             enabled = enabled,
             interactionSource = remember { MutableInteractionSource() },
             indication = null,
-            onClick = { }
+            onClick = onClick
         )
         .then(
             if (enabled) {

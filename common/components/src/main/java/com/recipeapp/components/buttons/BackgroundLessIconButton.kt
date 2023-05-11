@@ -13,7 +13,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.recipeapp.components.NoRippleInteractionSource
 import com.recipeapp.theme.RecipeAppTheme
 import com.recipeapp.utils.ClickState
 import com.recipeapp.utils.bounceClick
@@ -25,6 +27,7 @@ fun BackgroundLessIconButton(
     enabled: Boolean = true,
     pressedContentColor: Color = RecipeAppTheme.colors.primary70,
     defaultContentColor: Color = RecipeAppTheme.colors.primary50,
+    size: Dp = RecipeAppTheme.sizes.small,
     content: @Composable RowScope.() -> Unit
 ) {
     var clickState by remember { mutableStateOf(ClickState.IDLE) }
@@ -34,7 +37,7 @@ fun BackgroundLessIconButton(
     Button(
         onClick = onClick,
         modifier = modifier
-            .size(RecipeAppTheme.sizes.small)
+            .size(size)
             .bounceClick(
                 enabled = enabled,
                 otherEffect = { clickState = it }
@@ -54,7 +57,8 @@ fun BackgroundLessIconButton(
             focusedElevation = 0.dp
         ),
         enabled = enabled,
-        contentPadding = PaddingValues(1.dp),
+        contentPadding = PaddingValues(0.dp),
+        interactionSource = remember { NoRippleInteractionSource() },
         content = content
     )
 }

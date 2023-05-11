@@ -12,7 +12,7 @@ object Plugins {
 
     const val kotlinSerialization = "org.jetbrains.kotlin.plugin.serialization"
 
-    const val kotlinJvmVersion = "1.8.0"
+    const val kotlinJvmVersion = "1.8.20"
     const val kotlinJvm = "org.jetbrains.kotlin.jvm"
 
     const val javaLibrary = "java-library"

@@ -3,6 +3,7 @@ package com.recipeapp.components.buttons
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,6 +23,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import com.recipeapp.components.NoRippleInteractionSource
 import com.recipeapp.theme.RecipeAppTheme
 import com.recipeapp.utils.ClickState
 import com.recipeapp.utils.bounceClick
@@ -48,6 +50,8 @@ fun BackgroundLessButton(
             contentColor = contentColor,
             disabledContentColor = RecipeAppTheme.colors.neutral50
         ),
+        contentPadding = PaddingValues(RecipeAppTheme.paddings.default),
+        interactionSource = remember { NoRippleInteractionSource() },
         enabled = enabled,
         content = content
     )

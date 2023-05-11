@@ -31,6 +31,8 @@ fun DefaultTextField(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     singleLine: Boolean = false,
+    isError: Boolean = false,
+    readOnly: Boolean = false,
     minLines: Int = 1,
     maxLines: Int = if (singleLine) 1 else Int.MAX_VALUE,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
@@ -69,8 +71,15 @@ fun DefaultTextField(
             disabledTrailingIconColor = RecipeAppTheme.colors.neutral20,
             placeholderColor = RecipeAppTheme.colors.neutral30,
             disabledPlaceholderColor = RecipeAppTheme.colors.neutral30,
+            errorCursorColor = RecipeAppTheme.colors.error100,
+            errorBorderColor = RecipeAppTheme.colors.error100,
+            errorLabelColor = RecipeAppTheme.colors.error100,
+            errorLeadingIconColor = RecipeAppTheme.colors.error100,
+            errorTrailingIconColor = RecipeAppTheme.colors.error100
         ),
-        textStyle = RecipeAppTheme.typography.regularLabel
+        textStyle = RecipeAppTheme.typography.regularLabel,
+        isError = isError,
+        readOnly = readOnly
     )
 }
 

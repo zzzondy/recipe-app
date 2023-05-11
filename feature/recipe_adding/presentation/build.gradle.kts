@@ -59,12 +59,15 @@ dependencies {
     implementation(project(Modules.commonTheme))
     implementation(project(Modules.commonNavigation))
 
+    implementation(project(Modules.featureRecipeAddingDomain))
+
     // Compose BOM
     implementation(platform(Dependencies.Compose.bom))
 
     // Compose UI
     implementation(Dependencies.Compose.ui)
     implementation(Dependencies.Compose.material)
+    implementation(Dependencies.Compose.constraintLayout)
 
     // Compose tooling
     implementation(Dependencies.Compose.tooling)
@@ -83,4 +86,7 @@ dependencies {
     // Landscapist
     implementation(Dependencies.Landscapist.bom)
     implementation(Dependencies.Landscapist.coil)
+
+    // Wheel picker
+    implementation(Dependencies.WheelPicker.wheelPicker)
 }

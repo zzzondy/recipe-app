@@ -55,6 +55,7 @@ data class RecipeAppColors(
 
     // Error
     val error100: Color,
+    val error50: Color,
     val error10: Color,
 
     // Success
@@ -144,10 +145,7 @@ object RecipeAppTheme {
 internal object RecipeAppRippleTheme : RippleTheme {
 
     @Composable
-    override fun defaultColor(): Color = RippleTheme.defaultRippleColor(
-        contentColor = RecipeAppTheme.colors.primary100,
-        lightTheme = RecipeAppTheme.colors.isLightTheme
-    )
+    override fun defaultColor(): Color = Color.Unspecified
 
     @Composable
     override fun rippleAlpha(): RippleAlpha = RippleAlpha(0f, 0f, 0f, 0f)

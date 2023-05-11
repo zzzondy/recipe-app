@@ -1,15 +1,26 @@
 package com.recipeapp.components.buttons
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.recipeapp.components.NoRippleInteractionSource
 import com.recipeapp.theme.RecipeAppTheme
 import com.recipeapp.utils.bounceClick
 
@@ -18,21 +29,26 @@ fun DefaultIconButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
     enabled: Boolean = true,
+    backgroundColor: Color = RecipeAppTheme.colors.primary50,
+    contentColor: Color = if (RecipeAppTheme.colors.isLightTheme) RecipeAppTheme.colors.white0 else RecipeAppTheme.colors.neutral100,
+    shape: Shape = RecipeAppTheme.shapes.default,
+    size: Dp = RecipeAppTheme.sizes.small,
     content: @Composable RowScope.() -> Unit
 ) {
     Button(
         enabled = enabled,
         onClick = onClick,
-        shape = RecipeAppTheme.shapes.default,
+        shape = shape,
         modifier = modifier
-            .size(RecipeAppTheme.sizes.small)
+            .size(size)
             .bounceClick(enabled = enabled),
         colors = ButtonDefaults.buttonColors(
-            backgroundColor = RecipeAppTheme.colors.primary50,
+            backgroundColor = backgroundColor,
+            contentColor = contentColor,
             disabledBackgroundColor = RecipeAppTheme.colors.neutral20,
-            contentColor = RecipeAppTheme.colors.white0,
             disabledContentColor = RecipeAppTheme.colors.neutral50
         ),
+        interactionSource = remember { NoRippleInteractionSource() },
         contentPadding = PaddingValues(1.dp),
         content = content
     )

@@ -12,6 +12,8 @@ object Dependencies {
 
         const val navigation = "androidx.navigation:navigation-compose:2.5.3"
 
+        const val constraintLayout = "androidx.constraintlayout:constraintlayout-compose:1.0.1"
+
         const val toolingPreview = "androidx.compose.ui:ui-tooling-preview"
         const val tooling = "androidx.compose.ui:ui-tooling"
         const val manifest = "androidx.compose.ui:ui-test-manifest"
@@ -85,5 +87,9 @@ object Dependencies {
         const val bom = "com.github.skydoves:landscapist-bom:$landscapistVersion"
         const val coil = "com.github.skydoves:landscapist-coil"
         const val animation = "com.github.skydoves:landscapist-animation"
+    }
+
+    object WheelPicker {
+        const val wheelPicker = "com.github.zj565061763:compose-wheel-picker:1.0.0-alpha16"
     }
 }

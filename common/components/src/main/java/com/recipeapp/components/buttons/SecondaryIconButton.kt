@@ -21,6 +21,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.recipeapp.components.NoRippleInteractionSource
 import com.recipeapp.theme.RecipeAppTheme
 import com.recipeapp.utils.ClickState
 import com.recipeapp.utils.bounceClick
@@ -55,6 +56,7 @@ fun SecondaryIconButton(
             disabledContentColor = RecipeAppTheme.colors.neutral50
         ),
         contentPadding = PaddingValues(1.dp),
+        interactionSource = remember { NoRippleInteractionSource() },
         content = content
     )
 }

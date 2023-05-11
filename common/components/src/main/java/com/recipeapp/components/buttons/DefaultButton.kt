@@ -16,8 +16,10 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.recipeapp.components.NoRippleInteractionSource
 import com.recipeapp.theme.RecipeAppTheme
 import com.recipeapp.utils.bounceClick
 
@@ -37,9 +39,10 @@ fun DefaultButton(
         colors = ButtonDefaults.buttonColors(
             backgroundColor = RecipeAppTheme.colors.primary50,
             disabledBackgroundColor = RecipeAppTheme.colors.neutral20,
-            contentColor = RecipeAppTheme.colors.white0,
-            disabledContentColor = RecipeAppTheme.colors.neutral50
+            contentColor = if (RecipeAppTheme.colors.isLightTheme) RecipeAppTheme.colors.white0 else RecipeAppTheme.colors.neutral100,
+            disabledContentColor = RecipeAppTheme.colors.neutral50,
         ),
+        interactionSource = remember { NoRippleInteractionSource() },
         content = content
     )
 }
@@ -102,7 +105,10 @@ private fun DefaultButtonPreview() {
                 )
             }
 
-            DefaultIconButton(modifier = Modifier.padding(RecipeAppTheme.paddings.medium), enabled = false) {
+            DefaultIconButton(
+                modifier = Modifier.padding(RecipeAppTheme.paddings.medium),
+                enabled = false
+            ) {
                 Icon(
                     imageVector = Icons.Default.ArrowForward,
                     contentDescription = null,

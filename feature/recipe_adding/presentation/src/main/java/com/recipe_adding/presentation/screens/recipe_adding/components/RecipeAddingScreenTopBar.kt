@@ -6,11 +6,13 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.recipe_adding.presentation.R
@@ -28,14 +30,16 @@ fun RecipeAddingScreenTopBar(
             .background(RecipeAppTheme.colors.white0)
     ) {
         BackgroundLessIconButton(
-            onClick = { onNavigateBack() }
+            onClick = { onNavigateBack() },
+            pressedContentColor = RecipeAppTheme.colors.neutral100,
+            defaultContentColor = RecipeAppTheme.colors.neutral90,
+            modifier = Modifier.size(RecipeAppTheme.sizes.small)
         ) {
             Icon(
-                painter = painterResource(R.drawable.arrow_back),
+                imageVector = Icons.Default.ArrowBack,
                 contentDescription = stringResource(
                     R.string.arrow_back_icon
-                ),
-                tint = RecipeAppTheme.colors.neutral100
+                )
             )
         }
 
