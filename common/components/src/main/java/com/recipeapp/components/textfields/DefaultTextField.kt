@@ -67,7 +67,7 @@ fun DefaultTextField(
             disabledBorderColor = RecipeAppTheme.colors.neutral30,
             leadingIconColor = RecipeAppTheme.colors.neutral20,
             disabledLeadingIconColor = RecipeAppTheme.colors.neutral20,
-            trailingIconColor = RecipeAppTheme.colors.neutral20,
+            trailingIconColor = RecipeAppTheme.colors.primary50,
             disabledTrailingIconColor = RecipeAppTheme.colors.neutral20,
             placeholderColor = RecipeAppTheme.colors.neutral30,
             disabledPlaceholderColor = RecipeAppTheme.colors.neutral30,

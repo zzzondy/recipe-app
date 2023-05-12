@@ -1,5 +1,6 @@
 package com.recipe_adding.presentation.screens.recipe_adding
 
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -10,8 +11,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.NestedScrollSource
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.tooling.preview.Preview
 import com.recipe_adding.presentation.screens.recipe_adding.components.CookingTimeChoosingDialog
 import com.recipe_adding.presentation.screens.recipe_adding.components.RecipeAddingScreenTopBar
@@ -26,12 +32,35 @@ fun RecipeAddingScreen(
     state: RecipeAddingScreenState,
     onDispatchAction: (RecipeAddingScreenAction) -> Unit = {}
 ) {
+    var progress by rememberSaveable { mutableStateOf(0f) }
+
     val photoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickMultipleVisualMedia(),
         onResult = { uris ->
             onDispatchAction(RecipeAddingScreenAction.AddImage(uris))
         }
     )
+
+    val nestedScrollConnection = remember {
+        object : NestedScrollConnection {
+            override fun onPostScroll(
+                consumed: Offset,
+                available: Offset,
+                source: NestedScrollSource
+            ): Offset {
+                Log.d("Scroll", "onPostScroll: consumed: $consumed available: $available")
+                if (consumed.y == 0f) return Offset.Zero
+
+                val scrollProgress = -consumed.y / 200
+                progress = if (scrollProgress > 0) {
+                    (scrollProgress + progress).coerceAtMost(1f)
+                } else {
+                    (scrollProgress + progress).coerceAtLeast(0f)
+                }
+                return super.onPostScroll(consumed, available, source)
+            }
+        }
+    }
 
     var isDialogExpanded by remember { mutableStateOf(false) }
 
@@ -48,7 +77,7 @@ fun RecipeAddingScreen(
 
     Scaffold(
         topBar = {
-            RecipeAddingScreenTopBar()
+            RecipeAddingScreenTopBar(progress = progress)
         },
         backgroundColor = RecipeAppTheme.colors.white0,
         modifier = Modifier.fillMaxSize()
@@ -72,7 +101,9 @@ fun RecipeAddingScreen(
                     isIngredientsError = state.isIngredientsError,
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(paddingValues),
+                        .padding(paddingValues)
+                        .nestedScroll(nestedScrollConnection)
+                    ,
                     onAddImageClicked = {
                         photoPickerLauncher.launch(
                             PickVisualMediaRequest(
@@ -132,6 +163,7 @@ fun RecipeAddingScreen(
         }
     }
 }
+
 
 @Preview
 @Composable

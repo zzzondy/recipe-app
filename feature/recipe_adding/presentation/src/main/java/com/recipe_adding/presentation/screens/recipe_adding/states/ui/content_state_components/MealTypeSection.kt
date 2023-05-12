@@ -1,6 +1,5 @@
 package com.recipe_adding.presentation.screens.recipe_adding.states.ui.content_state_components
 
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -11,7 +10,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ExposedDropdownMenuBox
-import androidx.compose.material.Icon
+import androidx.compose.material.ExposedDropdownMenuDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -19,9 +18,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
@@ -43,7 +40,7 @@ internal fun MealTypeSection(
 ) {
     var isExpanded by rememberSaveable { mutableStateOf(false) }
     val focusManager = LocalFocusManager.current
-    val expandButtonRotation by animateFloatAsState(if (isExpanded) 180F else 0F)
+//    val expandButtonRotation by animateFloatAsState(if (isExpanded) 180F else 0F)
 
     Column(modifier = modifier) {
         Text(
@@ -72,12 +69,7 @@ internal fun MealTypeSection(
                 readOnly = !selectedMealType.isEditable,
                 modifier = Modifier.fillMaxWidth(),
                 trailingIcon = {
-                    Icon(
-                        painter = painterResource(R.drawable.expand_more),
-                        contentDescription = stringResource(R.string.expand_icon),
-                        tint = RecipeAppTheme.colors.primary50,
-                        modifier = Modifier.rotate(expandButtonRotation)
-                    )
+                    ExposedDropdownMenuDefaults.TrailingIcon(expanded = isExpanded)
                 },
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(
@@ -102,7 +94,6 @@ internal fun MealTypeSection(
                 expanded = isExpanded,
                 onDismissRequest = {
                     isExpanded = false
-                    focusManager.clearFocus()
                 },
                 modifier = Modifier.background(
                     color = RecipeAppTheme.colors.white0,

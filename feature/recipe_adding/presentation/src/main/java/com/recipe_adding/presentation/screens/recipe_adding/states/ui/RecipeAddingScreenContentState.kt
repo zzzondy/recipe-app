@@ -1,15 +1,12 @@
 package com.recipe_adding.presentation.screens.recipe_adding.states.ui
 
 import android.net.Uri
-import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.imeNestedScroll
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -33,7 +30,6 @@ import com.recipe_adding.presentation.screens.recipe_adding.states.ui.content_st
 import com.recipeapp.components.buttons.DefaultButton
 import com.recipeapp.theme.RecipeAppTheme
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun RecipeAddingScreenContentState(
     images: List<Uri>,
@@ -70,8 +66,6 @@ fun RecipeAddingScreenContentState(
     Column(
         modifier = modifier
             .imePadding()
-            .imeNestedScroll()
-            .animateContentSize()
             .pointerInput(Unit) {
                 detectTapGestures { focusManager.clearFocus() }
             }
@@ -79,7 +73,6 @@ fun RecipeAddingScreenContentState(
         LazyColumn(
             modifier = Modifier
                 .weight(1f)
-                .animateContentSize()
         ) {
             item(key = "image_section") {
                 ImageSection(
