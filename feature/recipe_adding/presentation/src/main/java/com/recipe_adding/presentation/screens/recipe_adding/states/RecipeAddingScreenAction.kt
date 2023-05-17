@@ -32,4 +32,6 @@ sealed interface RecipeAddingScreenAction {
         RecipeAddingScreenAction
 
     object OnSaveRecipeClicked : RecipeAddingScreenAction
+
+    object OnCloseScreenClicked : RecipeAddingScreenAction
 }

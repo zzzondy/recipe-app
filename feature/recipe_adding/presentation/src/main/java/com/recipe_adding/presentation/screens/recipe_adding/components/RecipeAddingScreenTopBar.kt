@@ -7,7 +7,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.layoutId
@@ -24,7 +24,8 @@ import com.recipeapp.theme.RecipeAppTheme
 @Composable
 fun RecipeAddingScreenTopBar(
     progress: Float,
-    onNavigateBack: () -> Unit = {}
+    modifier: Modifier = Modifier,
+    onNavigateBack: () -> Unit = {},
 ) {
     val paddings = RecipeAppTheme.paddings
 
@@ -37,19 +38,19 @@ fun RecipeAddingScreenTopBar(
                 from = constraintSet {
                     constrain(backArrowButton) {
                         start.linkTo(parent.start)
-                        top.linkTo(parent.top)
+                        top.linkTo(parent.top, paddings.extraExtraSmall)
                     }
 
                     constrain(title) {
-                        start.linkTo(parent.start, paddings.extraSmall)
-                        top.linkTo(backArrowButton.bottom, paddings.medium)
+                        start.linkTo(parent.start, paddings.extraExtraSmall)
+                        top.linkTo(backArrowButton.bottom, paddings.extraExtraSmall)
                         bottom.linkTo(parent.bottom)
                     }
                 },
                 to = constraintSet {
                     constrain(backArrowButton) {
                         start.linkTo(parent.start)
-                        top.linkTo(parent.top)
+                        top.linkTo(parent.top, paddings.extraExtraSmall)
                     }
 
                     constrain(title) {
@@ -93,7 +94,7 @@ fun RecipeAddingScreenTopBar(
             }
         },
         progress = progress,
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(paddings.extraSmall)
             .background(RecipeAppTheme.colors.white0),
@@ -107,9 +108,9 @@ fun RecipeAddingScreenTopBar(
                 .size(RecipeAppTheme.sizes.small)
         ) {
             Icon(
-                imageVector = Icons.Default.ArrowBack,
+                imageVector = Icons.Default.Close,
                 contentDescription = stringResource(
-                    R.string.arrow_back_icon
+                    R.string.close_icon
                 )
             )
         }
@@ -123,40 +124,6 @@ fun RecipeAddingScreenTopBar(
                 .padding(start = RecipeAppTheme.paddings.extraSmall)
         )
     }
-
-//    Column(
-//        modifier = Modifier
-//            .fillMaxWidth()
-//            .padding(RecipeAppTheme.paddings.extraSmall)
-//            .background(RecipeAppTheme.colors.white0)
-//    ) {
-//                BackgroundLessIconButton(
-//            onClick = { onNavigateBack() },
-//            pressedContentColor = RecipeAppTheme.colors.neutral100,
-//            defaultContentColor = RecipeAppTheme.colors.neutral90,
-//            modifier = Modifier
-//                .layoutId(BACK_ARROW_BUTTON_ID)
-//                .size(RecipeAppTheme.sizes.small)
-//        ) {
-//            Icon(
-//                imageVector = Icons.Default.ArrowBack,
-//                contentDescription = stringResource(
-//                    R.string.arrow_back_icon
-//                )
-//            )
-//        }
-//
-//        Spacer(modifier = Modifier.height(RecipeAppTheme.paddings))
-//
-//        Text(
-//            text = stringResource(R.string.create_recipe),
-//            style = RecipeAppTheme.typography.boldH4,
-//            color = RecipeAppTheme.colors.neutral100,
-//            modifier = Modifier
-//                .layoutId(TITLE_ID)
-//                .padding(start = RecipeAppTheme.paddings.extraSmall)
-//        )
-//    }
 }
 
 private const val BACK_ARROW_BUTTON_ID = "back_arrow_button"

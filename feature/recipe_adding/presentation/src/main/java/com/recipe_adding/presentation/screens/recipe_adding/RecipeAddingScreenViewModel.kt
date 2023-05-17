@@ -16,6 +16,8 @@ class RecipeAddingScreenViewModel(private val recipeAddingScreenStateMachine: Re
     private val _state = MutableStateFlow<RecipeAddingScreenState>(RecipeAddingScreenState.Loading)
     val state = _state.asStateFlow()
 
+    val effect = recipeAddingScreenStateMachine.effect
+
     init {
         viewModelScope.launch {
             recipeAddingScreenStateMachine.state.collect { newState ->

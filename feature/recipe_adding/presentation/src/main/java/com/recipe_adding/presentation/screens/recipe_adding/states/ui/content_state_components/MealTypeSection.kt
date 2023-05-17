@@ -40,7 +40,6 @@ internal fun MealTypeSection(
 ) {
     var isExpanded by rememberSaveable { mutableStateOf(false) }
     val focusManager = LocalFocusManager.current
-//    val expandButtonRotation by animateFloatAsState(if (isExpanded) 180F else 0F)
 
     Column(modifier = modifier) {
         Text(

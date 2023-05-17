@@ -97,6 +97,9 @@ dependencies {
     // Navigation
     implementation(Dependencies.Compose.navigation)
 
+    // Accompanist
+    implementation(Dependencies.Accompanist.animationNavigation)
+
 
     // Testing
     testImplementation(Dependencies.Testing.junit)

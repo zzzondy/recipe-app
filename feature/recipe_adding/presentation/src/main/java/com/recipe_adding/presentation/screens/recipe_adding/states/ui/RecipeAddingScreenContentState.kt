@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -41,6 +43,7 @@ fun RecipeAddingScreenContentState(
     onChangedIngredient: (Int, String) -> Unit,
     onChangedIngredientQuantity: (Int, String) -> Unit,
     modifier: Modifier = Modifier,
+    listState: LazyListState = rememberLazyListState(),
     selectedMealType: MealType = mealTypes[0],
     customMealType: String = "",
     onAddImageClicked: () -> Unit = {},
@@ -71,6 +74,7 @@ fun RecipeAddingScreenContentState(
             }
     ) {
         LazyColumn(
+            state = listState,
             modifier = Modifier
                 .weight(1f)
         ) {

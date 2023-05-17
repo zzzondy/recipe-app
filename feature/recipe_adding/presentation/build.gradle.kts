@@ -79,6 +79,9 @@ dependencies {
     // Navigation
     implementation(Dependencies.Compose.navigation)
 
+    // Accompanist
+    implementation(Dependencies.Accompanist.animationNavigation)
+
     // Dagger
     implementation(Dependencies.Dagger.dagger)
     kapt(Dependencies.Dagger.compiler)

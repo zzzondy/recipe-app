@@ -5,6 +5,7 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.BottomAppBar
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
@@ -14,12 +15,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.recipeapp.R
 import com.recipeapp.navigation.BottomBarItem
 import com.recipeapp.theme.RecipeAppTheme
+import com.recipeapp.utils.bounceClick
 
 @Composable
 fun BottomNavBar(
@@ -60,11 +63,15 @@ fun BottomNavBar(
                     icon = {
                         Icon(
                             painter = painterResource(bottomBarItem.iconId),
-                            contentDescription = stringResource(R.string.bottom_bar_icon)
+                            contentDescription = stringResource(R.string.bottom_bar_icon),
+                            modifier = Modifier
+                                .size(30.dp)
+                                .bounceClick()
                         )
                     },
                     selectedContentColor = RecipeAppTheme.colors.primary50,
-                    interactionSource = remember { MutableInteractionSource() }
+                    interactionSource = remember { MutableInteractionSource() },
+
                 )
 
                 if (checkIndexIsMiddleOfList(index, bottomBarItems)) {

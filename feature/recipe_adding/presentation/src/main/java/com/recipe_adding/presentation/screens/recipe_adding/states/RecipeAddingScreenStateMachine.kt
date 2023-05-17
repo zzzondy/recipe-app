@@ -9,11 +9,16 @@ import com.recipe_adding.presentation.R
 import com.recipeapp.utils.UIText
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import okhttp3.internal.toImmutableList
 
 @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
 class RecipeAddingScreenStateMachine(private val validateQuantityUseCase: ValidateQuantityUseCase) :
     FlowReduxStateMachine<RecipeAddingScreenState, RecipeAddingScreenAction>(initialState = RecipeAddingScreenState.Loading) {
+
+    private val _effect = MutableSharedFlow<RecipeAddingScreenEffect>()
+    val effect = _effect.asSharedFlow()
 
     private val urisOfImages = mutableListOf<Uri>()
     private var cookingTimeInMinutes = 0
@@ -193,6 +198,10 @@ class RecipeAddingScreenStateMachine(private val validateQuantityUseCase: Valida
                             isIngredientsError = this@RecipeAddingScreenStateMachine.ingredients.isEmpty() || this@RecipeAddingScreenStateMachine.ingredients.indexOfFirst { it.name.isEmpty() || it.quantity.isEmpty() } != -1
                         )
                     }
+                }
+
+                onActionEffect { _: RecipeAddingScreenAction.OnCloseScreenClicked, _: Any ->
+                    _effect.emit(RecipeAddingScreenEffect.NavigateBack)
                 }
             }
         }
