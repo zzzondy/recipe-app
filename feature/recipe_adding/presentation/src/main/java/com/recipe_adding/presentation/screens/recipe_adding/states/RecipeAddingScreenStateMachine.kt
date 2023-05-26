@@ -1,6 +1,7 @@
 package com.recipe_adding.presentation.screens.recipe_adding.states
 
 import android.net.Uri
+import com.freeletics.flowredux.dsl.ChangedState
 import com.freeletics.flowredux.dsl.FlowReduxStateMachine
 import com.freeletics.flowredux.dsl.State
 import com.recipe_adding.domain.models.MealType
@@ -26,6 +27,12 @@ class RecipeAddingScreenStateMachine(private val validateQuantityUseCase: Valida
 
     init {
         spec {
+            inState {
+                onActionEffect { _: RecipeAddingScreenAction.OnCloseScreen, _: Any ->
+                    _effect.emit(RecipeAddingScreenEffect.NavigateBack)
+                }
+            }
+
             inState<RecipeAddingScreenState.Loading> {
                 onEnter {
                     it.override {
@@ -62,147 +69,200 @@ class RecipeAddingScreenStateMachine(private val validateQuantityUseCase: Valida
 
             inState {
                 on { action: RecipeAddingScreenAction.AddImage, state: State<RecipeAddingScreenState.ContentState> ->
-                    urisOfImages.addAll(0, action.imageUris)
-                    state.mutate {
-                        this.copy(
-                            images = urisOfImages.toImmutableList(),
-                            isImagesError = urisOfImages.isEmpty() && this.isImagesError
-                        )
-                    }
+                    onAddImage(action = action, state = state)
                 }
 
                 on { action: RecipeAddingScreenAction.RemoveImage, state: State<RecipeAddingScreenState.ContentState> ->
-                    urisOfImages.remove(action.imageUri)
-                    state.mutate { this.copy(images = urisOfImages.toImmutableList()) }
+                    onRemoveImage(action = action, state = state)
                 }
 
                 on { action: RecipeAddingScreenAction.OnChangedRecipeName, state: State<RecipeAddingScreenState.ContentState> ->
-                    state.mutate { this.copy(recipeName = action.newName, isNameError = false) }
+                    onChangedRecipeName(action = action, state = state)
                 }
 
                 on { action: RecipeAddingScreenAction.OnCookingTimeChanged, state: State<RecipeAddingScreenState.ContentState> ->
-                    cookingTimeInMinutes = action.cookingTimeInMinutes
-
-                    state.mutate {
-                        this.copy(
-                            cookingTime = UIText.PluralsResource(
-                                R.plurals.minutes_plural,
-                                this@RecipeAddingScreenStateMachine.cookingTimeInMinutes,
-                                this@RecipeAddingScreenStateMachine.cookingTimeInMinutes,
-                            ),
-                            isCookingTimeError = false,
-                        )
-                    }
+                    onCookingTimeChanged(action = action, state = state)
                 }
 
                 on { action: RecipeAddingScreenAction.OnMealTypeChanged, state: State<RecipeAddingScreenState.ContentState> ->
-                    state.mutate {
-                        this.copy(
-                            selectedMealType = action.mealType,
-                            isMealTypeError = action.mealType.isEditable && this.customMealType.isEmpty()
-                        )
-                    }
+                    onMealTypeChanged(action = action, state = state)
                 }
 
-                on { action: RecipeAddingScreenAction.OnChangeCustomMealType, state: State<RecipeAddingScreenState.ContentState> ->
-                    state.mutate {
-                        this.copy(
-                            customMealType = action.name,
-                            isMealTypeError = action.name.isEmpty()
-                        )
-                    }
+                on { action: RecipeAddingScreenAction.OnCustomMealTypeChanged, state: State<RecipeAddingScreenState.ContentState> ->
+                    onCustomMealTypeChanged(action = action, state = state)
                 }
 
                 on { action: RecipeAddingScreenAction.OnDescriptionChanged, state: State<RecipeAddingScreenState.ContentState> ->
-                    state.mutate {
-                        this.copy(
-                            description = action.newDescription,
-                            isDescriptionError = false,
-                        )
-                    }
+                    onDescriptionChanged(action = action, state = state)
                 }
 
-                on { _: RecipeAddingScreenAction.AddNewIngredientClicked, state: State<RecipeAddingScreenState.ContentState> ->
-                    if (ingredients.indexOfFirst { it.name == "" && it.quantity == "" } == -1) {
-                        ingredients.add(IngredientItem("", ""))
-
-                        state.mutate {
-                            this.copy(
-                                ingredients = this@RecipeAddingScreenStateMachine.ingredients.toImmutableList(),
-                                isIngredientsError = false,
-                            )
-                        }
-                    } else {
-                        state.noChange()
-                    }
+                on { _: RecipeAddingScreenAction.OnAddNewIngredient, state: State<RecipeAddingScreenState.ContentState> ->
+                    onAddNewIngredient(state = state)
                 }
 
-                on { action: RecipeAddingScreenAction.OnChangedIngredient, state: State<RecipeAddingScreenState.ContentState> ->
-                    ingredients[action.index] =
-                        ingredients[action.index].copy(name = action.newIngredient)
-
-                    handleIngredientsRepetitions()
-
-                    state.mutate {
-                        this.copy(
-                            ingredients = this@RecipeAddingScreenStateMachine.ingredients.toImmutableList()
-                        )
-                    }
+                on { action: RecipeAddingScreenAction.OnChangedIngredientName, state: State<RecipeAddingScreenState.ContentState> ->
+                    onChangedIngredientName(action = action, state = state)
                 }
 
                 on { action: RecipeAddingScreenAction.OnChangedIngredientQuantity, state: State<RecipeAddingScreenState.ContentState> ->
-                    if (action.newQuantity.length > ValidateQuantityUseCase.lengthLimit) {
-                        state.noChange()
-                    } else {
-                        ingredients[action.index] =
-                            ingredients[action.index].copy(
-                                quantity = action.newQuantity,
-                                isQuantityError = if (action.newQuantity.isEmpty()) {
-                                    false
-                                } else {
-                                    !validateQuantityUseCase(action.newQuantity)
-                                }
-                            )
-
-                        state.mutate {
-                            this.copy(
-                                ingredients = this@RecipeAddingScreenStateMachine.ingredients.toImmutableList()
-                            )
-                        }
-                    }
+                    onChangedIngredientQuantity(action = action, state = state)
                 }
 
                 on { action: RecipeAddingScreenAction.OnRemoveIngredient, state: State<RecipeAddingScreenState.ContentState> ->
-                    ingredients.removeAt(action.index)
-
-                    handleIngredientsRepetitions()
-
-                    state.mutate {
-                        this.copy(
-                            ingredients = this@RecipeAddingScreenStateMachine.ingredients.toImmutableList()
-                        )
-                    }
+                    onRemoveIngredient(action = action, state = state)
                 }
 
-                on { _: RecipeAddingScreenAction.OnSaveRecipeClicked, state: State<RecipeAddingScreenState.ContentState> ->
-                    handleIngredientsErrors()
-
-                    state.mutate {
-                        this.copy(
-                            ingredients = this@RecipeAddingScreenStateMachine.ingredients.toImmutableList(),
-                            isImagesError = this@RecipeAddingScreenStateMachine.urisOfImages.isEmpty(),
-                            isNameError = this.recipeName.isEmpty(),
-                            isCookingTimeError = this@RecipeAddingScreenStateMachine.cookingTimeInMinutes == 0,
-                            isDescriptionError = this.description.isEmpty(),
-                            isMealTypeError = this.selectedMealType.isEditable && this.customMealType.isEmpty(),
-                            isIngredientsError = this@RecipeAddingScreenStateMachine.ingredients.isEmpty() || this@RecipeAddingScreenStateMachine.ingredients.indexOfFirst { it.name.isEmpty() || it.quantity.isEmpty() } != -1
-                        )
-                    }
+                on { _: RecipeAddingScreenAction.OnSaveRecipe, state: State<RecipeAddingScreenState.ContentState> ->
+                    onSaveRecipe(state = state)
                 }
+            }
 
-                onActionEffect { _: RecipeAddingScreenAction.OnCloseScreenClicked, _: Any ->
-                    _effect.emit(RecipeAddingScreenEffect.NavigateBack)
+            inState {
+                on { _: RecipeAddingScreenAction.OnTryAgainClicked, state: State<RecipeAddingScreenState.ErrorState> ->
+                    state.override { RecipeAddingScreenState.Loading }
                 }
+            }
+        }
+    }
+
+    private fun onAddImage(
+        action: RecipeAddingScreenAction.AddImage,
+        state: State<RecipeAddingScreenState.ContentState>
+    ): ChangedState<RecipeAddingScreenState> {
+        urisOfImages.addAll(0, action.imageUris)
+        return state.mutate {
+            this.copy(
+                images = urisOfImages.toImmutableList(),
+                isImagesError = urisOfImages.isEmpty() && this.isImagesError
+            )
+        }
+    }
+
+    private fun onRemoveImage(
+        action: RecipeAddingScreenAction.RemoveImage,
+        state: State<RecipeAddingScreenState.ContentState>
+    ): ChangedState<RecipeAddingScreenState> {
+        urisOfImages.remove(action.imageUri)
+        return state.mutate { this.copy(images = urisOfImages.toImmutableList()) }
+    }
+
+    private fun onChangedRecipeName(
+        action: RecipeAddingScreenAction.OnChangedRecipeName,
+        state: State<RecipeAddingScreenState.ContentState>
+    ): ChangedState<RecipeAddingScreenState> {
+        return state.mutate { this.copy(recipeName = action.newName, isNameError = false) }
+    }
+
+    private fun onCookingTimeChanged(
+        action: RecipeAddingScreenAction.OnCookingTimeChanged,
+        state: State<RecipeAddingScreenState.ContentState>
+    ): ChangedState<RecipeAddingScreenState> {
+        cookingTimeInMinutes = action.cookingTimeInMinutes
+
+        return state.mutate {
+            this.copy(
+                cookingTime = UIText.PluralsResource(
+                    R.plurals.minutes_plural,
+                    this@RecipeAddingScreenStateMachine.cookingTimeInMinutes,
+                    this@RecipeAddingScreenStateMachine.cookingTimeInMinutes,
+                ),
+                isCookingTimeError = false,
+            )
+        }
+    }
+
+    private fun onMealTypeChanged(
+        action: RecipeAddingScreenAction.OnMealTypeChanged,
+        state: State<RecipeAddingScreenState.ContentState>
+    ): ChangedState<RecipeAddingScreenState> {
+        return state.mutate {
+            this.copy(
+                selectedMealType = action.mealType,
+                isMealTypeError = action.mealType.isEditable && this.customMealType.isEmpty()
+            )
+        }
+    }
+
+    private fun onCustomMealTypeChanged(
+        action: RecipeAddingScreenAction.OnCustomMealTypeChanged,
+        state: State<RecipeAddingScreenState.ContentState>
+    ): ChangedState<RecipeAddingScreenState> {
+        return state.mutate {
+            this.copy(
+                customMealType = action.name,
+                isMealTypeError = action.name.isEmpty()
+            )
+        }
+    }
+
+    private fun onDescriptionChanged(
+        action: RecipeAddingScreenAction.OnDescriptionChanged,
+        state: State<RecipeAddingScreenState.ContentState>
+    ): ChangedState<RecipeAddingScreenState> {
+        return state.mutate {
+            this.copy(
+                description = action.newDescription,
+                isDescriptionError = false,
+            )
+        }
+    }
+
+    private fun onAddNewIngredient(
+        state: State<RecipeAddingScreenState.ContentState>
+    ): ChangedState<RecipeAddingScreenState> {
+        return if (ingredients.indexOfFirst { it.name == "" && it.quantity == "" } == -1) {
+            ingredients.add(IngredientItem("", ""))
+
+            state.mutate {
+                this.copy(
+                    ingredients = this@RecipeAddingScreenStateMachine.ingredients.toImmutableList(),
+                    isIngredientsError = false,
+                )
+            }
+        } else {
+            state.noChange()
+        }
+    }
+
+    private fun onChangedIngredientName(
+        action: RecipeAddingScreenAction.OnChangedIngredientName,
+        state: State<RecipeAddingScreenState.ContentState>
+    ): ChangedState<RecipeAddingScreenState> {
+        ingredients[action.index] =
+            ingredients[action.index].copy(name = action.newIngredientName)
+
+        handleIngredientsRepetitions()
+
+        return state.mutate {
+            this.copy(
+                ingredients = this@RecipeAddingScreenStateMachine.ingredients.toImmutableList()
+            )
+        }
+    }
+
+    private fun onRemoveIngredient(
+        action: RecipeAddingScreenAction.OnRemoveIngredient,
+        state: State<RecipeAddingScreenState.ContentState>
+    ): ChangedState<RecipeAddingScreenState> {
+        ingredients.removeAt(action.index)
+
+        handleIngredientsRepetitions()
+
+        return state.mutate {
+            this.copy(
+                ingredients = this@RecipeAddingScreenStateMachine.ingredients.toImmutableList()
+            )
+        }
+    }
+
+    private fun handleIngredientsRepetitions() {
+        val theSameIngredientsIndices = getIndicesOfTheSameIngredients()
+
+        ingredients.indices.forEach { index ->
+            if (theSameIngredientsIndices.contains(index)) {
+                ingredients[index] = ingredients[index].copy(isNameError = true)
+            } else {
+                ingredients[index] = ingredients[index].copy(isNameError = false)
             }
         }
     }
@@ -219,15 +279,46 @@ class RecipeAddingScreenStateMachine(private val validateQuantityUseCase: Valida
         return indices
     }
 
-    private fun handleIngredientsRepetitions() {
-        val theSameIngredientsIndices = getIndicesOfTheSameIngredients()
+    private fun onChangedIngredientQuantity(
+        action: RecipeAddingScreenAction.OnChangedIngredientQuantity,
+        state: State<RecipeAddingScreenState.ContentState>
+    ): ChangedState<RecipeAddingScreenState> {
+        return if (action.newQuantity.length > ValidateQuantityUseCase.lengthLimit) {
+            state.noChange()
+        } else {
+            ingredients[action.index] =
+                ingredients[action.index].copy(
+                    quantity = action.newQuantity,
+                    isQuantityError = if (action.newQuantity.isEmpty()) {
+                        false
+                    } else {
+                        !validateQuantityUseCase(action.newQuantity)
+                    }
+                )
 
-        ingredients.indices.forEach { index ->
-            if (theSameIngredientsIndices.contains(index)) {
-                ingredients[index] = ingredients[index].copy(isNameError = true)
-            } else {
-                ingredients[index] = ingredients[index].copy(isNameError = false)
+            state.mutate {
+                this.copy(
+                    ingredients = this@RecipeAddingScreenStateMachine.ingredients.toImmutableList()
+                )
             }
+        }
+    }
+
+    private fun onSaveRecipe(
+        state: State<RecipeAddingScreenState.ContentState>
+    ): ChangedState<RecipeAddingScreenState> {
+        handleIngredientsErrors()
+
+        return state.mutate {
+            this.copy(
+                ingredients = this@RecipeAddingScreenStateMachine.ingredients.toImmutableList(),
+                isImagesError = this@RecipeAddingScreenStateMachine.urisOfImages.isEmpty(),
+                isNameError = this.recipeName.isEmpty(),
+                isCookingTimeError = this@RecipeAddingScreenStateMachine.cookingTimeInMinutes == 0,
+                isDescriptionError = this.description.isEmpty(),
+                isMealTypeError = this.selectedMealType.isEditable && this.customMealType.isEmpty(),
+                isIngredientsError = this@RecipeAddingScreenStateMachine.ingredients.isEmpty() || this@RecipeAddingScreenStateMachine.ingredients.indexOfFirst { it.name.isEmpty() || it.quantity.isEmpty() } != -1
+            )
         }
     }
 

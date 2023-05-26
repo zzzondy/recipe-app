@@ -15,23 +15,25 @@ sealed interface RecipeAddingScreenAction {
 
     data class OnMealTypeChanged(val mealType: MealType) : RecipeAddingScreenAction
 
-    data class OnChangeCustomMealType(val name: String) : RecipeAddingScreenAction
+    data class OnCustomMealTypeChanged(val name: String) : RecipeAddingScreenAction
 
     data class OnDescriptionChanged(val newDescription: String) : RecipeAddingScreenAction
 
     data class OnChangedRecipeName(val newName: String) : RecipeAddingScreenAction
 
-    object AddNewIngredientClicked : RecipeAddingScreenAction
+    object OnAddNewIngredient : RecipeAddingScreenAction
 
     data class OnRemoveIngredient(val index: Int) : RecipeAddingScreenAction
 
-    data class OnChangedIngredient(val index: Int, val newIngredient: String) :
+    data class OnChangedIngredientName(val index: Int, val newIngredientName: String) :
         RecipeAddingScreenAction
 
     data class OnChangedIngredientQuantity(val index: Int, val newQuantity: String) :
         RecipeAddingScreenAction
 
-    object OnSaveRecipeClicked : RecipeAddingScreenAction
+    object OnSaveRecipe : RecipeAddingScreenAction
 
-    object OnCloseScreenClicked : RecipeAddingScreenAction
+    object OnCloseScreen : RecipeAddingScreenAction
+
+    object OnTryAgainClicked : RecipeAddingScreenAction
 }

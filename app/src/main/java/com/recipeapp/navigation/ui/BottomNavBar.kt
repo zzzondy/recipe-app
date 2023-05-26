@@ -33,7 +33,6 @@ fun BottomNavBar(
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestinationParentRoute = navBackStackEntry?.destination?.parent?.route
-
     val shouldShowBottomBar =
         bottomBarItems.any { it.navigationRoute == currentDestinationParentRoute } || currentDestinationParentRoute == null
 

@@ -1,5 +1,6 @@
 package com.recipeapp.components.buttons
 
+import android.os.SystemClock
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.RowScope
@@ -18,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import com.recipeapp.components.NoRippleInteractionSource
 import com.recipeapp.theme.RecipeAppTheme
 import com.recipeapp.utils.ClickState
+import com.recipeapp.utils.MULTIPLE_CLICKS_PREVENTION_TIME_DELTA
 import com.recipeapp.utils.bounceClick
 
 @Composable
@@ -30,12 +32,18 @@ fun BackgroundLessIconButton(
     size: Dp = RecipeAppTheme.sizes.small,
     content: @Composable RowScope.() -> Unit
 ) {
+    var lastClickTime by remember { mutableStateOf(0L) }
     var clickState by remember { mutableStateOf(ClickState.IDLE) }
 
     val contentColor by animateColorAsState(if (clickState == ClickState.PRESSED) pressedContentColor else defaultContentColor)
 
     Button(
-        onClick = onClick,
+        onClick = {
+            if (SystemClock.elapsedRealtime() - lastClickTime >= MULTIPLE_CLICKS_PREVENTION_TIME_DELTA) {
+                lastClickTime = SystemClock.elapsedRealtime()
+                onClick()
+            }
+        },
         modifier = modifier
             .size(size)
             .bounceClick(

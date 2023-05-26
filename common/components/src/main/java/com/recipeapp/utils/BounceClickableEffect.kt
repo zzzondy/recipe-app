@@ -1,5 +1,6 @@
 package com.recipeapp.utils
 
+import android.os.SystemClock
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.awaitFirstDown
@@ -23,6 +24,7 @@ fun Modifier.bounceClick(
     otherEffect: (ClickState) -> Unit = {},
     onClick: () -> Unit = {}
 ) = composed {
+    var lastClickTime by remember { mutableStateOf(0L) }
 
     var buttonState by remember { mutableStateOf(ClickState.IDLE) }
 
@@ -37,7 +39,12 @@ fun Modifier.bounceClick(
             enabled = enabled,
             interactionSource = remember { MutableInteractionSource() },
             indication = null,
-            onClick = onClick
+            onClick = {
+                if (SystemClock.elapsedRealtime() - lastClickTime >= MULTIPLE_CLICKS_PREVENTION_TIME_DELTA) {
+                    lastClickTime = SystemClock.elapsedRealtime()
+                    onClick()
+                }
+            }
         )
         .then(
             if (enabled) {

@@ -1,5 +1,6 @@
 package com.recipeapp.components.buttons
 
+import android.os.SystemClock
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.RowScope
@@ -16,11 +17,15 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.recipeapp.components.NoRippleInteractionSource
 import com.recipeapp.theme.RecipeAppTheme
+import com.recipeapp.utils.MULTIPLE_CLICKS_PREVENTION_TIME_DELTA
 import com.recipeapp.utils.bounceClick
 
 @Composable
@@ -30,9 +35,16 @@ fun DefaultButton(
     enabled: Boolean = true,
     content: @Composable RowScope.() -> Unit
 ) {
+    var lastClickTime by remember { mutableStateOf(0L) }
+
     Button(
         enabled = enabled,
-        onClick = onClick,
+        onClick = {
+            if (SystemClock.elapsedRealtime() - lastClickTime >= MULTIPLE_CLICKS_PREVENTION_TIME_DELTA) {
+                lastClickTime = SystemClock.elapsedRealtime()
+                onClick()
+            }
+        },
         modifier = modifier
             .bounceClick(enabled = enabled),
         shape = RecipeAppTheme.shapes.default,

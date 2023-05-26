@@ -12,7 +12,8 @@ object Dependencies {
 
         const val navigation = "androidx.navigation:navigation-compose:2.5.3"
 
-        const val constraintLayout = "androidx.constraintlayout:constraintlayout-compose:1.1.0-alpha04"
+        const val constraintLayout =
+            "androidx.constraintlayout:constraintlayout-compose:1.1.0-alpha04"
 
         const val toolingPreview = "androidx.compose.ui:ui-tooling-preview"
         const val tooling = "androidx.compose.ui:ui-tooling"
@@ -40,13 +41,16 @@ object Dependencies {
     }
 
     object Accompanist {
-        private const val accompanistVersion = "0.31.1-alpha"
+        private const val accompanistVersion = "0.31.2-alpha"
 
         const val animationNavigation =
             "com.google.accompanist:accompanist-navigation-animation:$accompanistVersion"
 
         const val systemUiController =
             "com.google.accompanist:accompanist-systemuicontroller:$accompanistVersion"
+
+        const val placeholders =
+            "com.google.accompanist:accompanist-placeholder-material:$accompanistVersion"
 
     }
 

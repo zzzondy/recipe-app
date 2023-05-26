@@ -25,5 +25,5 @@ sealed class RecipeAddingScreenState {
         val isIngredientsError: Boolean = false,
     ) : RecipeAddingScreenState()
 
-    data class Error(val message: UIText) : RecipeAddingScreenState()
+    data class ErrorState(val title: UIText, val subtitle: UIText) : RecipeAddingScreenState()
 }

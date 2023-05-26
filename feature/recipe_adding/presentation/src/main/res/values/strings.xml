@@ -22,6 +22,8 @@
     <string name="meal_type">Meal type</string>
     <string name="expand_icon">Expand icon</string>
     <string name="enter_type">Enter your type</string>
+    <string name="no_internet_connection">No internet connection</string>
+    <string name="check_your_connection">Check your connection and try again later</string>
 
     <plurals name="minutes_plural">
         <item quantity="zero">%1$d minutes</item>

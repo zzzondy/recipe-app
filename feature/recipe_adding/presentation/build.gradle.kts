@@ -14,6 +14,8 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
+
+        signingConfig = signingConfigs.getByName("debug")
     }
 
     buildTypes {
@@ -81,6 +83,7 @@ dependencies {
 
     // Accompanist
     implementation(Dependencies.Accompanist.animationNavigation)
+    implementation(Dependencies.Accompanist.placeholders)
 
     // Dagger
     implementation(Dependencies.Dagger.dagger)

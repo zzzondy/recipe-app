@@ -3,8 +3,12 @@ package com.recipe_adding.presentation.screens.recipe_adding
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.core.FloatExponentialDecaySpec
 import androidx.compose.animation.core.animateDecay
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.with
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -29,6 +33,8 @@ import com.recipe_adding.presentation.screens.recipe_adding.components.RecipeAdd
 import com.recipe_adding.presentation.screens.recipe_adding.states.RecipeAddingScreenAction
 import com.recipe_adding.presentation.screens.recipe_adding.states.RecipeAddingScreenState
 import com.recipe_adding.presentation.screens.recipe_adding.states.ui.RecipeAddingScreenContentState
+import com.recipe_adding.presentation.screens.recipe_adding.states.ui.RecipeAddingScreenLoadingState
+import com.recipeapp.components.screen_states_ui.ErrorScreenState
 import com.recipeapp.components.top_app_bar.rememberTopAppBarState
 import com.recipeapp.theme.RecipeAppTheme
 import com.recipeapp.utils.UIText
@@ -98,7 +104,7 @@ fun RecipeAddingScreen(
             RecipeAddingScreenTopBar(
                 progress = topAppBarState.progress,
                 onNavigateBack = {
-                    onDispatchAction(RecipeAddingScreenAction.OnCloseScreenClicked)
+                    onDispatchAction(RecipeAddingScreenAction.OnCloseScreen)
                 },
                 modifier = Modifier
                     .height(with(LocalDensity.current) { topAppBarState.height.toDp() })
@@ -109,82 +115,105 @@ fun RecipeAddingScreen(
             .fillMaxSize()
             .nestedScroll(nestedScrollConnection),
     ) { paddingValues ->
-        when (state) {
-            is RecipeAddingScreenState.ContentState -> {
-                RecipeAddingScreenContentState(
-                    listState = listState,
-                    images = state.images,
-                    recipeName = state.recipeName,
-                    cookingTime = state.cookingTime.asString(),
-                    mealTypes = state.mealTypes,
-                    selectedMealType = state.selectedMealType,
-                    customMealType = state.customMealType,
-                    description = state.description,
-                    ingredients = state.ingredients,
-                    isMealTypeError = state.isMealTypeError,
-                    isImagesError = state.isImagesError,
-                    isNameError = state.isNameError,
-                    isCookingTimeError = state.isCookingTimeError,
-                    isDescriptionError = state.isDescriptionError,
-                    isIngredientsError = state.isIngredientsError,
-                    modifier = Modifier
-                        .padding(paddingValues)
-                        .fillMaxSize(),
-                    onAddImageClicked = {
-                        photoPickerLauncher.launch(
-                            PickVisualMediaRequest(
-                                ActivityResultContracts.PickVisualMedia.ImageOnly
+        AnimatedContent(
+            targetState = state.javaClass,
+            transitionSpec = { fadeIn() with fadeOut() }
+        ) {
+            when (state) {
+                is RecipeAddingScreenState.ContentState -> {
+                    RecipeAddingScreenContentState(
+                        listState = listState,
+                        images = state.images,
+                        recipeName = state.recipeName,
+                        cookingTime = state.cookingTime.asString(),
+                        mealTypes = state.mealTypes,
+                        selectedMealType = state.selectedMealType,
+                        customMealType = state.customMealType,
+                        description = state.description,
+                        ingredients = state.ingredients,
+                        isMealTypeError = state.isMealTypeError,
+                        isImagesError = state.isImagesError,
+                        isNameError = state.isNameError,
+                        isCookingTimeError = state.isCookingTimeError,
+                        isDescriptionError = state.isDescriptionError,
+                        isIngredientsError = state.isIngredientsError,
+                        modifier = Modifier
+                            .padding(paddingValues)
+                            .fillMaxSize(),
+                        onAddImageClicked = {
+                            photoPickerLauncher.launch(
+                                PickVisualMediaRequest(
+                                    ActivityResultContracts.PickVisualMedia.ImageOnly
+                                )
                             )
-                        )
-                    },
-                    onRemoveImageClicked = { uri ->
-                        onDispatchAction(RecipeAddingScreenAction.RemoveImage(uri))
-                    },
-                    onChangedName = { recipeName ->
-                        onDispatchAction(RecipeAddingScreenAction.OnChangedRecipeName(recipeName))
-                    },
-                    onAddNewIngredient = { onDispatchAction(RecipeAddingScreenAction.AddNewIngredientClicked) },
-                    onChangedIngredient = { index, newIngredient ->
-                        onDispatchAction(
-                            RecipeAddingScreenAction.OnChangedIngredient(
-                                index = index, newIngredient = newIngredient
+                        },
+                        onRemoveImageClicked = { uri ->
+                            onDispatchAction(RecipeAddingScreenAction.RemoveImage(uri))
+                        },
+                        onChangedName = { recipeName ->
+                            onDispatchAction(RecipeAddingScreenAction.OnChangedRecipeName(recipeName))
+                        },
+                        onAddNewIngredient = { onDispatchAction(RecipeAddingScreenAction.OnAddNewIngredient) },
+                        onChangedIngredient = { index, newIngredient ->
+                            onDispatchAction(
+                                RecipeAddingScreenAction.OnChangedIngredientName(
+                                    index = index, newIngredientName = newIngredient
+                                )
                             )
-                        )
-                    },
-                    onChangedIngredientQuantity = { index, quantity ->
-                        onDispatchAction(
-                            RecipeAddingScreenAction.OnChangedIngredientQuantity(
-                                index = index,
-                                newQuantity = quantity
+                        },
+                        onChangedIngredientQuantity = { index, quantity ->
+                            onDispatchAction(
+                                RecipeAddingScreenAction.OnChangedIngredientQuantity(
+                                    index = index,
+                                    newQuantity = quantity
+                                )
                             )
-                        )
-                    },
-                    onRemoveIngredient = { index ->
-                        onDispatchAction(RecipeAddingScreenAction.OnRemoveIngredient(index = index))
-                    },
-                    onSaveRecipe = {
-                        onDispatchAction(RecipeAddingScreenAction.OnSaveRecipeClicked)
-                    },
-                    onCookingTimeClicked = {
-                        isDialogExpanded = true
-                    },
-                    onDescriptionChanged = { newDescription ->
-                        onDispatchAction(
-                            RecipeAddingScreenAction.OnDescriptionChanged(
-                                newDescription
+                        },
+                        onRemoveIngredient = { index ->
+                            onDispatchAction(RecipeAddingScreenAction.OnRemoveIngredient(index = index))
+                        },
+                        onSaveRecipe = {
+                            onDispatchAction(RecipeAddingScreenAction.OnSaveRecipe)
+                        },
+                        onCookingTimeClicked = {
+                            isDialogExpanded = true
+                        },
+                        onDescriptionChanged = { newDescription ->
+                            onDispatchAction(
+                                RecipeAddingScreenAction.OnDescriptionChanged(
+                                    newDescription
+                                )
                             )
-                        )
-                    },
-                    onMealTypeChanged = { mealType ->
-                        onDispatchAction(RecipeAddingScreenAction.OnMealTypeChanged(mealType))
-                    },
-                    onChangedCustomMealType = { name ->
-                        onDispatchAction(RecipeAddingScreenAction.OnChangeCustomMealType(name))
-                    }
-                )
-            }
+                        },
+                        onMealTypeChanged = { mealType ->
+                            onDispatchAction(RecipeAddingScreenAction.OnMealTypeChanged(mealType))
+                        },
+                        onChangedCustomMealType = { name ->
+                            onDispatchAction(RecipeAddingScreenAction.OnCustomMealTypeChanged(name))
+                        }
+                    )
+                }
 
-            else -> {
+                is RecipeAddingScreenState.ErrorState -> {
+                    ErrorScreenState(
+                        title = state.title.asString(),
+                        subtitle = state.subtitle.asString(),
+                        modifier = Modifier
+                            .padding(paddingValues)
+                            .fillMaxSize(),
+                        onTryAgainButtonClicked = {
+                            onDispatchAction(RecipeAddingScreenAction.OnTryAgainClicked)
+                        }
+                    )
+                }
+
+                is RecipeAddingScreenState.Loading -> {
+                    RecipeAddingScreenLoadingState(
+                        modifier = Modifier
+                            .padding(paddingValues)
+                            .fillMaxSize()
+                    )
+                }
             }
         }
     }

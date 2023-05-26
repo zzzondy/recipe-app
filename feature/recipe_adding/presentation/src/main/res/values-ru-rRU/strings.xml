@@ -28,4 +28,6 @@
     <string name="meal_type">Тип блюда</string>
     <string name="expand_icon">Иконка расширения</string>
     <string name="enter_type">Введите тип</string>
+    <string name="no_internet_connection">Нет подключения к интернету</string>
+    <string name="check_your_connection">Проверьте соединение и повторите попытку позже</string>
 </resources>
