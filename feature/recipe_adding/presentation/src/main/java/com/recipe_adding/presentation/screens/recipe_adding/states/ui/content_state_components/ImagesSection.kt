@@ -34,7 +34,7 @@ import com.skydoves.landscapist.coil.CoilImage
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-internal fun ImageSection(
+internal fun ImagesSection(
     images: List<Uri>,
     modifier: Modifier = Modifier,
     onAddImageClicked: () -> Unit = {},

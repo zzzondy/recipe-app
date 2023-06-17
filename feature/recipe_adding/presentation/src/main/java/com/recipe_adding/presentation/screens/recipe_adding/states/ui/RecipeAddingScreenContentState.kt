@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.recipe_adding.domain.models.MealType
@@ -25,9 +26,9 @@ import com.recipe_adding.presentation.R
 import com.recipe_adding.presentation.screens.recipe_adding.states.IngredientItem
 import com.recipe_adding.presentation.screens.recipe_adding.states.ui.content_state_components.CookingTimeSection
 import com.recipe_adding.presentation.screens.recipe_adding.states.ui.content_state_components.DescriptionSection
-import com.recipe_adding.presentation.screens.recipe_adding.states.ui.content_state_components.ImageSection
+import com.recipe_adding.presentation.screens.recipe_adding.states.ui.content_state_components.ImagesSection
 import com.recipe_adding.presentation.screens.recipe_adding.states.ui.content_state_components.IngredientsSection
-import com.recipe_adding.presentation.screens.recipe_adding.states.ui.content_state_components.MealTypeSection
+import com.recipe_adding.presentation.screens.recipe_adding.states.ui.content_state_components.MealTypesSection
 import com.recipe_adding.presentation.screens.recipe_adding.states.ui.content_state_components.NameSection
 import com.recipeapp.components.buttons.DefaultButton
 import com.recipeapp.theme.RecipeAppTheme
@@ -68,6 +69,7 @@ fun RecipeAddingScreenContentState(
 
     Column(
         modifier = modifier
+            .testTag(RecipeAddingScreenContentStateTestingTags.RECIPE_ADDING_SCREEN_CONTENT_STATE_ROOT_ELEMENT)
             .imePadding()
             .pointerInput(Unit) {
                 detectTapGestures { focusManager.clearFocus() }
@@ -76,10 +78,11 @@ fun RecipeAddingScreenContentState(
         LazyColumn(
             state = listState,
             modifier = Modifier
+                .testTag(RecipeAddingScreenContentStateTestingTags.LAZY_COLUMN_TAG)
                 .weight(1f)
         ) {
-            item(key = "image_section") {
-                ImageSection(
+            item(key = RecipeAddingScreenContentStateSections.IMAGES_SECTION) {
+                ImagesSection(
                     images = images,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -91,7 +94,7 @@ fun RecipeAddingScreenContentState(
                 )
             }
 
-            item(key = "name_section") {
+            item(key = RecipeAddingScreenContentStateSections.RECIPE_NAME_SECTION) {
                 NameSection(
                     name = recipeName,
                     modifier = Modifier
@@ -102,7 +105,7 @@ fun RecipeAddingScreenContentState(
                 )
             }
 
-            item(key = "cooking_time_section") {
+            item(key = RecipeAddingScreenContentStateSections.COOKING_TIME_SECTION) {
                 CookingTimeSection(
                     time = cookingTime,
                     modifier = Modifier
@@ -114,8 +117,8 @@ fun RecipeAddingScreenContentState(
                 )
             }
 
-            item(key = "meal_types_section") {
-                MealTypeSection(
+            item(key = RecipeAddingScreenContentStateSections.MEAL_TYPES_SECTION) {
+                MealTypesSection(
                     mealTypes = mealTypes,
                     selectedMealType = selectedMealType,
                     customMealType = customMealType,
@@ -128,7 +131,7 @@ fun RecipeAddingScreenContentState(
                 )
             }
 
-            item(key = "description_section") {
+            item(key = RecipeAddingScreenContentStateSections.DESCRIPTION_SECTION) {
                 DescriptionSection(
                     description = description,
                     onDescriptionChanged = onDescriptionChanged,
@@ -139,7 +142,7 @@ fun RecipeAddingScreenContentState(
                 )
             }
 
-            item(key = "ingredients_section") {
+            item(key = RecipeAddingScreenContentStateSections.INGREDIENTS_SECTION) {
                 IngredientsSection(
                     ingredients = ingredients,
                     modifier = Modifier
@@ -179,4 +182,21 @@ fun RecipeAddingScreenContentState(
             }
         }
     }
+}
+
+object RecipeAddingScreenContentStateSections {
+
+    const val IMAGES_SECTION = "IMAGES_SECTION"
+    const val RECIPE_NAME_SECTION = "RECIPE_NAME_SECTION"
+    const val COOKING_TIME_SECTION = "COOKING_TIME_SECTION"
+    const val MEAL_TYPES_SECTION = "MEAL_TYPES_SECTION"
+    const val DESCRIPTION_SECTION = "DESCRIPTION_SECTION"
+    const val INGREDIENTS_SECTION = "INGREDIENTS_SECTION"
+}
+
+object RecipeAddingScreenContentStateTestingTags {
+
+    const val RECIPE_ADDING_SCREEN_CONTENT_STATE_ROOT_ELEMENT =
+        "RECIPE_ADDING_SCREEN_CONTENT_STATE_ROOT_ELEMENT"
+    const val LAZY_COLUMN_TAG = "LAZY_COLUMN_TAG"
 }

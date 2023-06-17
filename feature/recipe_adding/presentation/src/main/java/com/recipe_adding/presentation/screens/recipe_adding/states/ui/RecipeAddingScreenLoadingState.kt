@@ -18,6 +18,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -35,6 +36,7 @@ import com.recipeapp.theme.RecipeAppTheme
 fun RecipeAddingScreenLoadingState(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
+            .testTag(RecipeAddingScreenLoadingStateTestingTags.RECIPE_ADDING_SCREEN_LOADING_STATE_ROOT)
     ) {
         LazyColumn(
             userScrollEnabled = false,
@@ -291,6 +293,10 @@ private fun IngredientsSection(modifier: Modifier = Modifier) {
             )
         }
     }
+}
+
+object RecipeAddingScreenLoadingStateTestingTags {
+    const val RECIPE_ADDING_SCREEN_LOADING_STATE_ROOT = "RECIPE_ADDING_SCREEN_LOADING_STATE_ROOT"
 }
 
 

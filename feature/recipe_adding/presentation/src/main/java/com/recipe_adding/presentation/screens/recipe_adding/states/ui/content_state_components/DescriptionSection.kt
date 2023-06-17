@@ -10,6 +10,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
@@ -42,7 +43,9 @@ internal fun DescriptionSection(
         DefaultTextField(
             value = description,
             onValueChange = { onDescriptionChanged(it) },
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .testTag(DescriptionSectionTestingTags.DESCRIPTION_TEXT_FIELD_TAG)
+                .fillMaxWidth(),
             keyboardOptions = KeyboardOptions(
                 capitalization = KeyboardCapitalization.Sentences,
                 imeAction = ImeAction.Done
@@ -55,4 +58,8 @@ internal fun DescriptionSection(
             isError = isError,
         )
     }
+}
+
+object DescriptionSectionTestingTags {
+    const val DESCRIPTION_TEXT_FIELD_TAG = "DESCRIPTION_TEXT_FIELD_TAG"
 }

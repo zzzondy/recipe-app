@@ -69,8 +69,11 @@ dependencies {
     // Compose tooling
     implementation(Dependencies.Compose.toolingPreview)
     debugImplementation(Dependencies.Compose.tooling)
-    debugImplementation(Dependencies.Compose.manifest)
 
     // Lifecycle
     implementation(Dependencies.Lifecycle.composeActivity)
+
+    // Testing
+    androidTestImplementation(Dependencies.Testing.composeJunit)
+    debugImplementation(Dependencies.Testing.manifest)
 }

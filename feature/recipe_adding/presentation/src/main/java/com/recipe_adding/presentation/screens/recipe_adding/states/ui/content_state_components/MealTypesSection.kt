@@ -29,7 +29,7 @@ import com.recipeapp.theme.RecipeAppTheme
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-internal fun MealTypeSection(
+internal fun MealTypesSection(
     mealTypes: List<MealType>,
     modifier: Modifier = Modifier,
     selectedMealType: MealType = mealTypes[0],

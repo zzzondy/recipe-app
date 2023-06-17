@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -32,7 +33,7 @@ fun ErrorScreenState(
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
-        modifier = modifier
+        modifier = modifier.testTag(ErrorScreenStateTestingTags.ROOT_ELEMENT)
     ) {
         Image(
             painter = painterResource(R.drawable.error_icon),
@@ -48,7 +49,9 @@ fun ErrorScreenState(
             style = RecipeAppTheme.typography.boldH5,
             color = RecipeAppTheme.colors.neutral100,
             textAlign = TextAlign.Center,
-            modifier = Modifier.padding(horizontal = RecipeAppTheme.paddings.medium)
+            modifier = Modifier
+                .testTag(ErrorScreenStateTestingTags.PRIMARY_TEXT)
+                .padding(horizontal = RecipeAppTheme.paddings.medium)
         )
 
         Spacer(modifier = Modifier.height(RecipeAppTheme.paddings.extraSmall))
@@ -58,7 +61,9 @@ fun ErrorScreenState(
             style = RecipeAppTheme.typography.regularP,
             color = RecipeAppTheme.colors.neutral100,
             textAlign = TextAlign.Center,
-            modifier = Modifier.padding(horizontal = RecipeAppTheme.paddings.medium)
+            modifier = Modifier
+                .testTag(ErrorScreenStateTestingTags.SECONDARY_TEXT)
+                .padding(horizontal = RecipeAppTheme.paddings.medium)
         )
 
         Spacer(modifier = Modifier.height(RecipeAppTheme.paddings.medium))
@@ -72,6 +77,13 @@ fun ErrorScreenState(
             Text(text = stringResource(R.string.try_again))
         }
     }
+}
+
+object ErrorScreenStateTestingTags {
+
+    const val ROOT_ELEMENT = "ERROR_SCREEN_STATE_ROOT_ELEMENT"
+    const val PRIMARY_TEXT = "ERROR_SCREEN_STATE_PRIMARY_TEXT"
+    const val SECONDARY_TEXT = "ERROR_SCREEN_STATE_SECONDARY_TEXT"
 }
 
 

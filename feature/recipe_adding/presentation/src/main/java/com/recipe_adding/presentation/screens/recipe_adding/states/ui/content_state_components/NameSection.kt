@@ -9,6 +9,7 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
@@ -34,7 +35,8 @@ internal fun NameSection(
                 BackgroundLessIconButton(
                     onClick = {
                         onChangedName("")
-                    }
+                    },
+                    modifier = Modifier.testTag(NameSectionTestingTags.CLEAR_BUTTON)
                 ) {
                     Icon(
                         imageVector = Icons.Default.Close,
@@ -51,7 +53,13 @@ internal fun NameSection(
         placeholder = {
             Text(text = stringResource(R.string.recipe_name))
         },
-        modifier = modifier,
+        modifier = modifier.testTag(NameSectionTestingTags.RECIPE_NAME_TEXT_FIELD_TAG),
         isError = isError,
     )
+}
+
+object NameSectionTestingTags {
+
+    const val RECIPE_NAME_TEXT_FIELD_TAG = "RECIPE_NAME_TEXT_FIELD_TAG"
+    const val CLEAR_BUTTON = "CLEAR_BUTTON"
 }

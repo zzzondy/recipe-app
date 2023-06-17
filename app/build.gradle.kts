@@ -91,7 +91,7 @@ dependencies {
     // Compose ui
     implementation(Dependencies.Compose.ui)
     implementation(Dependencies.Compose.material)
-    
+
     // Dagger
     implementation(Dependencies.Dagger.dagger)
     kapt(Dependencies.Dagger.compiler)
@@ -108,9 +108,9 @@ dependencies {
     androidTestImplementation(Dependencies.Testing.androidJunit)
     androidTestImplementation(Dependencies.Testing.espresso)
     androidTestImplementation(Dependencies.Testing.composeJunit)
+    debugImplementation(Dependencies.Testing.manifest)
 
     // Compose tooling
     implementation(Dependencies.Compose.toolingPreview)
     debugImplementation(Dependencies.Compose.tooling)
-    debugImplementation(Dependencies.Compose.manifest)
 }

@@ -95,4 +95,9 @@ dependencies {
 
     // Wheel picker
     implementation(Dependencies.WheelPicker.wheelPicker)
+
+    // Testing
+    testImplementation(Dependencies.Testing.junit)
+    androidTestImplementation(Dependencies.Testing.composeJunit)
+    debugImplementation(Dependencies.Testing.manifest)
 }
