@@ -25,6 +25,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Velocity
@@ -38,6 +39,7 @@ import com.recipeapp.components.screen_states_ui.ErrorScreenState
 import com.recipeapp.components.top_app_bar.rememberTopAppBarState
 import com.recipeapp.theme.RecipeAppTheme
 import com.recipeapp.utils.UIText
+import com.recipeapp.utils.toBitmap
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.launch
 
@@ -46,10 +48,12 @@ fun RecipeAddingScreen(
     state: RecipeAddingScreenState,
     onDispatchAction: (RecipeAddingScreenAction) -> Unit = {}
 ) {
+    val context = LocalContext.current
+
     val photoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickMultipleVisualMedia(),
         onResult = { uris ->
-            onDispatchAction(RecipeAddingScreenAction.AddImage(uris))
+            onDispatchAction(RecipeAddingScreenAction.AddImages(uris.map { it.toBitmap(context) }))
         }
     )
 
@@ -122,6 +126,9 @@ fun RecipeAddingScreen(
             when (state) {
                 is RecipeAddingScreenState.ContentState -> {
                     RecipeAddingScreenContentState(
+                        deleteClick = {
+                            onDispatchAction(RecipeAddingScreenAction.OnOpenMealTypesChoosingDialog)
+                        },
                         listState = listState,
                         images = state.images,
                         recipeName = state.recipeName,
@@ -147,8 +154,8 @@ fun RecipeAddingScreen(
                                 )
                             )
                         },
-                        onRemoveImageClicked = { uri ->
-                            onDispatchAction(RecipeAddingScreenAction.RemoveImage(uri))
+                        onRemoveImageClicked = { index ->
+                            onDispatchAction(RecipeAddingScreenAction.RemoveImage(index))
                         },
                         onChangedName = { recipeName ->
                             onDispatchAction(RecipeAddingScreenAction.OnChangedRecipeName(recipeName))

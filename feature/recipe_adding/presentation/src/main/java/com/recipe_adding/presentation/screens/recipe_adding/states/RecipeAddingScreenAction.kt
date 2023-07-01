@@ -1,13 +1,14 @@
 package com.recipe_adding.presentation.screens.recipe_adding.states
 
+import android.graphics.Bitmap
 import android.net.Uri
 import com.recipe_adding.domain.models.MealType
 
 sealed interface RecipeAddingScreenAction {
 
-    data class AddImage(val imageUris: List<Uri>) : RecipeAddingScreenAction
+    data class AddImages(val imageUris: List<Bitmap>) : RecipeAddingScreenAction
 
-    data class RemoveImage(val imageUri: Uri) : RecipeAddingScreenAction
+    data class RemoveImage(val index: Int) : RecipeAddingScreenAction
 
     data class ReplaceImage(val imageUri: Uri, val newImageUri: Uri) : RecipeAddingScreenAction
 
@@ -34,6 +35,8 @@ sealed interface RecipeAddingScreenAction {
     object OnSaveRecipe : RecipeAddingScreenAction
 
     object OnCloseScreen : RecipeAddingScreenAction
+
+    object OnOpenMealTypesChoosingDialog : RecipeAddingScreenAction
 
     object OnTryAgainClicked : RecipeAddingScreenAction
 }

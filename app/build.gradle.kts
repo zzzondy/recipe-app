@@ -79,6 +79,7 @@ dependencies {
 
     implementation(project(Modules.featureRecipeAddingPresentation))
     implementation(project(Modules.featureRecipeAddingDomain))
+    implementation(project(Modules.featureRecipeAddingData))
 
     // Lifecycle
     implementation(Dependencies.Lifecycle.core)
@@ -101,6 +102,7 @@ dependencies {
 
     // Accompanist
     implementation(Dependencies.Accompanist.animationNavigation)
+    implementation(Dependencies.Accompanist.navigationMaterial)
 
 
     // Testing

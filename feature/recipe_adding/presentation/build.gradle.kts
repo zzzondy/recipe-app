@@ -62,6 +62,7 @@ dependencies {
     implementation(project(Modules.commonNavigation))
 
     implementation(project(Modules.featureRecipeAddingDomain))
+    implementation(project(Modules.featureRecipeAddingData))
 
     // Compose BOM
     implementation(platform(Dependencies.Compose.bom))
@@ -83,6 +84,7 @@ dependencies {
 
     // Accompanist
     implementation(Dependencies.Accompanist.animationNavigation)
+    implementation(Dependencies.Accompanist.navigationMaterial)
     implementation(Dependencies.Accompanist.placeholders)
 
     // Dagger
@@ -95,6 +97,12 @@ dependencies {
 
     // Wheel picker
     implementation(Dependencies.WheelPicker.wheelPicker)
+
+    // Retrofit
+    implementation(Dependencies.Retrofit.retrofit)
+
+    // Paging
+    implementation(Dependencies.Paging.compose)
 
     // Testing
     testImplementation(Dependencies.Testing.junit)

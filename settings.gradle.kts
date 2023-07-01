@@ -34,3 +34,4 @@ include(":feature:recipes:data")
 // Recipe adding
 include(":feature:recipe_adding:presentation")
 include(":feature:recipe_adding:domain")
+include(":feature:recipe_adding:data")

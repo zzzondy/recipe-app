@@ -46,11 +46,15 @@ object Dependencies {
         const val animationNavigation =
             "com.google.accompanist:accompanist-navigation-animation:$accompanistVersion"
 
+        const val navigationMaterial =
+            "com.google.accompanist:accompanist-navigation-material:$accompanistVersion"
+
         const val systemUiController =
             "com.google.accompanist:accompanist-systemuicontroller:$accompanistVersion"
 
         const val placeholders =
             "com.google.accompanist:accompanist-placeholder-material:$accompanistVersion"
+
 
     }
 

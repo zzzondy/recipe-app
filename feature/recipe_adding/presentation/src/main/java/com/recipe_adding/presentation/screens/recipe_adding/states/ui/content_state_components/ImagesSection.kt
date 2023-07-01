@@ -1,6 +1,6 @@
 package com.recipe_adding.presentation.screens.recipe_adding.states.ui.content_state_components
 
-import android.net.Uri
+import android.graphics.Bitmap
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -35,11 +35,11 @@ import com.skydoves.landscapist.coil.CoilImage
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun ImagesSection(
-    images: List<Uri>,
+    images: List<Bitmap>,
     modifier: Modifier = Modifier,
     onAddImageClicked: () -> Unit = {},
-    onRemoveImageClicked: (Uri) -> Unit = {},
-    onReplaceImageClicked: (Uri) -> Unit = {},
+    onRemoveImageClicked: (Int) -> Unit = {},
+    onReplaceImageClicked: (Int) -> Unit = {},
     isError: Boolean = false,
 ) {
     Column(
@@ -65,7 +65,7 @@ internal fun ImagesSection(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
-            images.forEachIndexed { index, uri ->
+            images.forEachIndexed { index, bitmap ->
                 item(key = index) {
                     Box(
                         contentAlignment = Alignment.TopEnd,
@@ -79,11 +79,11 @@ internal fun ImagesSection(
                                 animationSpec = tween(durationMillis = 150)
                             )
                             .bounceClick {
-                                onReplaceImageClicked(uri)
+                                onReplaceImageClicked(index)
                             },
                     ) {
                         CoilImage(
-                            imageModel = { uri },
+                            imageModel = { bitmap },
                             modifier = Modifier
                                 .size(
                                     width = RecipeAppTheme.sizes.imageWidth,
@@ -109,7 +109,7 @@ internal fun ImagesSection(
                             backgroundColor = RecipeAppTheme.colors.white0,
                             contentColor = RecipeAppTheme.colors.primary50,
                             shape = CircleShape,
-                            onClick = { onRemoveImageClicked(uri) }
+                            onClick = { onRemoveImageClicked(index) }
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Delete,

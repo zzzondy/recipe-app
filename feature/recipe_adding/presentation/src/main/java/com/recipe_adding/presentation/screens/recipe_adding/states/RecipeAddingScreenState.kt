@@ -1,5 +1,6 @@
 package com.recipe_adding.presentation.screens.recipe_adding.states
 
+import android.graphics.Bitmap
 import android.net.Uri
 import com.recipe_adding.domain.models.MealType
 import com.recipeapp.utils.UIText
@@ -9,7 +10,7 @@ sealed class RecipeAddingScreenState {
     object Loading : RecipeAddingScreenState()
 
     data class ContentState(
-        val images: List<Uri>,
+        val images: List<Bitmap>,
         val recipeName: String,
         val cookingTime: UIText,
         val mealTypes: List<MealType>,

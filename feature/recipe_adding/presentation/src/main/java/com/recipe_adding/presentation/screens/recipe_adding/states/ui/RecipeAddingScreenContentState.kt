@@ -1,6 +1,6 @@
 package com.recipe_adding.presentation.screens.recipe_adding.states.ui
 
-import android.net.Uri
+import android.graphics.Bitmap
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -35,7 +35,7 @@ import com.recipeapp.theme.RecipeAppTheme
 
 @Composable
 fun RecipeAddingScreenContentState(
-    images: List<Uri>,
+    images: List<Bitmap>,
     recipeName: String,
     cookingTime: String,
     mealTypes: List<MealType>,
@@ -48,8 +48,8 @@ fun RecipeAddingScreenContentState(
     selectedMealType: MealType = mealTypes[0],
     customMealType: String = "",
     onAddImageClicked: () -> Unit = {},
-    onRemoveImageClicked: (Uri) -> Unit = {},
-    onReplaceImageClicked: (Uri) -> Unit = {},
+    onRemoveImageClicked: (Int) -> Unit = {},
+    onReplaceImageClicked: (Int) -> Unit = {},
     onChangedName: (String) -> Unit = {},
     onCookingTimeClicked: () -> Unit = {},
     onAddNewIngredient: () -> Unit = {},
@@ -64,6 +64,7 @@ fun RecipeAddingScreenContentState(
     isDescriptionError: Boolean = false,
     isMealTypeError: Boolean = false,
     isIngredientsError: Boolean = false,
+    deleteClick: () -> Unit = {}
 ) {
     val focusManager = LocalFocusManager.current
 
@@ -129,6 +130,12 @@ fun RecipeAddingScreenContentState(
                         .padding(RecipeAppTheme.paddings.medium)
                         .fillMaxWidth()
                 )
+            }
+
+            item(key = "delete") {
+                DefaultButton(onClick = deleteClick) {
+
+                }
             }
 
             item(key = RecipeAddingScreenContentStateSections.DESCRIPTION_SECTION) {

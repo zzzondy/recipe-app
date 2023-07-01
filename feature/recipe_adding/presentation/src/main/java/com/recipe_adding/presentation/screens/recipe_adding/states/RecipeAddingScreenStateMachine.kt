@@ -1,13 +1,17 @@
 package com.recipe_adding.presentation.screens.recipe_adding.states
 
-import android.net.Uri
+import android.graphics.Bitmap
 import com.freeletics.flowredux.dsl.ChangedState
 import com.freeletics.flowredux.dsl.FlowReduxStateMachine
 import com.freeletics.flowredux.dsl.State
+import com.recipe_adding.domain.models.Ingredient
 import com.recipe_adding.domain.models.MealType
+import com.recipe_adding.domain.models.Recipe
+import com.recipe_adding.domain.use_cases.UploadRecipeUseCase
 import com.recipe_adding.domain.use_cases.ValidateQuantityUseCase
 import com.recipe_adding.presentation.R
 import com.recipeapp.utils.UIText
+import com.recipeapp.utils.toBase64
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -15,13 +19,16 @@ import kotlinx.coroutines.flow.asSharedFlow
 import okhttp3.internal.toImmutableList
 
 @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
-class RecipeAddingScreenStateMachine(private val validateQuantityUseCase: ValidateQuantityUseCase) :
+class RecipeAddingScreenStateMachine(
+    private val validateQuantityUseCase: ValidateQuantityUseCase,
+    private val uploadRecipeUseCase: UploadRecipeUseCase
+) :
     FlowReduxStateMachine<RecipeAddingScreenState, RecipeAddingScreenAction>(initialState = RecipeAddingScreenState.Loading) {
 
     private val _effect = MutableSharedFlow<RecipeAddingScreenEffect>()
     val effect = _effect.asSharedFlow()
 
-    private val urisOfImages = mutableListOf<Uri>()
+    private val images = mutableListOf<Bitmap>()
     private var cookingTimeInMinutes = 0
     private val ingredients = mutableListOf<IngredientItem>()
 
@@ -37,7 +44,7 @@ class RecipeAddingScreenStateMachine(private val validateQuantityUseCase: Valida
                 onEnter {
                     it.override {
                         RecipeAddingScreenState.ContentState(
-                            images = urisOfImages.toImmutableList(),
+                            images = images.toImmutableList(),
                             recipeName = "",
                             cookingTime = UIText.PluralsResource(
                                 R.plurals.minutes_plural,
@@ -45,14 +52,14 @@ class RecipeAddingScreenStateMachine(private val validateQuantityUseCase: Valida
                                 cookingTimeInMinutes
                             ),
                             mealTypes = listOf(
-                                MealType("Meal type", isEditable = true),
-                                MealType("Soap"),
-                                MealType("First"),
-                                MealType("Second"),
-                                MealType("Third"),
-                                MealType("Beef")
+                                MealType(name = "Meal type", isEditable = true),
+                                MealType(name = "Soap"),
+                                MealType(name = "First"),
+                                MealType(name = "Second"),
+                                MealType(name = "Third"),
+                                MealType(name = "Beef")
                             ),
-                            selectedMealType = MealType("Meal type", isEditable = true),
+                            selectedMealType = MealType(name = "Meal type", isEditable = true),
                             customMealType = "",
                             description = "",
                             ingredients = ingredients.toImmutableList(),
@@ -68,7 +75,7 @@ class RecipeAddingScreenStateMachine(private val validateQuantityUseCase: Valida
             }
 
             inState {
-                on { action: RecipeAddingScreenAction.AddImage, state: State<RecipeAddingScreenState.ContentState> ->
+                on { action: RecipeAddingScreenAction.AddImages, state: State<RecipeAddingScreenState.ContentState> ->
                     onAddImage(action = action, state = state)
                 }
 
@@ -115,6 +122,10 @@ class RecipeAddingScreenStateMachine(private val validateQuantityUseCase: Valida
                 on { _: RecipeAddingScreenAction.OnSaveRecipe, state: State<RecipeAddingScreenState.ContentState> ->
                     onSaveRecipe(state = state)
                 }
+
+                onActionEffect { _: RecipeAddingScreenAction.OnOpenMealTypesChoosingDialog, _: RecipeAddingScreenState.ContentState ->
+                    _effect.emit(RecipeAddingScreenEffect.OpenMealTypesChoosingDialog)
+                }
             }
 
             inState {
@@ -126,14 +137,14 @@ class RecipeAddingScreenStateMachine(private val validateQuantityUseCase: Valida
     }
 
     private fun onAddImage(
-        action: RecipeAddingScreenAction.AddImage,
+        action: RecipeAddingScreenAction.AddImages,
         state: State<RecipeAddingScreenState.ContentState>
     ): ChangedState<RecipeAddingScreenState> {
-        urisOfImages.addAll(0, action.imageUris)
+        images.addAll(0, action.imageUris)
         return state.mutate {
             this.copy(
-                images = urisOfImages.toImmutableList(),
-                isImagesError = urisOfImages.isEmpty() && this.isImagesError
+                images = this@RecipeAddingScreenStateMachine.images.toImmutableList(),
+                isImagesError = this@RecipeAddingScreenStateMachine.images.isEmpty() && this.isImagesError
             )
         }
     }
@@ -142,8 +153,8 @@ class RecipeAddingScreenStateMachine(private val validateQuantityUseCase: Valida
         action: RecipeAddingScreenAction.RemoveImage,
         state: State<RecipeAddingScreenState.ContentState>
     ): ChangedState<RecipeAddingScreenState> {
-        urisOfImages.remove(action.imageUri)
-        return state.mutate { this.copy(images = urisOfImages.toImmutableList()) }
+        images.removeAt(action.index)
+        return state.mutate { this.copy(images = this@RecipeAddingScreenStateMachine.images.toImmutableList()) }
     }
 
     private fun onChangedRecipeName(
@@ -304,15 +315,31 @@ class RecipeAddingScreenStateMachine(private val validateQuantityUseCase: Valida
         }
     }
 
-    private fun onSaveRecipe(
+    private suspend fun onSaveRecipe(
         state: State<RecipeAddingScreenState.ContentState>
     ): ChangedState<RecipeAddingScreenState> {
         handleIngredientsErrors()
 
+        uploadRecipeUseCase(
+            Recipe(
+                mealType = state.snapshot.selectedMealType.name,
+                ingredients = ingredients.map {
+                    Ingredient(
+                        name = it.name,
+                        quantity = it.quantity
+                    )
+                },
+                cookingTime = cookingTimeInMinutes,
+                description = state.snapshot.description,
+                name = state.snapshot.recipeName,
+                images = images.map { it.toBase64() }
+            )
+        )
+
         return state.mutate {
             this.copy(
                 ingredients = this@RecipeAddingScreenStateMachine.ingredients.toImmutableList(),
-                isImagesError = this@RecipeAddingScreenStateMachine.urisOfImages.isEmpty(),
+                isImagesError = this@RecipeAddingScreenStateMachine.images.isEmpty(),
                 isNameError = this.recipeName.isEmpty(),
                 isCookingTimeError = this@RecipeAddingScreenStateMachine.cookingTimeInMinutes == 0,
                 isDescriptionError = this.description.isEmpty(),

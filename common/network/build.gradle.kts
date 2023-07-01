@@ -42,7 +42,7 @@ android {
             buildConfigField(
                 "String",
                 "API_URL",
-                "\"http://192.168.0.13:8000/\""
+                "\"http://192.168.0.14:8000/\""
             )
         }
     }
