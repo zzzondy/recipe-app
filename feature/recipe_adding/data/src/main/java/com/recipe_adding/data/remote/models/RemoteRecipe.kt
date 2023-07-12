@@ -1,5 +1,6 @@
 package com.recipe_adding.data.remote.models
 
+import com.recipe_adding.data.remote.models.meal_type.RemoteMealType
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

@@ -2,4 +2,5 @@
 <resources>
     <string name="error_icon">Error icon</string>
     <string name="try_again">Try again</string>
+    <string name="some_error">Some error occurred</string>
 </resources>

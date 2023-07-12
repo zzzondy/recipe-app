@@ -2,4 +2,5 @@
 <resources>
     <string name="error_icon">Иконка ошибки</string>
     <string name="try_again">Попробовать еще раз</string>
+    <string name="some_error">Произошла ошибка</string>
 </resources>

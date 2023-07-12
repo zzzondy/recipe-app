@@ -1,5 +1,6 @@
 package com.recipe_adding.presentation.screens.recipe_adding.states.ui
 
+import MealTypeSection
 import android.graphics.Bitmap
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
@@ -21,32 +22,29 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.recipe_adding.domain.models.MealType
 import com.recipe_adding.presentation.R
 import com.recipe_adding.presentation.screens.recipe_adding.states.IngredientItem
 import com.recipe_adding.presentation.screens.recipe_adding.states.ui.content_state_components.CookingTimeSection
 import com.recipe_adding.presentation.screens.recipe_adding.states.ui.content_state_components.DescriptionSection
 import com.recipe_adding.presentation.screens.recipe_adding.states.ui.content_state_components.ImagesSection
 import com.recipe_adding.presentation.screens.recipe_adding.states.ui.content_state_components.IngredientsSection
-import com.recipe_adding.presentation.screens.recipe_adding.states.ui.content_state_components.MealTypesSection
 import com.recipe_adding.presentation.screens.recipe_adding.states.ui.content_state_components.NameSection
 import com.recipeapp.components.buttons.DefaultButton
 import com.recipeapp.theme.RecipeAppTheme
+import com.recipeapp.utils.UIText
 
 @Composable
 fun RecipeAddingScreenContentState(
     images: List<Bitmap>,
     recipeName: String,
     cookingTime: String,
-    mealTypes: List<MealType>,
     description: String,
     ingredients: List<IngredientItem>,
+    selectedMealTypeName: UIText,
     onChangedIngredient: (Int, String) -> Unit,
     onChangedIngredientQuantity: (Int, String) -> Unit,
     modifier: Modifier = Modifier,
     listState: LazyListState = rememberLazyListState(),
-    selectedMealType: MealType = mealTypes[0],
-    customMealType: String = "",
     onAddImageClicked: () -> Unit = {},
     onRemoveImageClicked: (Int) -> Unit = {},
     onReplaceImageClicked: (Int) -> Unit = {},
@@ -56,15 +54,13 @@ fun RecipeAddingScreenContentState(
     onRemoveIngredient: (Int) -> Unit = {},
     onSaveRecipe: () -> Unit = {},
     onDescriptionChanged: (String) -> Unit = {},
-    onMealTypeChanged: (MealType) -> Unit = {},
-    onChangedCustomMealType: (String) -> Unit = {},
+    onMealTypeSectionClicked: () -> Unit = {},
     isImagesError: Boolean = false,
     isNameError: Boolean = false,
     isCookingTimeError: Boolean = false,
-    isDescriptionError: Boolean = false,
     isMealTypeError: Boolean = false,
+    isDescriptionError: Boolean = false,
     isIngredientsError: Boolean = false,
-    deleteClick: () -> Unit = {}
 ) {
     val focusManager = LocalFocusManager.current
 
@@ -119,23 +115,15 @@ fun RecipeAddingScreenContentState(
             }
 
             item(key = RecipeAddingScreenContentStateSections.MEAL_TYPES_SECTION) {
-                MealTypesSection(
-                    mealTypes = mealTypes,
-                    selectedMealType = selectedMealType,
-                    customMealType = customMealType,
+                MealTypeSection(
+                    selectedMealTypeName = selectedMealTypeName,
+                    onClick = onMealTypeSectionClicked,
                     isError = isMealTypeError,
-                    onMealTypeChanged = onMealTypeChanged,
-                    onChangedCustomMealType = onChangedCustomMealType,
                     modifier = Modifier
-                        .padding(RecipeAppTheme.paddings.medium)
                         .fillMaxWidth()
-                )
-            }
-
-            item(key = "delete") {
-                DefaultButton(onClick = deleteClick) {
-
-                }
+                        .height(100.dp)
+                        .padding(RecipeAppTheme.paddings.medium),
+                    )
             }
 
             item(key = RecipeAddingScreenContentStateSections.DESCRIPTION_SECTION) {

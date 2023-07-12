@@ -10,7 +10,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class RecipeAddingScreenViewModel(private val recipeAddingScreenStateMachine: RecipeAddingScreenStateMachine) :
+class RecipeAddingScreenViewModel(
+    private val recipeAddingScreenStateMachine: RecipeAddingScreenStateMachine,
+) :
     ViewModel() {
 
     private val _state = MutableStateFlow<RecipeAddingScreenState>(RecipeAddingScreenState.Loading)
@@ -26,7 +28,7 @@ class RecipeAddingScreenViewModel(private val recipeAddingScreenStateMachine: Re
         }
     }
 
-    fun dispatchAction(action: RecipeAddingScreenAction) {
+    fun onDispatchAction(action: RecipeAddingScreenAction) {
         viewModelScope.launch {
             recipeAddingScreenStateMachine.dispatch(action)
         }

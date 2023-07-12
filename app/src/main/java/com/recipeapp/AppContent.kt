@@ -38,8 +38,9 @@ fun AppContent(
     featureNavigationApis: List<FeatureNavigationApi>
 ) {
     val sheetState = rememberModalBottomSheetState(
-        initialValue = ModalBottomSheetValue.Expanded,
+        initialValue = ModalBottomSheetValue.Hidden,
         animationSpec = tween(300),
+        skipHalfExpanded = true
     )
     val bottomSheetNavigator = remember { BottomSheetNavigator(sheetState = sheetState) }
     val navController = rememberAnimatedNavController(bottomSheetNavigator)

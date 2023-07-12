@@ -5,4 +5,10 @@ sealed interface RecipeAddingScreenEffect {
     object NavigateBack : RecipeAddingScreenEffect
 
     object OpenMealTypesChoosingDialog : RecipeAddingScreenEffect
+
+    object ShowLoadingDialog : RecipeAddingScreenEffect
+
+    object CloseLoadingDialog : RecipeAddingScreenEffect
+
+    object NavigateBackOnSuccessfulResult : RecipeAddingScreenEffect
 }

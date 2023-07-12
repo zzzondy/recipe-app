@@ -5,8 +5,8 @@ import com.freeletics.flowredux.dsl.ChangedState
 import com.freeletics.flowredux.dsl.FlowReduxStateMachine
 import com.freeletics.flowredux.dsl.State
 import com.recipe_adding.domain.models.Ingredient
-import com.recipe_adding.domain.models.MealType
 import com.recipe_adding.domain.models.Recipe
+import com.recipe_adding.domain.states.UploadingRecipeResult
 import com.recipe_adding.domain.use_cases.UploadRecipeUseCase
 import com.recipe_adding.domain.use_cases.ValidateQuantityUseCase
 import com.recipe_adding.presentation.R
@@ -14,6 +14,7 @@ import com.recipeapp.utils.UIText
 import com.recipeapp.utils.toBase64
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import okhttp3.internal.toImmutableList
@@ -51,16 +52,7 @@ class RecipeAddingScreenStateMachine(
                                 cookingTimeInMinutes,
                                 cookingTimeInMinutes
                             ),
-                            mealTypes = listOf(
-                                MealType(name = "Meal type", isEditable = true),
-                                MealType(name = "Soap"),
-                                MealType(name = "First"),
-                                MealType(name = "Second"),
-                                MealType(name = "Third"),
-                                MealType(name = "Beef")
-                            ),
-                            selectedMealType = MealType(name = "Meal type", isEditable = true),
-                            customMealType = "",
+                            selectedMealTypeName = UIText.StringResource(R.string.not_selected),
                             description = "",
                             ingredients = ingredients.toImmutableList(),
                             isImagesError = false,
@@ -91,14 +83,6 @@ class RecipeAddingScreenStateMachine(
                     onCookingTimeChanged(action = action, state = state)
                 }
 
-                on { action: RecipeAddingScreenAction.OnMealTypeChanged, state: State<RecipeAddingScreenState.ContentState> ->
-                    onMealTypeChanged(action = action, state = state)
-                }
-
-                on { action: RecipeAddingScreenAction.OnCustomMealTypeChanged, state: State<RecipeAddingScreenState.ContentState> ->
-                    onCustomMealTypeChanged(action = action, state = state)
-                }
-
                 on { action: RecipeAddingScreenAction.OnDescriptionChanged, state: State<RecipeAddingScreenState.ContentState> ->
                     onDescriptionChanged(action = action, state = state)
                 }
@@ -123,7 +107,11 @@ class RecipeAddingScreenStateMachine(
                     onSaveRecipe(state = state)
                 }
 
-                onActionEffect { _: RecipeAddingScreenAction.OnOpenMealTypesChoosingDialog, _: RecipeAddingScreenState.ContentState ->
+                on { action: RecipeAddingScreenAction.OnMealTypeSelected, state: State<RecipeAddingScreenState.ContentState> ->
+                    onMealTypeSelected(action, state)
+                }
+
+                onActionEffect { _: RecipeAddingScreenAction.OnMealTypeSectionClicked, _: RecipeAddingScreenState.ContentState ->
                     _effect.emit(RecipeAddingScreenEffect.OpenMealTypesChoosingDialog)
                 }
             }
@@ -182,26 +170,14 @@ class RecipeAddingScreenStateMachine(
         }
     }
 
-    private fun onMealTypeChanged(
-        action: RecipeAddingScreenAction.OnMealTypeChanged,
+    private fun onMealTypeSelected(
+        action: RecipeAddingScreenAction.OnMealTypeSelected,
         state: State<RecipeAddingScreenState.ContentState>
     ): ChangedState<RecipeAddingScreenState> {
         return state.mutate {
             this.copy(
-                selectedMealType = action.mealType,
-                isMealTypeError = action.mealType.isEditable && this.customMealType.isEmpty()
-            )
-        }
-    }
-
-    private fun onCustomMealTypeChanged(
-        action: RecipeAddingScreenAction.OnCustomMealTypeChanged,
-        state: State<RecipeAddingScreenState.ContentState>
-    ): ChangedState<RecipeAddingScreenState> {
-        return state.mutate {
-            this.copy(
-                customMealType = action.name,
-                isMealTypeError = action.name.isEmpty()
+                selectedMealTypeName = UIText.DynamicText(action.mealTypeName),
+                isMealTypeError = false,
             )
         }
     }
@@ -320,31 +296,51 @@ class RecipeAddingScreenStateMachine(
     ): ChangedState<RecipeAddingScreenState> {
         handleIngredientsErrors()
 
-        uploadRecipeUseCase(
-            Recipe(
-                mealType = state.snapshot.selectedMealType.name,
-                ingredients = ingredients.map {
-                    Ingredient(
-                        name = it.name,
-                        quantity = it.quantity
-                    )
-                },
-                cookingTime = cookingTimeInMinutes,
-                description = state.snapshot.description,
-                name = state.snapshot.recipeName,
-                images = images.map { it.toBase64() }
+        val isImagesError = images.isEmpty()
+        val isNameError = state.snapshot.recipeName.isEmpty()
+        val isCookingTimeError = cookingTimeInMinutes == 0
+        val isDescriptionError = state.snapshot.description.isEmpty()
+        val isMealTypeError = state.snapshot.selectedMealTypeName is UIText.StringResource
+        val isIngredientsError =
+            ingredients.isEmpty() || ingredients.indexOfFirst { it.name.isEmpty() || it.quantity.isEmpty() } != -1
+
+        if (
+            !isImagesError &&!isIngredientsError && !isNameError &&
+            !isCookingTimeError && !isDescriptionError &&
+            !isMealTypeError
+        ) {
+            _effect.emit(RecipeAddingScreenEffect.ShowLoadingDialog)
+            delay(1000)
+            val result = uploadRecipeUseCase(
+                Recipe(
+                    mealType = (state.snapshot.selectedMealTypeName as UIText.DynamicText).value,
+                    ingredients = ingredients.map {
+                        Ingredient(
+                            name = it.name,
+                            quantity = it.quantity
+                        )
+                    },
+                    cookingTime = cookingTimeInMinutes,
+                    description = state.snapshot.description,
+                    name = state.snapshot.recipeName,
+                    images = images.map { it.toBase64() }
+                )
             )
-        )
+
+            if (result is UploadingRecipeResult.Success) {
+                _effect.emit(RecipeAddingScreenEffect.NavigateBackOnSuccessfulResult)
+            }
+        }
 
         return state.mutate {
             this.copy(
                 ingredients = this@RecipeAddingScreenStateMachine.ingredients.toImmutableList(),
-                isImagesError = this@RecipeAddingScreenStateMachine.images.isEmpty(),
-                isNameError = this.recipeName.isEmpty(),
-                isCookingTimeError = this@RecipeAddingScreenStateMachine.cookingTimeInMinutes == 0,
-                isDescriptionError = this.description.isEmpty(),
-                isMealTypeError = this.selectedMealType.isEditable && this.customMealType.isEmpty(),
-                isIngredientsError = this@RecipeAddingScreenStateMachine.ingredients.isEmpty() || this@RecipeAddingScreenStateMachine.ingredients.indexOfFirst { it.name.isEmpty() || it.quantity.isEmpty() } != -1
+                isImagesError = isImagesError,
+                isNameError = isNameError,
+                isCookingTimeError = isCookingTimeError,
+                isDescriptionError = isDescriptionError,
+                isMealTypeError = isMealTypeError,
+                isIngredientsError = isIngredientsError,
             )
         }
     }

@@ -15,10 +15,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -29,24 +31,66 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Velocity
+import androidx.navigation.NavController
+import com.recipe_adding.presentation.navigation.RecipeAddingScreens
 import com.recipe_adding.presentation.screens.recipe_adding.components.CookingTimeChoosingDialog
 import com.recipe_adding.presentation.screens.recipe_adding.components.RecipeAddingScreenTopBar
 import com.recipe_adding.presentation.screens.recipe_adding.states.RecipeAddingScreenAction
+import com.recipe_adding.presentation.screens.recipe_adding.states.RecipeAddingScreenEffect
 import com.recipe_adding.presentation.screens.recipe_adding.states.RecipeAddingScreenState
 import com.recipe_adding.presentation.screens.recipe_adding.states.ui.RecipeAddingScreenContentState
 import com.recipe_adding.presentation.screens.recipe_adding.states.ui.RecipeAddingScreenLoadingState
 import com.recipeapp.components.screen_states_ui.ErrorScreenState
+import com.recipeapp.components.screen_states_ui.LoadingDialog
 import com.recipeapp.components.top_app_bar.rememberTopAppBarState
 import com.recipeapp.theme.RecipeAppTheme
 import com.recipeapp.utils.UIText
+import com.recipeapp.utils.collectAsEffect
 import com.recipeapp.utils.toBitmap
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.launch
 
 @Composable
 fun RecipeAddingScreen(
+    navController: NavController,
+    viewModel: RecipeAddingScreenViewModel,
+) {
+    var isLoadingDialogVisible by rememberSaveable { mutableStateOf(false) }
+
+    viewModel.effect.collectAsEffect { effect ->
+        when (effect) {
+            RecipeAddingScreenEffect.NavigateBack -> navController.popBackStack()
+
+            RecipeAddingScreenEffect.OpenMealTypesChoosingDialog -> navController.navigate(
+                RecipeAddingScreens.MealTypesChoosingDialog.route
+            )
+
+            RecipeAddingScreenEffect.ShowLoadingDialog -> isLoadingDialogVisible = true
+
+            RecipeAddingScreenEffect.CloseLoadingDialog ->
+                isLoadingDialogVisible = false
+
+            RecipeAddingScreenEffect.NavigateBackOnSuccessfulResult -> {
+                isLoadingDialogVisible = false
+                navController.popBackStack()
+            }
+        }
+    }
+
+    if (isLoadingDialogVisible) {
+        LoadingDialog()
+    }
+
+    RecipeAddingScreenContent(
+        state = viewModel.state.collectAsState().value,
+        onDispatchAction = viewModel::onDispatchAction
+    )
+}
+
+@Composable
+private fun RecipeAddingScreenContent(
     state: RecipeAddingScreenState,
-    onDispatchAction: (RecipeAddingScreenAction) -> Unit = {}
+    onDispatchAction: (RecipeAddingScreenAction) -> Unit = {},
 ) {
     val context = LocalContext.current
 
@@ -126,16 +170,11 @@ fun RecipeAddingScreen(
             when (state) {
                 is RecipeAddingScreenState.ContentState -> {
                     RecipeAddingScreenContentState(
-                        deleteClick = {
-                            onDispatchAction(RecipeAddingScreenAction.OnOpenMealTypesChoosingDialog)
-                        },
                         listState = listState,
                         images = state.images,
                         recipeName = state.recipeName,
                         cookingTime = state.cookingTime.asString(),
-                        mealTypes = state.mealTypes,
-                        selectedMealType = state.selectedMealType,
-                        customMealType = state.customMealType,
+                        selectedMealTypeName = state.selectedMealTypeName,
                         description = state.description,
                         ingredients = state.ingredients,
                         isMealTypeError = state.isMealTypeError,
@@ -192,11 +231,10 @@ fun RecipeAddingScreen(
                                 )
                             )
                         },
-                        onMealTypeChanged = { mealType ->
-                            onDispatchAction(RecipeAddingScreenAction.OnMealTypeChanged(mealType))
-                        },
-                        onChangedCustomMealType = { name ->
-                            onDispatchAction(RecipeAddingScreenAction.OnCustomMealTypeChanged(name))
+                        onMealTypeSectionClicked = {
+                            onDispatchAction(
+                                RecipeAddingScreenAction.OnMealTypeSectionClicked
+                            )
                         }
                     )
                 }
@@ -231,14 +269,14 @@ fun RecipeAddingScreen(
 @Composable
 fun RecipeAddingScreenPreview() {
     RecipeAppTheme {
-        RecipeAddingScreen(
+        RecipeAddingScreenContent(
             state = RecipeAddingScreenState.ContentState(
                 images = emptyList(),
                 recipeName = "",
                 cookingTime = UIText.DynamicText("1 минут"),
-                mealTypes = emptyList(),
                 description = "",
                 ingredients = emptyList(),
+                selectedMealTypeName = UIText.DynamicText("")
             )
         )
     }

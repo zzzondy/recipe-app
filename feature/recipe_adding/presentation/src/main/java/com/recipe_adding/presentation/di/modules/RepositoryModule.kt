@@ -1,4 +1,4 @@
-package com.recipe_adding.presentation.screens.recipe_adding.di.modules
+package com.recipe_adding.presentation.di.modules
 
 import com.recipe_adding.data.remote.repository.RemoteRecipeAddingRepository
 import com.recipe_adding.data.repository.RecipeAddingRepositoryImpl

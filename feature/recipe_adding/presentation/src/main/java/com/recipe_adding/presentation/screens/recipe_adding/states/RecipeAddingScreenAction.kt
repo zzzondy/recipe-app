@@ -2,7 +2,6 @@ package com.recipe_adding.presentation.screens.recipe_adding.states
 
 import android.graphics.Bitmap
 import android.net.Uri
-import com.recipe_adding.domain.models.MealType
 
 sealed interface RecipeAddingScreenAction {
 
@@ -14,13 +13,13 @@ sealed interface RecipeAddingScreenAction {
 
     data class OnCookingTimeChanged(val cookingTimeInMinutes: Int) : RecipeAddingScreenAction
 
-    data class OnMealTypeChanged(val mealType: MealType) : RecipeAddingScreenAction
-
-    data class OnCustomMealTypeChanged(val name: String) : RecipeAddingScreenAction
-
     data class OnDescriptionChanged(val newDescription: String) : RecipeAddingScreenAction
 
     data class OnChangedRecipeName(val newName: String) : RecipeAddingScreenAction
+
+    object OnMealTypeSectionClicked : RecipeAddingScreenAction
+
+    data class OnMealTypeSelected(val mealTypeName: String) : RecipeAddingScreenAction
 
     object OnAddNewIngredient : RecipeAddingScreenAction
 
@@ -36,7 +35,6 @@ sealed interface RecipeAddingScreenAction {
 
     object OnCloseScreen : RecipeAddingScreenAction
 
-    object OnOpenMealTypesChoosingDialog : RecipeAddingScreenAction
 
     object OnTryAgainClicked : RecipeAddingScreenAction
 }
