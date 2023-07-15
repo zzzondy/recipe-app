@@ -14,6 +14,7 @@ sealed class RecipeAddingScreenState {
         val description: String,
         val ingredients: List<IngredientItem>,
         val selectedMealTypeName: UIText,
+        val isAddImageButtonAvailable: Boolean = true,
         val isImagesError: Boolean = false,
         val isNameError: Boolean = false,
         val isCookingTimeError: Boolean = false,

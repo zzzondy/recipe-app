@@ -1,4 +1,4 @@
-package com.recipeapp.components.screen_states_ui
+package com.recipeapp.components.screen_states_ui.dialogs
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

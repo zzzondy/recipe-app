@@ -98,6 +98,9 @@ dependencies {
     // Wheel picker
     implementation(Dependencies.WheelPicker.wheelPicker)
 
+    // InfoBar
+    implementation(Dependencies.InfoBar.infoBar)
+
     // Retrofit
     implementation(Dependencies.Retrofit.retrofit)
 

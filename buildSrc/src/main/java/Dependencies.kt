@@ -100,4 +100,8 @@ object Dependencies {
     object WheelPicker {
         const val wheelPicker = "com.github.zj565061763:compose-wheel-picker:1.0.0-alpha16"
     }
+
+    object InfoBar {
+        const val infoBar = "com.radusalagean:info-bar-compose:1.0.0"
+    }
 }

@@ -21,6 +21,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import com.recipeapp.theme.RecipeAppTheme
 
@@ -37,6 +38,7 @@ fun DefaultTextField(
     maxLines: Int = if (singleLine) 1 else Int.MAX_VALUE,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    textStyle: TextStyle = RecipeAppTheme.typography.regularLabel,
     label: @Composable (() -> Unit)? = null,
     placeholder: @Composable (() -> Unit)? = null,
     leadingIcon: @Composable (() -> Unit)? = null,
@@ -77,7 +79,7 @@ fun DefaultTextField(
             errorLeadingIconColor = RecipeAppTheme.colors.error100,
             errorTrailingIconColor = RecipeAppTheme.colors.error100
         ),
-        textStyle = RecipeAppTheme.typography.regularLabel,
+        textStyle = textStyle,
         isError = isError,
         readOnly = readOnly
     )

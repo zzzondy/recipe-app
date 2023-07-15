@@ -5,7 +5,7 @@ import android.net.Uri
 
 sealed interface RecipeAddingScreenAction {
 
-    data class AddImages(val imageUris: List<Bitmap>) : RecipeAddingScreenAction
+    data class AddImage(val image: Bitmap) : RecipeAddingScreenAction
 
     data class RemoveImage(val index: Int) : RecipeAddingScreenAction
 

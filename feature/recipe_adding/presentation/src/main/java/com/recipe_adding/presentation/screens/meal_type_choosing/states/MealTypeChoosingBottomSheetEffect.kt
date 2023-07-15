@@ -9,4 +9,6 @@ sealed class MealTypeChoosingBottomSheetEffect {
     object RetryObtainingData : MealTypeChoosingBottomSheetEffect()
 
     object RefreshData : MealTypeChoosingBottomSheetEffect()
+
+    object CloseScreen : MealTypeChoosingBottomSheetEffect()
 }

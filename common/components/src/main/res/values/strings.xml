@@ -3,4 +3,7 @@
     <string name="error_icon">Error icon</string>
     <string name="try_again">Try again</string>
     <string name="some_error">Some error occurred</string>
+    <string name="clear_icon">Clear icon</string>
+    <string name="search_icon">Search icon</string>
+    <string name="search">Search</string>
 </resources>

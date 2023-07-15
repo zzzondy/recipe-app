@@ -28,6 +28,8 @@
     <string name="clear_icon">Clear icon</string>
     <string name="enter_meal_type">Enter meal type</string>
     <string name="not_selected">Not selected</string>
+    <string name="some_error">Some error occurred</string>
+    <string name="some_error_details">Unknown error occurred, please try again later</string>
 
     <plurals name="minutes_plural">
         <item quantity="zero">%1$d minutes</item>

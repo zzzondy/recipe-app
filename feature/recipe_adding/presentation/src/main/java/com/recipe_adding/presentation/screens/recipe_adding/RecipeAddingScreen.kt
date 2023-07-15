@@ -9,6 +9,7 @@ import androidx.compose.animation.core.animateDecay
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.with
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -40,8 +41,10 @@ import com.recipe_adding.presentation.screens.recipe_adding.states.RecipeAddingS
 import com.recipe_adding.presentation.screens.recipe_adding.states.RecipeAddingScreenState
 import com.recipe_adding.presentation.screens.recipe_adding.states.ui.RecipeAddingScreenContentState
 import com.recipe_adding.presentation.screens.recipe_adding.states.ui.RecipeAddingScreenLoadingState
-import com.recipeapp.components.screen_states_ui.ErrorScreenState
-import com.recipeapp.components.screen_states_ui.LoadingDialog
+import com.recipeapp.components.screen_states_ui.dialogs.LoadingDialog
+import com.recipeapp.components.screen_states_ui.screens.ErrorScreenState
+import com.recipeapp.components.screen_states_ui.snackbars.ErrorMessage
+import com.recipeapp.components.screen_states_ui.snackbars.ErrorSnackBar
 import com.recipeapp.components.top_app_bar.rememberTopAppBarState
 import com.recipeapp.theme.RecipeAppTheme
 import com.recipeapp.utils.UIText
@@ -56,23 +59,30 @@ fun RecipeAddingScreen(
     viewModel: RecipeAddingScreenViewModel,
 ) {
     var isLoadingDialogVisible by rememberSaveable { mutableStateOf(false) }
+    var errorSnackBarMessage: ErrorMessage? by remember { mutableStateOf(null) }
 
     viewModel.effect.collectAsEffect { effect ->
         when (effect) {
-            RecipeAddingScreenEffect.NavigateBack -> navController.popBackStack()
+            is RecipeAddingScreenEffect.NavigateBack -> navController.popBackStack()
 
-            RecipeAddingScreenEffect.OpenMealTypesChoosingDialog -> navController.navigate(
+            is RecipeAddingScreenEffect.OpenMealTypesChoosingDialog -> navController.navigate(
                 RecipeAddingScreens.MealTypesChoosingDialog.route
             )
 
-            RecipeAddingScreenEffect.ShowLoadingDialog -> isLoadingDialogVisible = true
+            is RecipeAddingScreenEffect.ShowLoadingDialog -> isLoadingDialogVisible = true
 
-            RecipeAddingScreenEffect.CloseLoadingDialog ->
+            is RecipeAddingScreenEffect.CloseLoadingDialog ->
                 isLoadingDialogVisible = false
 
-            RecipeAddingScreenEffect.NavigateBackOnSuccessfulResult -> {
+            is RecipeAddingScreenEffect.NavigateBackOnSuccessfulResult -> {
                 isLoadingDialogVisible = false
                 navController.popBackStack()
+            }
+
+            is RecipeAddingScreenEffect.ShowErrorSnackBar -> {
+                isLoadingDialogVisible = false
+                errorSnackBarMessage =
+                    ErrorMessage(title = effect.title, subtitle = effect.subtitle)
             }
         }
     }
@@ -81,23 +91,32 @@ fun RecipeAddingScreen(
         LoadingDialog()
     }
 
-    RecipeAddingScreenContent(
-        state = viewModel.state.collectAsState().value,
-        onDispatchAction = viewModel::onDispatchAction
-    )
+    Box {
+        RecipeAddingScreenContent(
+            state = viewModel.state.collectAsState().value,
+            onDispatchAction = viewModel::onDispatchAction
+        )
+
+        ErrorSnackBar(
+            message = errorSnackBarMessage,
+            onDismiss = { errorSnackBarMessage = null }
+        )
+    }
 }
 
 @Composable
-private fun RecipeAddingScreenContent(
+fun RecipeAddingScreenContent(
     state: RecipeAddingScreenState,
     onDispatchAction: (RecipeAddingScreenAction) -> Unit = {},
 ) {
     val context = LocalContext.current
 
     val photoPickerLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.PickMultipleVisualMedia(),
-        onResult = { uris ->
-            onDispatchAction(RecipeAddingScreenAction.AddImages(uris.map { it.toBitmap(context) }))
+        contract = ActivityResultContracts.PickVisualMedia(),
+        onResult = { uri ->
+            if (uri != null) {
+                onDispatchAction(RecipeAddingScreenAction.AddImage(uri.toBitmap(context)))
+            }
         }
     )
 
@@ -183,6 +202,7 @@ private fun RecipeAddingScreenContent(
                         isCookingTimeError = state.isCookingTimeError,
                         isDescriptionError = state.isDescriptionError,
                         isIngredientsError = state.isIngredientsError,
+                        isAddImageButtonAvailable = state.isAddImageButtonAvailable,
                         modifier = Modifier
                             .padding(paddingValues)
                             .fillMaxSize(),

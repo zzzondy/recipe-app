@@ -9,4 +9,8 @@ sealed class MealTypeChoosingBottomSheetAction {
     object OnRetryButtonClicked : MealTypeChoosingBottomSheetAction()
 
     object OnRefreshButtonClicked : MealTypeChoosingBottomSheetAction()
+
+    data class OnTypingSearchQuery(val query: String) : MealTypeChoosingBottomSheetAction()
+
+    object OnCloseButtonClicked : MealTypeChoosingBottomSheetAction()
 }

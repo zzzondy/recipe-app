@@ -6,10 +6,11 @@ import androidx.compose.ui.test.onNodeWithTag
 import com.recipe_adding.domain.models.MealType
 import com.recipe_adding.presentation.R
 import com.recipe_adding.presentation.screens.recipe_adding.RecipeAddingScreen
+import com.recipe_adding.presentation.screens.recipe_adding.RecipeAddingScreenContent
 import com.recipe_adding.presentation.screens.recipe_adding.states.RecipeAddingScreenState
 import com.recipe_adding.presentation.screens.recipe_adding.states.ui.RecipeAddingScreenContentStateTestingTags
 import com.recipe_adding.presentation.screens.recipe_adding.states.ui.RecipeAddingScreenLoadingStateTestingTags
-import com.recipeapp.components.screen_states_ui.ErrorScreenStateTestingTags
+import com.recipeapp.components.screen_states_ui.screens.ErrorScreenStateTestingTags
 import com.recipeapp.theme.RecipeAppTheme
 import com.recipeapp.utils.UIText
 import org.junit.Rule
@@ -26,7 +27,7 @@ class RecipeAddingScreenTest {
 
         setContent {
             RecipeAppTheme {
-                RecipeAddingScreen(state = state)
+                RecipeAddingScreenContent(state = state)
             }
         }
 
@@ -43,11 +44,8 @@ class RecipeAddingScreenTest {
                 R.plurals.minutes_plural,
                 0, 0
             ),
-            mealTypes = listOf(
-                MealType("Meal type", isEditable = true),
-            ),
-            selectedMealType = MealType("Meal type", isEditable = true),
-            customMealType = "",
+
+            selectedMealTypeName = UIText.DynamicText("Beer"),
             description = "",
             ingredients = emptyList(),
             isImagesError = false,
@@ -60,7 +58,7 @@ class RecipeAddingScreenTest {
 
         setContent {
             RecipeAppTheme {
-                RecipeAddingScreen(state = state)
+                RecipeAddingScreenContent(state = state)
             }
         }
 
@@ -75,7 +73,7 @@ class RecipeAddingScreenTest {
 
         setContent {
             RecipeAppTheme {
-                RecipeAddingScreen(state = state)
+                RecipeAddingScreenContent(state = state)
             }
         }
         onNodeWithTag(ErrorScreenStateTestingTags.ROOT_ELEMENT)

@@ -1,4 +1,4 @@
-package com.recipeapp.components.screen_states_ui
+package com.recipeapp.components.screen_states_ui.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement

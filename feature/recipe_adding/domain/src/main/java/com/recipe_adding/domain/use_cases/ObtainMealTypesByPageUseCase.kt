@@ -4,5 +4,6 @@ import com.recipe_adding.domain.repository.RecipeAddingRepository
 
 class ObtainMealTypesByPageUseCase(private val recipeAddingRepository: RecipeAddingRepository) {
 
-    operator fun invoke() = recipeAddingRepository.obtainMealTypesByPage()
+    operator fun invoke(searchQuery: String = "") =
+        recipeAddingRepository.obtainMealTypesByPage(searchQuery = searchQuery)
 }

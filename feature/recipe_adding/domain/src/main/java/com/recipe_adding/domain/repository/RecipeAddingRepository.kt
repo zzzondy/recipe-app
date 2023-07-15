@@ -10,5 +10,5 @@ interface RecipeAddingRepository {
 
     suspend fun uploadRecipe(recipe: Recipe): UploadingRecipeResult
 
-    fun obtainMealTypesByPage(): Flow<PagingData<MealType>>
+    fun obtainMealTypesByPage(searchQuery: String): Flow<PagingData<MealType>>
 }

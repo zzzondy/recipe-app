@@ -41,11 +41,13 @@ internal fun ImagesSection(
     onRemoveImageClicked: (Int) -> Unit = {},
     onReplaceImageClicked: (Int) -> Unit = {},
     isError: Boolean = false,
+    isAddImageButtonAvailable: Boolean = true,
 ) {
     Column(
         horizontalAlignment = Alignment.End
     ) {
         DefaultIconButton(
+            enabled = isAddImageButtonAvailable,
             onClick = onAddImageClicked,
             modifier = Modifier
                 .padding(end = RecipeAppTheme.paddings.medium),

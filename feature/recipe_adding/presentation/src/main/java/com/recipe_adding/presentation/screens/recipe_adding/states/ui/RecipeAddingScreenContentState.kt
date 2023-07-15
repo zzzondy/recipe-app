@@ -61,6 +61,7 @@ fun RecipeAddingScreenContentState(
     isMealTypeError: Boolean = false,
     isDescriptionError: Boolean = false,
     isIngredientsError: Boolean = false,
+    isAddImageButtonAvailable: Boolean = true,
 ) {
     val focusManager = LocalFocusManager.current
 
@@ -88,6 +89,7 @@ fun RecipeAddingScreenContentState(
                     onRemoveImageClicked = onRemoveImageClicked,
                     onReplaceImageClicked = onReplaceImageClicked,
                     isError = isImagesError,
+                    isAddImageButtonAvailable = isAddImageButtonAvailable,
                 )
             }
 
@@ -106,9 +108,9 @@ fun RecipeAddingScreenContentState(
                 CookingTimeSection(
                     time = cookingTime,
                     modifier = Modifier
-                        .fillMaxWidth()
                         .height(100.dp)
-                        .padding(RecipeAppTheme.paddings.medium),
+                        .padding(RecipeAppTheme.paddings.medium)
+                        .fillMaxWidth(),
                     onClick = onCookingTimeClicked,
                     isError = isCookingTimeError,
                 )
@@ -120,10 +122,10 @@ fun RecipeAddingScreenContentState(
                     onClick = onMealTypeSectionClicked,
                     isError = isMealTypeError,
                     modifier = Modifier
-                        .fillMaxWidth()
                         .height(100.dp)
-                        .padding(RecipeAppTheme.paddings.medium),
-                    )
+                        .padding(RecipeAppTheme.paddings.medium)
+                        .fillMaxWidth(),
+                )
             }
 
             item(key = RecipeAddingScreenContentStateSections.DESCRIPTION_SECTION) {

@@ -34,4 +34,6 @@
     <string name="clear_icon">Иконка очистить</string>
     <string name="enter_meal_type">Введите тип блюда</string>
     <string name="not_selected">Не выбрано</string>
+    <string name="some_error">Произошла ошибка</string>
+    <string name="some_error_details">Произошла неизвестная ошибка, повторите попытку позже</string>
 </resources>

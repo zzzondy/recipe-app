@@ -73,6 +73,9 @@ dependencies {
     // Lifecycle
     implementation(Dependencies.Lifecycle.composeActivity)
 
+    // InfoBar
+    implementation(Dependencies.InfoBar.infoBar)
+
     // Testing
     androidTestImplementation(Dependencies.Testing.composeJunit)
     debugImplementation(Dependencies.Testing.manifest)

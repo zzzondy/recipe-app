@@ -6,6 +6,7 @@ import com.recipe_adding.data.remote.network.RecipeAddingService
 import com.recipe_adding.data.remote.states.RemoteObtainingMealTypesResult
 import com.recipe_adding.data.remote.states.RemoteUploadingRecipeResult
 import java.io.IOException
+import java.net.ConnectException
 
 class RemoteRecipeAddingRepositoryImpl(private val recipeAddingService: RecipeAddingService) :
     RemoteRecipeAddingRepository {
@@ -15,6 +16,9 @@ class RemoteRecipeAddingRepositoryImpl(private val recipeAddingService: RecipeAd
             recipeAddingService.uploadRecipe(recipe)
             RemoteUploadingRecipeResult.Success
         } catch (e: IOException) {
+            Log.d("Recipe adding", e.toString())
+            RemoteUploadingRecipeResult.NetworkError
+        } catch (e: ConnectException) {
             Log.d("Recipe adding", e.toString())
             RemoteUploadingRecipeResult.NetworkError
         } catch (e: Exception) {

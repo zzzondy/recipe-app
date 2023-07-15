@@ -19,10 +19,15 @@ class RecipeAddingRepositoryImpl(private val remoteRecipeAddingRepository: Remot
     override suspend fun uploadRecipe(recipe: Recipe): UploadingRecipeResult =
         remoteRecipeAddingRepository.uploadRecipe(recipe.toRemote()).toDomain()
 
-    override fun obtainMealTypesByPage(): Flow<PagingData<MealType>> =
+    override fun obtainMealTypesByPage(searchQuery: String): Flow<PagingData<MealType>> =
         Pager(
             config = PagingConfig(pageSize = PAGE_SIZE, prefetchDistance = PAGE_SIZE),
-            pagingSourceFactory = { MealTypesPagingSource(remoteRecipeAddingRepository) }
+            pagingSourceFactory = {
+                MealTypesPagingSource(
+                    searchQuery,
+                    remoteRecipeAddingRepository
+                )
+            }
         ).flow
 
     companion object {

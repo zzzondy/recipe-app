@@ -4,6 +4,8 @@ import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.assertTextContains
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
+import com.recipeapp.components.screen_states_ui.screens.ErrorScreenState
+import com.recipeapp.components.screen_states_ui.screens.ErrorScreenStateTestingTags
 import com.recipeapp.theme.RecipeAppTheme
 import org.junit.Rule
 import org.junit.Test

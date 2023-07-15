@@ -1,6 +1,7 @@
 package com.recipe_adding.presentation.screens.meal_type_choosing.states.ui
 
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
@@ -11,8 +12,8 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.items
 import com.recipe_adding.domain.models.MealType
 import com.recipe_adding.presentation.screens.meal_type_choosing.ui_components.MealTypeItem
-import com.recipeapp.components.screen_states_ui.AppendPagingErrorState
-import com.recipeapp.components.screen_states_ui.AppendPagingLoadingState
+import com.recipeapp.components.screen_states_ui.paging.AppendPagingErrorState
+import com.recipeapp.components.screen_states_ui.paging.AppendPagingLoadingState
 import com.recipeapp.theme.RecipeAppTheme
 import com.recipeapp.utils.bounceClick
 
@@ -24,7 +25,7 @@ fun MealTypeChoosingContentState(
     onRetryButtonClicked: () -> Unit = {},
 ) {
     LazyColumn(
-        modifier = modifier,
+        modifier = modifier.imePadding(),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         items(mealTypes, key = { it.id }) { mealType ->

@@ -11,6 +11,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class MealTypesPagingSource(
+    private val searchQuery: String,
     private val remoteRecipeAddingRepository: RemoteRecipeAddingRepository,
 ) : PagingSource<Int, MealType>() {
 

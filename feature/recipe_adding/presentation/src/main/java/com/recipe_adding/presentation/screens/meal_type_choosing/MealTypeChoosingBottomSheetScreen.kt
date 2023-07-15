@@ -1,20 +1,31 @@
 package com.recipe_adding.presentation.screens.meal_type_choosing
 
+import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.NestedScrollSource
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import androidx.paging.LoadState
@@ -28,8 +39,8 @@ import com.recipe_adding.presentation.screens.meal_type_choosing.states.MealType
 import com.recipe_adding.presentation.screens.meal_type_choosing.states.ui.MealTypeChoosingContentState
 import com.recipe_adding.presentation.screens.meal_type_choosing.states.ui.MealTypeChoosingLoadingState
 import com.recipeapp.components.buttons.BackgroundLessIconButton
-import com.recipeapp.components.screen_states_ui.ErrorScreenState
-import com.recipeapp.components.textfields.DefaultTextField
+import com.recipeapp.components.screen_states_ui.screens.ErrorScreenState
+import com.recipeapp.components.textfields.SearchTextField
 import com.recipeapp.theme.RecipeAppTheme
 import com.recipeapp.utils.collectAsEffect
 
@@ -59,6 +70,10 @@ fun MealTypeChoosingBottomSheetScreen(
             is MealTypeChoosingBottomSheetEffect.RefreshData -> {
                 mealTypes.refresh()
             }
+
+            is MealTypeChoosingBottomSheetEffect.CloseScreen -> {
+                navController.popBackStack()
+            }
         }
     }
 
@@ -74,43 +89,79 @@ private fun MealTypeChoosingBottomSheetContent(
     onDispatchAction: (MealTypeChoosingBottomSheetAction) -> Unit = {},
 ) {
     var searchingQuery by rememberSaveable { mutableStateOf("") }
+    val focusManager = LocalFocusManager.current
+
+    val nestedScrollConnection = remember {
+        object : NestedScrollConnection {
+            override fun onPostScroll(
+                consumed: Offset,
+                available: Offset,
+                source: NestedScrollSource
+            ): Offset {
+                focusManager.clearFocus()
+                return super.onPostScroll(consumed, available, source)
+            }
+        }
+    }
 
     Scaffold(
         topBar = {
-            DefaultTextField(
-                value = searchingQuery,
-                onValueChange = {
-                    searchingQuery = it
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(RecipeAppTheme.paddings.medium),
-                singleLine = true,
-                leadingIcon = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                BackgroundLessIconButton(
+                    modifier = Modifier.padding(
+                        start = RecipeAppTheme.paddings.extraSmall,
+                        top = RecipeAppTheme.paddings.medium,
+                        bottom = RecipeAppTheme.paddings.medium
+                    ),
+                    onClick = {
+                        onDispatchAction(MealTypeChoosingBottomSheetAction.OnCloseButtonClicked)
+                    },
+                    pressedContentColor = RecipeAppTheme.colors.neutral100,
+                    defaultContentColor = RecipeAppTheme.colors.neutral90,
+                ) {
                     Icon(
-                        imageVector = Icons.Default.Search,
-                        contentDescription = stringResource(R.string.search_icon)
+                        imageVector = Icons.Default.Close,
+                        contentDescription = stringResource(R.string.close_icon),
                     )
-                },
-                trailingIcon = {
-                    BackgroundLessIconButton(
-                        onClick = {
-                            searchingQuery = ""
-                        }
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Clear, contentDescription = stringResource(
-                                R.string.clear_icon
-                            )
-                        )
-                    }
-                },
-                placeholder = {
-                    Text(text = stringResource(R.string.enter_meal_type))
                 }
-            )
+
+                Spacer(modifier = Modifier.width(RecipeAppTheme.paddings.small))
+
+                SearchTextField(
+                    value = searchingQuery,
+                    placeholderText = stringResource(R.string.enter_meal_type),
+                    onValueChanged = {
+                        searchingQuery = it
+                        onDispatchAction(MealTypeChoosingBottomSheetAction.OnTypingSearchQuery(it))
+                    },
+                    onClearInput = {
+                        searchingQuery = ""
+                        onDispatchAction(MealTypeChoosingBottomSheetAction.OnTypingSearchQuery(""))
+                    },
+                    onSearchClicked = {
+                        focusManager.clearFocus()
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            end = RecipeAppTheme.paddings.medium,
+                            top = RecipeAppTheme.paddings.medium,
+                            bottom = RecipeAppTheme.paddings.medium
+                        )
+                )
+            }
         },
         backgroundColor = RecipeAppTheme.colors.white0,
+        modifier = Modifier
+            .pointerInput(Unit) {
+                detectTapGestures {
+                    focusManager.clearFocus()
+                }
+            }
     ) { paddingValues ->
         when (mealTypes.loadState.refresh) {
             is LoadState.Loading -> {
@@ -137,7 +188,8 @@ private fun MealTypeChoosingBottomSheetContent(
                     mealTypes = mealTypes,
                     modifier = Modifier
                         .padding(paddingValues)
-                        .fillMaxSize(),
+                        .fillMaxSize()
+                        .nestedScroll(nestedScrollConnection),
                     onMealTypeClicked = { mealType ->
                         onDispatchAction(
                             MealTypeChoosingBottomSheetAction.OnMealTypeClicked(

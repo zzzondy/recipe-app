@@ -14,7 +14,6 @@ import com.recipeapp.utils.UIText
 import com.recipeapp.utils.toBase64
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import okhttp3.internal.toImmutableList
@@ -67,7 +66,7 @@ class RecipeAddingScreenStateMachine(
             }
 
             inState {
-                on { action: RecipeAddingScreenAction.AddImages, state: State<RecipeAddingScreenState.ContentState> ->
+                on { action: RecipeAddingScreenAction.AddImage, state: State<RecipeAddingScreenState.ContentState> ->
                     onAddImage(action = action, state = state)
                 }
 
@@ -125,14 +124,15 @@ class RecipeAddingScreenStateMachine(
     }
 
     private fun onAddImage(
-        action: RecipeAddingScreenAction.AddImages,
+        action: RecipeAddingScreenAction.AddImage,
         state: State<RecipeAddingScreenState.ContentState>
     ): ChangedState<RecipeAddingScreenState> {
-        images.addAll(0, action.imageUris)
+        images.add(0, action.image)
         return state.mutate {
             this.copy(
                 images = this@RecipeAddingScreenStateMachine.images.toImmutableList(),
-                isImagesError = this@RecipeAddingScreenStateMachine.images.isEmpty() && this.isImagesError
+                isImagesError = this@RecipeAddingScreenStateMachine.images.isEmpty() && this.isImagesError,
+                isAddImageButtonAvailable = this@RecipeAddingScreenStateMachine.images.size < MAX_COUNT_OF_IMAGES
             )
         }
     }
@@ -142,7 +142,12 @@ class RecipeAddingScreenStateMachine(
         state: State<RecipeAddingScreenState.ContentState>
     ): ChangedState<RecipeAddingScreenState> {
         images.removeAt(action.index)
-        return state.mutate { this.copy(images = this@RecipeAddingScreenStateMachine.images.toImmutableList()) }
+        return state.mutate {
+            this.copy(
+                images = this@RecipeAddingScreenStateMachine.images.toImmutableList(),
+                isAddImageButtonAvailable = this@RecipeAddingScreenStateMachine.images.size < MAX_COUNT_OF_IMAGES
+            )
+        }
     }
 
     private fun onChangedRecipeName(
@@ -305,12 +310,11 @@ class RecipeAddingScreenStateMachine(
             ingredients.isEmpty() || ingredients.indexOfFirst { it.name.isEmpty() || it.quantity.isEmpty() } != -1
 
         if (
-            !isImagesError &&!isIngredientsError && !isNameError &&
+            !isImagesError && !isIngredientsError && !isNameError &&
             !isCookingTimeError && !isDescriptionError &&
             !isMealTypeError
         ) {
             _effect.emit(RecipeAddingScreenEffect.ShowLoadingDialog)
-            delay(1000)
             val result = uploadRecipeUseCase(
                 Recipe(
                     mealType = (state.snapshot.selectedMealTypeName as UIText.DynamicText).value,
@@ -327,8 +331,28 @@ class RecipeAddingScreenStateMachine(
                 )
             )
 
-            if (result is UploadingRecipeResult.Success) {
-                _effect.emit(RecipeAddingScreenEffect.NavigateBackOnSuccessfulResult)
+            when (result) {
+                is UploadingRecipeResult.Success -> {
+                    _effect.emit(RecipeAddingScreenEffect.NavigateBackOnSuccessfulResult)
+                }
+
+                is UploadingRecipeResult.NetworkError -> {
+                    _effect.emit(
+                        RecipeAddingScreenEffect.ShowErrorSnackBar(
+                            title = UIText.StringResource(R.string.no_internet_connection),
+                            subtitle = UIText.StringResource(R.string.check_your_connection)
+                        )
+                    )
+                }
+
+                is UploadingRecipeResult.OtherError -> {
+                    _effect.emit(
+                        RecipeAddingScreenEffect.ShowErrorSnackBar(
+                            title = UIText.StringResource(R.string.some_error),
+                            subtitle = UIText.StringResource(R.string.some_error_details)
+                        )
+                    )
+                }
             }
         }
 
@@ -352,5 +376,9 @@ class RecipeAddingScreenStateMachine(
                 isQuantityError = !validateQuantityUseCase(ingredientItem.quantity),
             )
         }
+    }
+
+    companion object {
+        private const val MAX_COUNT_OF_IMAGES = 10
     }
 }

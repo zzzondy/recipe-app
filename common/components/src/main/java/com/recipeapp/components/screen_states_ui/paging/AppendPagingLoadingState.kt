@@ -1,4 +1,4 @@
-package com.recipeapp.components.screen_states_ui
+package com.recipeapp.components.screen_states_ui.paging
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.material.CircularProgressIndicator
