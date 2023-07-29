@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="arrow_back_icon">Иконка стрелки назад</string>
+    <string name="create_recipe">Создать рецепт</string>
+    <string name="add_icon">Иконка добавления</string>
+    <string name="delete_icon">Иконка удаления</string>
+    <string name="recipe_image">Фотография блюда</string>
+    <string name="close_icon">Иконка закрыть</string>
+    <string name="recipe_name">Название рецепта</string>
+    <string name="watch_icon">Иконка часов</string>
+    <string name="cook_time">Время готовки</string>
+    <string name="arrow_forward_icon">Иконка стрелки вперед</string>
+    <string name="ingredients">Ингредиенты</string>
+    <string name="remove_icon">Иконка удаления</string>
+    <string name="add_new_ingredient">Добавить ингредиент</string>
+    <string name="item_name">Название</string>
+    <string name="save_recipe">Сохранить рецепт</string>
+    <string name="choose">Выбрать</string>
+    <string name="choose_time_in_minutes">Выберите время в минутах</string>
+    <string name="description">Описание</string>
+    
+    <plurals name="minutes_plural">
+        <item quantity="one">%1$d минута</item>
+        <item quantity="few">%1$d минуты</item>
+        <item quantity="many">%1$d минут</item>
+        <item quantity="other">%1$d минут</item>
+    </plurals>
+    <string name="meal_type">Тип блюда</string>
+    <string name="expand_icon">Иконка расширения</string>
+    <string name="enter_type">Введите тип</string>
+    <string name="no_internet_connection">Нет подключения к интернету</string>
+    <string name="check_your_connection">Проверьте соединение и повторите попытку позже</string>
+    <string name="search_icon">Иконка поиска</string>
+    <string name="clear_icon">Иконка очистить</string>
+    <string name="enter_meal_type">Введите тип блюда</string>
+    <string name="not_selected">Не выбрано</string>
+    <string name="some_error">Произошла ошибка</string>
+    <string name="some_error_details">Произошла неизвестная ошибка, повторите попытку позже</string>
+    <string name="nothing_found">Ничего не найдено</string>
+    <string name="try_to_enter_another_query">Попробуйте ввести другой запрос или создайте новый тип блюда</string>
+    <string name="create_new_meal_type">Создать новый тип блюда</string>
+</resources>

@@ -22,7 +22,7 @@ fun RecipesListScreen(viewModel: RecipesListScreenViewModel) {
             Column(modifier = Modifier.fillMaxWidth()) {
                 Text(text = recipe?.title ?: "")
 
-                Spacer(modifier = Modifier.height(RecipeAppTheme.paddings.small))
+                Spacer(modifier = Modifier.height(RecipeAppTheme.paddings.extraSmall))
 
                 Text(text = recipe?.description ?: "")
             }

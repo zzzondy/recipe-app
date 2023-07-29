@@ -1,30 +1,59 @@
 package com.recipeapp.components.buttons
 
+import android.os.SystemClock
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.recipeapp.components.NoRippleInteractionSource
 import com.recipeapp.theme.RecipeAppTheme
+import com.recipeapp.utils.ClickState
+import com.recipeapp.utils.MULTIPLE_CLICKS_PREVENTION_TIME_DELTA
+import com.recipeapp.utils.bounceClick
 
 @Composable
 fun BackgroundLessIconButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
     enabled: Boolean = true,
+    pressedContentColor: Color = RecipeAppTheme.colors.primary70,
+    defaultContentColor: Color = RecipeAppTheme.colors.primary50,
+    size: Dp = RecipeAppTheme.sizes.small,
     content: @Composable RowScope.() -> Unit
 ) {
+    var lastClickTime by remember { mutableStateOf(0L) }
+    var clickState by remember { mutableStateOf(ClickState.IDLE) }
+
+    val contentColor by animateColorAsState(if (clickState == ClickState.PRESSED) pressedContentColor else defaultContentColor)
+
     Button(
-        onClick = onClick,
-        modifier = modifier.size(RecipeAppTheme.sizes.small),
+        onClick = {
+            if (SystemClock.elapsedRealtime() - lastClickTime >= MULTIPLE_CLICKS_PREVENTION_TIME_DELTA) {
+                lastClickTime = SystemClock.elapsedRealtime()
+                onClick()
+            }
+        },
+        modifier = modifier
+            .size(size)
+            .bounceClick(
+                enabled = enabled,
+                otherEffect = { clickState = it }
+            ),
         shape = RecipeAppTheme.shapes.default,
         colors = ButtonDefaults.buttonColors(
             backgroundColor = Color.Transparent,
-            contentColor = RecipeAppTheme.colors.primary50,
+            contentColor = contentColor,
             disabledBackgroundColor = Color.Transparent,
             disabledContentColor = RecipeAppTheme.colors.neutral50
         ),
@@ -36,7 +65,8 @@ fun BackgroundLessIconButton(
             focusedElevation = 0.dp
         ),
         enabled = enabled,
-        contentPadding = PaddingValues(1.dp),
+        contentPadding = PaddingValues(0.dp),
+        interactionSource = remember { NoRippleInteractionSource() },
         content = content
     )
 }

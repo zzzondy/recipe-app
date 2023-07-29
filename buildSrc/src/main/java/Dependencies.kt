@@ -8,12 +8,15 @@ object Dependencies {
         const val ui = "androidx.compose.ui:ui"
         const val material = "androidx.compose.material:material"
         const val foundation = "androidx.compose.foundation:foundation"
+        const val runtime = "androidx.compose.runtime:runtime"
 
         const val navigation = "androidx.navigation:navigation-compose:2.5.3"
 
+        const val constraintLayout =
+            "androidx.constraintlayout:constraintlayout-compose:1.1.0-alpha04"
+
         const val toolingPreview = "androidx.compose.ui:ui-tooling-preview"
         const val tooling = "androidx.compose.ui:ui-tooling"
-        const val manifest = "androidx.compose.ui:ui-test-manifest"
     }
 
     object Lifecycle {
@@ -26,7 +29,8 @@ object Dependencies {
         const val junit = "junit:junit:4.13.2"
         const val androidJunit = "androidx.test.ext:junit:1.1.5"
         const val espresso = "androidx.test.espresso:espresso-core:3.5.1"
-        const val composeJunit = "androidx.compose.ui:ui-test-junit4:1.4.1"
+        const val composeJunit = "androidx.compose.ui:ui-test-junit4:1.4.3"
+        const val manifest = "androidx.compose.ui:ui-test-manifest"
     }
 
     object Dagger {
@@ -37,10 +41,21 @@ object Dependencies {
     }
 
     object Accompanist {
-        private const val accompanistVersion = "0.31.0-alpha"
+        private const val accompanistVersion = "0.31.2-alpha"
 
         const val animationNavigation =
             "com.google.accompanist:accompanist-navigation-animation:$accompanistVersion"
+
+        const val navigationMaterial =
+            "com.google.accompanist:accompanist-navigation-material:$accompanistVersion"
+
+        const val systemUiController =
+            "com.google.accompanist:accompanist-systemuicontroller:$accompanistVersion"
+
+        const val placeholders =
+            "com.google.accompanist:accompanist-placeholder-material:$accompanistVersion"
+
+
     }
 
     object Serialization {
@@ -57,7 +72,8 @@ object Dependencies {
 
     object Retrofit {
         const val retrofit = "com.squareup.retrofit2:retrofit:2.9.0"
-        const val serialization = "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0"
+        const val serialization =
+            "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0"
     }
 
     object Paging {
@@ -65,5 +81,27 @@ object Dependencies {
 
         const val common = "androidx.paging:paging-common-ktx:$pagingVersion"
         const val compose = "androidx.paging:paging-compose:1.0.0-alpha17"
+    }
+
+    object FlowRedux {
+        private const val flowReduxVersion = "1.0.2"
+
+        const val flowRedux = "com.freeletics.flowredux:flowredux-jvm:$flowReduxVersion"
+    }
+
+    object Landscapist {
+        private const val landscapistVersion = "2.1.0"
+
+        const val bom = "com.github.skydoves:landscapist-bom:$landscapistVersion"
+        const val coil = "com.github.skydoves:landscapist-coil"
+        const val animation = "com.github.skydoves:landscapist-animation"
+    }
+
+    object WheelPicker {
+        const val wheelPicker = "com.github.zj565061763:compose-wheel-picker:1.0.0-alpha16"
+    }
+
+    object InfoBar {
+        const val infoBar = "com.radusalagean:info-bar-compose:1.0.0"
     }
 }

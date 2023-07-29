@@ -1,10 +1,11 @@
 package com.recipeapp.presentation.navigation
 
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.compose.composable
-import androidx.navigation.navigation
+import com.google.accompanist.navigation.animation.composable
+import com.google.accompanist.navigation.animation.navigation
 import com.recipeapp.navigation.FeatureNavigationApi
 import com.recipeapp.navigation.daggerViewModel
 import com.recipeapp.presentation.di.RecipesComponentProvider
@@ -15,6 +16,7 @@ class RecipesFeatureNavigationApi : FeatureNavigationApi {
 
     override val navigationRoute = RecipesFeatureScreens.navigationRoute
 
+    @OptIn(ExperimentalAnimationApi::class)
     override fun registerFeatureNavigationGraph(
         navGraphBuilder: NavGraphBuilder,
         navController: NavController,
@@ -22,7 +24,7 @@ class RecipesFeatureNavigationApi : FeatureNavigationApi {
     ) {
         navGraphBuilder.navigation(
             startDestination = RecipesFeatureScreens.startScreenRoute,
-            route = navigationRoute
+            route = navigationRoute,
         ) {
             val context = navController.context.applicationContext
             val recipesComponent = (context as RecipesComponentProvider).provideRecipeComponent()

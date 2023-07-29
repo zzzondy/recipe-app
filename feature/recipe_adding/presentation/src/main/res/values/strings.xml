@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="arrow_back_icon">Arrow back icon</string>
+    <string name="arrow_forward_icon">Arrow forward icon</string>
+    <string name="create_recipe">Create recipe</string>
+    <string name="add_icon">Add circle icon</string>
+    <string name="delete_icon">Delete icon</string>
+    <string name="recipe_image">Recipe image</string>
+    <string name="close_icon">Close icon</string>
+    <string name="recipe_name">Recipe name</string>
+    <string name="watch_icon">Watch icon</string>
+    <string name="cook_time">Cook time</string>
+    <string name="ingredients">Ingredients</string>
+    <string name="remove_icon">Remove icon</string>
+    <string name="add_new_ingredient">Add new ingredient</string>
+    <string name="item_name">Item name</string>
+    <string name="quantity_format" translatable="false">****AA</string>
+    <string name="save_recipe">Save recipe</string>
+    <string name="choose">Choose</string>
+    <string name="choose_time_in_minutes">Choose time in minutes</string>
+    <string name="description">Description</string>
+    <string name="meal_type">Meal type</string>
+    <string name="expand_icon">Expand icon</string>
+    <string name="enter_type">Enter your type</string>
+    <string name="no_internet_connection">No internet connection</string>
+    <string name="check_your_connection">Check your connection and try again later</string>
+    <string name="search_icon">Search icon</string>
+    <string name="clear_icon">Clear icon</string>
+    <string name="enter_meal_type">Enter meal type</string>
+    <string name="not_selected">Not selected</string>
+    <string name="some_error">Some error occurred</string>
+    <string name="some_error_details">Unknown error occurred, please try again later</string>
+    <string name="nothing_found">Nothing found</string>
+    <string name="try_to_enter_another_query">Try to enter another query or create new meal type</string>
+    <string name="create_new_meal_type">Create new meal type</string>
+    
+    <plurals name="minutes_plural">
+        <item quantity="zero">%1$d minutes</item>
+        <item quantity="one">%1$d minute</item>
+        <item quantity="two">%1$d minutes</item>
+        <item quantity="few">%1$d minutes</item>
+        <item quantity="many">%1$d minutes</item>
+        <item quantity="other">%1$d minutes</item>
+    </plurals>
+</resources>

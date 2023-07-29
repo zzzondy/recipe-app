@@ -3,7 +3,7 @@ package com.recipeapp.theme
 import androidx.compose.ui.graphics.Color
 
 internal val lightColors = RecipeAppColors(
-    isDarkTheme = false,
+    isLightTheme = true,
     neutral100 = Color(0xff181818),
     neutral90 = Color(0xff303030),
     neutral80 = Color(0xff484848),
@@ -39,9 +39,34 @@ internal val lightColors = RecipeAppColors(
     secondary0 = Color(0xfffff7eb),
     rating100 = Color(0xffffb661),
     error100 = Color(0xffee1133),
+    error50 = Color(0xFF911717),
     error10 = Color(0xfff7f0f1),
     success100 = Color(0xff31b057),
-    success10 = Color(0xffceecd7)
+    success10 = Color(0xffceecd7),
 )
 
-internal val darkColors = lightColors.copy(isDarkTheme = true)
+internal val darkColors = lightColors.copy(
+    isLightTheme = false,
+    white0 = Color(0xff181818),
+    neutral100 = Color(0xffffffff),
+    neutral90 = Color(0xfff1f1f1),
+    neutral80 = Color(0xffc1c1c1),
+    neutral70 = Color(0xffa9a9a9),
+    neutral60 = Color(0xff919191),
+    neutral50 = Color(0xff797979),
+    neutral40 = Color(0xff606060),
+    neutral30 = Color(0xff484848),
+    neutral20 = Color(0xff303030),
+    neutral10 = Color(0xFF1D1D1D),
+    primary0 = Color(0xff711F1F),
+    primary10 = Color(0xff882525),
+    primary20 = Color(0xff9e2b2b),
+    primary30 = Color(0xffb53232),
+    primary40 = Color(0xffCB3838),
+    primary50 = Color(0xffe23e3e),
+    primary60 = Color(0xffe86565),
+    primary70 = Color(0xffee8b8b),
+    primary80 = Color(0xfff3b2b2),
+    primary90 = Color(0xfff9d8d8),
+    primary100 = Color(0xfffcecec),
+)

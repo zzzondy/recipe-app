@@ -10,6 +10,7 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven("https://jitpack.io")
     }
 }
 rootProject.name = "RecipeApp"
@@ -32,3 +33,5 @@ include(":feature:recipes:data")
 
 // Recipe adding
 include(":feature:recipe_adding:presentation")
+include(":feature:recipe_adding:domain")
+include(":feature:recipe_adding:data")

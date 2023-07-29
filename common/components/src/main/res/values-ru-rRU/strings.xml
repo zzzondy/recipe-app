@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="error_icon">Иконка ошибки</string>
+    <string name="try_again">Попробовать еще раз</string>
+    <string name="some_error">Произошла ошибка</string>
+    <string name="clear_icon">Иконка очистить</string>
+    <string name="search_icon">Иконка поиска</string>
+    <string name="search">Поиск</string>
+</resources>

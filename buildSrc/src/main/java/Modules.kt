@@ -17,4 +17,6 @@ object Modules {
 
     // Recipe adding
     const val featureRecipeAddingPresentation = ":feature:recipe_adding:presentation"
+    const val featureRecipeAddingDomain = ":feature:recipe_adding:domain"
+    const val featureRecipeAddingData = ":feature:recipe_adding:data"
 }

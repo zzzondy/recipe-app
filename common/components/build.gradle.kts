@@ -13,6 +13,8 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
+
+        signingConfig = signingConfigs.getByName("debug")
     }
 
     buildTypes {
@@ -67,8 +69,14 @@ dependencies {
     // Compose tooling
     implementation(Dependencies.Compose.toolingPreview)
     debugImplementation(Dependencies.Compose.tooling)
-    debugImplementation(Dependencies.Compose.manifest)
 
     // Lifecycle
     implementation(Dependencies.Lifecycle.composeActivity)
+
+    // InfoBar
+    implementation(Dependencies.InfoBar.infoBar)
+
+    // Testing
+    androidTestImplementation(Dependencies.Testing.composeJunit)
+    debugImplementation(Dependencies.Testing.manifest)
 }
