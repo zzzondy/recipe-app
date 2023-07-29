@@ -14,5 +14,9 @@ interface RecipeAddingService {
     suspend fun uploadRecipe(@Body recipe: RemoteRecipe): Response<RemoteRecipe>
 
     @GET("food_type/")
-    suspend fun obtainMealTypesByPage(@Query("page") page: Int): Response<ObtainingMealTypesResponse>
+    suspend fun obtainMealTypesByPage(
+        @Query("limit") pagingLimit: Int,
+        @Query("offset") pagingOffset: Long,
+        @Query("search") searchQuery: String,
+    ): Response<ObtainingMealTypesResponse>
 }

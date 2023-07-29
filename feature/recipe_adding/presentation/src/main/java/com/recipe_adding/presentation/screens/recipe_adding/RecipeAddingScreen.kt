@@ -184,7 +184,8 @@ fun RecipeAddingScreenContent(
     ) { paddingValues ->
         AnimatedContent(
             targetState = state.javaClass,
-            transitionSpec = { fadeIn() with fadeOut() }
+            transitionSpec = { fadeIn() with fadeOut() },
+            label = "RecipeAddingScreenState"
         ) {
             when (state) {
                 is RecipeAddingScreenState.ContentState -> {

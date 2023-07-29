@@ -36,4 +36,7 @@
     <string name="not_selected">Не выбрано</string>
     <string name="some_error">Произошла ошибка</string>
     <string name="some_error_details">Произошла неизвестная ошибка, повторите попытку позже</string>
+    <string name="nothing_found">Ничего не найдено</string>
+    <string name="try_to_enter_another_query">Попробуйте ввести другой запрос или создайте новый тип блюда</string>
+    <string name="create_new_meal_type">Создать новый тип блюда</string>
 </resources>

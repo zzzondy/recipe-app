@@ -1,6 +1,5 @@
 package com.recipe_adding.data.remote.repository
 
-import android.util.Log
 import com.recipe_adding.data.remote.models.RemoteRecipe
 import com.recipe_adding.data.remote.network.RecipeAddingService
 import com.recipe_adding.data.remote.states.RemoteObtainingMealTypesResult
@@ -16,32 +15,34 @@ class RemoteRecipeAddingRepositoryImpl(private val recipeAddingService: RecipeAd
             recipeAddingService.uploadRecipe(recipe)
             RemoteUploadingRecipeResult.Success
         } catch (e: IOException) {
-            Log.d("Recipe adding", e.toString())
             RemoteUploadingRecipeResult.NetworkError
         } catch (e: ConnectException) {
-            Log.d("Recipe adding", e.toString())
             RemoteUploadingRecipeResult.NetworkError
         } catch (e: Exception) {
-            Log.d("Recipe adding", e.toString())
             RemoteUploadingRecipeResult.OtherError
         }
     }
 
-    override suspend fun obtainMealTypesByPage(page: Int): RemoteObtainingMealTypesResult {
+    override suspend fun obtainMealTypesByPage(
+        searchQuery: String,
+        pagingLimit: Int,
+        pagingOffset: Long
+    ): RemoteObtainingMealTypesResult {
         return try {
-            val response = recipeAddingService.obtainMealTypesByPage(page)
+            val response = recipeAddingService.obtainMealTypesByPage(
+                searchQuery = searchQuery,
+                pagingLimit = pagingLimit,
+                pagingOffset = pagingOffset
+            )
 
-            Log.d("Recipe adding", response.toString())
             if (response.isSuccessful) {
                 RemoteObtainingMealTypesResult.Success(response.body()!!)
             } else {
                 RemoteObtainingMealTypesResult.OtherError
             }
         } catch (e: IOException) {
-            Log.d("Recipe adding", e.toString())
             RemoteObtainingMealTypesResult.NetworkError
         } catch (e: Exception) {
-            Log.d("Recipe adding", e.toString())
             RemoteObtainingMealTypesResult.OtherError
         }
     }

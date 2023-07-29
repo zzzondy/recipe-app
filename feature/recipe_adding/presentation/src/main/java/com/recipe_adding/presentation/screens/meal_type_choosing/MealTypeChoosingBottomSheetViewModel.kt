@@ -2,7 +2,6 @@ package com.recipe_adding.presentation.screens.meal_type_choosing
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.recipe_adding.domain.models.MealType
 import com.recipe_adding.domain.use_cases.ObtainMealTypesByPageUseCase
 import com.recipe_adding.presentation.screens.meal_type_choosing.states.MealTypeChoosingBottomSheetAction
 import com.recipe_adding.presentation.screens.meal_type_choosing.states.MealTypeChoosingBottomSheetEffect
@@ -26,7 +25,7 @@ class MealTypeChoosingBottomSheetViewModel(obtainMealTypesByPageUseCase: ObtainM
     private val _effect = MutableSharedFlow<MealTypeChoosingBottomSheetEffect>()
     val effect = _effect.asSharedFlow()
 
-    private val queryChannel = Channel<String>(capacity = 1)
+    private val queryChannel = Channel<String>()
 
     val mealTypes = queryChannel.receiveAsFlow()
         .distinctUntilChanged()
@@ -44,7 +43,7 @@ class MealTypeChoosingBottomSheetViewModel(obtainMealTypesByPageUseCase: ObtainM
 
     fun onDispatchAction(action: MealTypeChoosingBottomSheetAction) {
         when (action) {
-            is MealTypeChoosingBottomSheetAction.OnMealTypeClicked -> onMealTypeClicked(action.mealType)
+            is MealTypeChoosingBottomSheetAction.OnMealTypeClicked -> onMealTypeClicked(action.mealTypeName)
 
             is MealTypeChoosingBottomSheetAction.OnRetryButtonClicked -> onRetryButtonClicked()
 
@@ -52,13 +51,17 @@ class MealTypeChoosingBottomSheetViewModel(obtainMealTypesByPageUseCase: ObtainM
 
             is MealTypeChoosingBottomSheetAction.OnTypingSearchQuery -> onTypingSearchQuery(action.query)
 
+            is MealTypeChoosingBottomSheetAction.OnCreateNewMealTypeClicked -> onCreateNewMealTypeClicked(
+                action.mealTypeName
+            )
+
             is MealTypeChoosingBottomSheetAction.OnCloseButtonClicked -> onCloseButtonClicked()
         }
     }
 
-    private fun onMealTypeClicked(mealType: MealType) {
+    private fun onMealTypeClicked(mealTypeName: String) {
         viewModelScope.launch {
-            _effect.emit(MealTypeChoosingBottomSheetEffect.OnMealTypeSelected(mealType))
+            _effect.emit(MealTypeChoosingBottomSheetEffect.OnMealTypeSelected(mealTypeName))
         }
     }
 
@@ -77,6 +80,12 @@ class MealTypeChoosingBottomSheetViewModel(obtainMealTypesByPageUseCase: ObtainM
     private fun onTypingSearchQuery(query: String) {
         viewModelScope.launch {
             queryChannel.send(query)
+        }
+    }
+
+    private fun onCreateNewMealTypeClicked(mealTypeName: String) {
+        viewModelScope.launch {
+            _effect.emit(MealTypeChoosingBottomSheetEffect.OnMealTypeSelected(mealTypeName))
         }
     }
 

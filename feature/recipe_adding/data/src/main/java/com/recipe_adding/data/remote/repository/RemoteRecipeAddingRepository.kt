@@ -8,5 +8,9 @@ interface RemoteRecipeAddingRepository {
 
     suspend fun uploadRecipe(recipe: RemoteRecipe): RemoteUploadingRecipeResult
 
-    suspend fun obtainMealTypesByPage(page: Int): RemoteObtainingMealTypesResult
+    suspend fun obtainMealTypesByPage(
+        searchQuery: String,
+        pagingLimit: Int,
+        pagingOffset: Long
+    ): RemoteObtainingMealTypesResult
 }

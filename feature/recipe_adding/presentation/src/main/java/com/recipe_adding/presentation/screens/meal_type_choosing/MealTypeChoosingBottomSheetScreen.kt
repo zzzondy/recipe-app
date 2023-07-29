@@ -2,6 +2,7 @@ package com.recipe_adding.presentation.screens.meal_type_choosing
 
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.Composable
@@ -39,8 +41,9 @@ import com.recipe_adding.presentation.screens.meal_type_choosing.states.MealType
 import com.recipe_adding.presentation.screens.meal_type_choosing.states.ui.MealTypeChoosingContentState
 import com.recipe_adding.presentation.screens.meal_type_choosing.states.ui.MealTypeChoosingLoadingState
 import com.recipeapp.components.buttons.BackgroundLessIconButton
+import com.recipeapp.components.buttons.DefaultButton
 import com.recipeapp.components.screen_states_ui.screens.ErrorScreenState
-import com.recipeapp.components.textfields.SearchTextField
+import com.recipeapp.components.textfields.SearchBar
 import com.recipeapp.theme.RecipeAppTheme
 import com.recipeapp.utils.collectAsEffect
 
@@ -58,7 +61,7 @@ fun MealTypeChoosingBottomSheetScreen(
                     ?.savedStateHandle
                     ?.set(
                         key = RecipeAddingFeatureNavigationApi.SELECTED_MEAL_TYPE_NAME,
-                        value = effect.mealType.name
+                        value = effect.mealTypeName
                     )
                 navController.popBackStack()
             }
@@ -106,53 +109,77 @@ private fun MealTypeChoosingBottomSheetContent(
 
     Scaffold(
         topBar = {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
+            Column(
+                modifier = Modifier.fillMaxWidth()
             ) {
-                BackgroundLessIconButton(
-                    modifier = Modifier.padding(
-                        start = RecipeAppTheme.paddings.extraSmall,
-                        top = RecipeAppTheme.paddings.medium,
-                        bottom = RecipeAppTheme.paddings.medium
-                    ),
-                    onClick = {
-                        onDispatchAction(MealTypeChoosingBottomSheetAction.OnCloseButtonClicked)
-                    },
-                    pressedContentColor = RecipeAppTheme.colors.neutral100,
-                    defaultContentColor = RecipeAppTheme.colors.neutral90,
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Icon(
-                        imageVector = Icons.Default.Close,
-                        contentDescription = stringResource(R.string.close_icon),
+                    BackgroundLessIconButton(
+                        modifier = Modifier.padding(
+                            start = RecipeAppTheme.paddings.extraSmall,
+                            top = RecipeAppTheme.paddings.medium,
+                            bottom = RecipeAppTheme.paddings.medium
+                        ),
+                        onClick = {
+                            onDispatchAction(MealTypeChoosingBottomSheetAction.OnCloseButtonClicked)
+                        },
+                        pressedContentColor = RecipeAppTheme.colors.neutral100,
+                        defaultContentColor = RecipeAppTheme.colors.neutral90,
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Close,
+                            contentDescription = stringResource(R.string.close_icon),
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.width(RecipeAppTheme.paddings.small))
+
+                    SearchBar(
+                        value = searchingQuery,
+                        placeholder = stringResource(R.string.enter_meal_type),
+                        onValueChange = {
+                            searchingQuery = it
+                            onDispatchAction(
+                                MealTypeChoosingBottomSheetAction.OnTypingSearchQuery(
+                                    it
+                                )
+                            )
+                        },
+                        onSearch = {
+                            focusManager.clearFocus()
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(
+                                end = RecipeAppTheme.paddings.medium,
+                                top = RecipeAppTheme.paddings.medium,
+                                bottom = RecipeAppTheme.paddings.medium
+                            )
                     )
                 }
 
-                Spacer(modifier = Modifier.width(RecipeAppTheme.paddings.small))
-
-                SearchTextField(
-                    value = searchingQuery,
-                    placeholderText = stringResource(R.string.enter_meal_type),
-                    onValueChanged = {
-                        searchingQuery = it
-                        onDispatchAction(MealTypeChoosingBottomSheetAction.OnTypingSearchQuery(it))
-                    },
-                    onClearInput = {
-                        searchingQuery = ""
-                        onDispatchAction(MealTypeChoosingBottomSheetAction.OnTypingSearchQuery(""))
-                    },
-                    onSearchClicked = {
-                        focusManager.clearFocus()
-                    },
+                DefaultButton(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(
+                            start = RecipeAppTheme.paddings.medium,
                             end = RecipeAppTheme.paddings.medium,
-                            top = RecipeAppTheme.paddings.medium,
-                            bottom = RecipeAppTheme.paddings.medium
+                            bottom = RecipeAppTheme.paddings.medium,
+                        ),
+                    onClick = {
+                        onDispatchAction(
+                            MealTypeChoosingBottomSheetAction.OnCreateNewMealTypeClicked(
+                                mealTypeName = searchingQuery
+                            )
                         )
-                )
+                    },
+                    enabled = searchingQuery.isNotBlank(),
+                ) {
+                    Text(text = stringResource(R.string.create_new_meal_type))
+                }
             }
         },
         backgroundColor = RecipeAppTheme.colors.white0,

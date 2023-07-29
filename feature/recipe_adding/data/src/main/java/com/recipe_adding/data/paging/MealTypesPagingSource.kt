@@ -24,9 +24,13 @@ class MealTypesPagingSource(
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, MealType> =
         withContext(Dispatchers.IO) {
-            val currentPage = (params.key ?: 1)
+            val currentOffset = (params.key ?: 0)
 
-            val remoteResult = remoteRecipeAddingRepository.obtainMealTypesByPage(currentPage)
+            val remoteResult = remoteRecipeAddingRepository.obtainMealTypesByPage(
+                searchQuery = searchQuery,
+                pagingLimit = params.loadSize,
+                pagingOffset = currentOffset.toLong()
+            )
 
             val previousPage =
                 if (remoteResult is RemoteObtainingMealTypesResult.Success) remoteResult.response.previousPage else null
@@ -39,8 +43,8 @@ class MealTypesPagingSource(
             if (result is ObtainingMealTypesResult.Success) {
                 LoadResult.Page(
                     data = result.mealTypes,
-                    prevKey = if (previousPage == null) null else currentPage - 1,
-                    nextKey = if (nextPage == null) null else currentPage + 1
+                    prevKey = if (previousPage == null) null else currentOffset - params.loadSize,
+                    nextKey = if (nextPage == null) null else currentOffset + params.loadSize
                 )
             } else {
                 LoadResult.Error(Exception())
